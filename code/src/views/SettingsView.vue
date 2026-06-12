@@ -64,10 +64,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 
 const MODEL_PRESETS = {
-  qwen: ['qwen-turbo', 'qwen-plus', 'qwen-max', 'qwen-omni-turbo'],
+  qwen: ['qwen-turbo', 'qwen-plus', 'qwen-max', 'qwen-omni-turbo', 'qwen-vl-plus', 'qwen-vl-max'],
   doubao: ['doubao-1.5-pro-256k', 'doubao-1.5-lite-32k'],
   openai: ['gpt-4o', 'gpt-4o-mini', 'gpt-4-turbo'],
   custom: [],
@@ -96,6 +96,8 @@ function loadConfig() {
 }
 
 async function testConnection() {
+  // 自动保存，避免忘点保存导致配置丢失
+  saveToStorage()
   testing.value = true
   testResult.value = null
   try {
@@ -124,16 +126,23 @@ async function checkAnki() {
   ankiStatus.value = data.available
 }
 
-function saveSettings() {
+function saveToStorage() {
   localStorage.setItem('maimemo_ai_config', JSON.stringify({
     provider: config.provider,
     apiKey: config.apiKey,
     baseURL: config.baseURL,
     model: config.model,
   }))
+}
+
+function saveSettings() {
+  saveToStorage()
   saved.value = true
   setTimeout(() => { saved.value = false }, 2000)
 }
+
+// 任意配置变更自动保存
+watch(config, () => saveToStorage(), { deep: true })
 
 onMounted(() => {
   loadConfig()

@@ -296,14 +296,9 @@ async function sendResponse() {
       ease: j.ease,
     })
 
-    // 如果 AI 要继续对话
-    if (j.continue && j.followUp) {
-      messages.value.push({ role: 'assistant', content: j.followUp })
-      waiting.value = false
-    } else {
-      // 完成当前卡片，更新 Anki
-      await completeCard(j.ease)
-    }
+    // AI 评分后直接完成当前卡片，不再进行多轮对话
+    // 这样每张卡片只做一轮问答，避免同一问题反复出现
+    await completeCard(j.ease)
   } catch (err) {
     messages.value.push({ role: 'system', content: '❌ 请求失败：' + err.message })
     waiting.value = false

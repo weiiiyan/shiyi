@@ -107,16 +107,11 @@ router.post('/respond', async (req, res) => {
 
     // 记录 AI 反馈
     sessionService.addMessage(deckId, 'assistant', judgment.feedback);
-    if (judgment.followUp) {
-      sessionService.addMessage(deckId, 'assistant', judgment.followUp);
-    }
 
     res.json({
       judgment: {
         ease: judgment.ease,
         feedback: judgment.feedback,
-        continue: judgment.continue,
-        followUp: judgment.followUp,
       },
     });
   } catch (err) {
