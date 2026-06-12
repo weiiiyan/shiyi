@@ -5,11 +5,11 @@ const router = Router();
 
 /**
  * GET /api/decks
- * 获取所有 MaiMemo 牌组列表，以及 Anki 中所有牌组名称（供调试）
+ * 获取所有 ShiYi 牌组列表，以及 Anki 中所有牌组名称（供调试）
  */
 router.get('/', async (req, res) => {
   try {
-    const result = await ankiService.getMaiMemoDecks();
+    const result = await ankiService.getShiYiDecks();
     res.json({
       decks: result.decks || [],
       allDeckNames: result.allDecks || [],
@@ -34,7 +34,7 @@ router.get('/status', async (req, res) => {
 
 /**
  * GET /api/decks/all
- * 调试端点 — 返回 Anki 中所有牌组名称（不做 MaiMemo 过滤）
+ * 调试端点 — 返回 Anki 中所有牌组名称（不做 ShiYi 过滤）
  */
 router.get('/all', async (req, res) => {
   try {

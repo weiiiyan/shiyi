@@ -48,19 +48,19 @@ async function getDeckMapping() {
 }
 
 /**
- * 获取所有 MaiMemo 项目牌组（MaiMemo:: 前缀的子牌组）
+ * 获取所有 ShiYi 项目牌组（ShiYi:: 前缀的子牌组）
  * 返回牌组名和统计信息
  */
-async function getMaiMemoDecks() {
+async function getShiYiDecks() {
   const allDecks = await invoke('deckNames');
 
-  // 匹配 "MaiMemo::" 子牌组和顶级 "MaiMemo" 牌组
-  const maiMemoDecks = allDecks.filter(
-    (d) => d === 'MaiMemo' || d.startsWith('MaiMemo::')
+  // 匹配 "ShiYi::" 子牌组和顶级 "ShiYi" 牌组
+  const ShiYiDecks = allDecks.filter(
+    (d) => d === 'ShiYi' || d.startsWith('ShiYi::')
   );
 
-  // 如果没有 MaiMemo 牌组，直接返回空
-  if (maiMemoDecks.length === 0) {
+  // 如果没有 ShiYi 牌组，直接返回空
+  if (ShiYiDecks.length === 0) {
     return { decks: [], allDecks };
   }
 
@@ -69,13 +69,13 @@ async function getMaiMemoDecks() {
 
   // 使用 did: 查询（牌组 ID）避免中文 UTF-8 编码问题
   const statsList = [];
-  for (const name of maiMemoDecks) {
+  for (const name of ShiYiDecks) {
     const deckId = nameToId[name];
     if (!deckId) {
       // 牌组不存在于映射中，跳过
       statsList.push({
         name,
-        displayName: name.replace('MaiMemo::', ''),
+        displayName: name.replace('ShiYi::', ''),
         totalCards: 0,
         dueCards: 0,
       });
@@ -101,7 +101,7 @@ async function getMaiMemoDecks() {
 
     statsList.push({
       name,
-      displayName: name.replace('MaiMemo::', ''),
+      displayName: name.replace('ShiYi::', ''),
       totalCards,
       dueCards,
     });
@@ -123,7 +123,7 @@ async function getMaiMemoDecks() {
  * 获取指定牌组中到期的卡片
  * 返回卡片信息（含 note 字段数据）
  *
- * @param {string} deckFullName — 牌组全名（decodeURIComponent 之后），如 "MaiMemo::编程"
+ * @param {string} deckFullName — 牌组全名（decodeURIComponent 之后），如 "ShiYi::编程"
  */
 async function getDueCards(deckFullName) {
   // 通过牌组名查找 ID，避免中文查询问题
@@ -250,7 +250,7 @@ function parseJsonField(value) {
 
 export default {
   getAllDeckNames,
-  getMaiMemoDecks,
+  getShiYiDecks,
   getDueCards,
   getKnownVocabulary,
   answerCard,

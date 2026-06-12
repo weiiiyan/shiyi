@@ -183,7 +183,7 @@ async function toggleVoiceInput() {
 // AI 配置 — 从 localStorage 读取
 const aiConfig = computed(() => {
   try {
-    const saved = localStorage.getItem('maimemo_ai_config')
+    const saved = localStorage.getItem('ShiYi_ai_config')
     if (saved) return JSON.parse(saved)
   } catch {}
   return {

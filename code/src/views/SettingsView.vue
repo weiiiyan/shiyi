@@ -90,7 +90,7 @@ const modelOptions = computed(() => MODEL_PRESETS[config.provider] || [])
 
 function loadConfig() {
   try {
-    const saved = localStorage.getItem('maimemo_ai_config')
+    const saved = localStorage.getItem('ShiYi_ai_config')
     if (saved) Object.assign(config, JSON.parse(saved))
   } catch {}
 }
@@ -127,7 +127,7 @@ async function checkAnki() {
 }
 
 function saveToStorage() {
-  localStorage.setItem('maimemo_ai_config', JSON.stringify({
+  localStorage.setItem('ShiYi_ai_config', JSON.stringify({
     provider: config.provider,
     apiKey: config.apiKey,
     baseURL: config.baseURL,

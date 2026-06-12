@@ -1,5 +1,5 @@
 /**
- * MaiMemoAiChat 后端服务
+ * ShiYiAiChat 后端服务
  *
  * 负责代理 Anki-Connect 请求、AI API 调用、会话管理。
  * 运行在 localhost:3001，与 Vite dev server (5173) 配合使用。
@@ -35,5 +35,5 @@ app.use((err, req, res, _next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`MaiMemoAiChat server running on http://localhost:${PORT}`);
+  console.log(`ShiYiAiChat server running on http://localhost:${PORT}`);
 });

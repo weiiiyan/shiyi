@@ -25,21 +25,21 @@
     </div>
 
     <div v-else-if="decks.length === 0" class="empty">
-      <h3>📭 没有找到 MaiMemo 牌组</h3>
-      <p>本应用需要以 <code>MaiMemo::</code> 为前缀的牌组。</p>
+      <h3>📭 没有找到 ShiYi 牌组</h3>
+      <p>本应用需要以 <code>ShiYi::</code> 为前缀的牌组。</p>
       <p><strong>如何在 Anki 中创建：</strong></p>
       <ol class="setup-guide">
         <li>打开 Anki，点击底部 <strong>"创建牌组"</strong></li>
-        <li>输入 <code>MaiMemo::日常交流</code>（这会创建一个名为"日常交流"的子牌组）</li>
-        <li>或者先创建 <code>MaiMemo</code>，再在其下创建子牌组</li>
+        <li>输入 <code>ShiYi::日常交流</code>（这会创建一个名为"日常交流"的子牌组）</li>
+        <li>或者先创建 <code>ShiYi</code>，再在其下创建子牌组</li>
       </ol>
       <div v-if="allDeckNames.length > 0" class="detected-decks">
         <p>🔍 Anki 中检测到的牌组（{{ allDeckNames.length }} 个）：</p>
         <ul>
           <li v-for="name in allDeckNames" :key="name">
             <code>{{ name }}</code>
-            <span v-if="name.startsWith('MaiMemo::')">✅ 匹配</span>
-            <span v-else class="not-match">❌ 需要重命名为 <code>MaiMemo::{{ name }}</code></span>
+            <span v-if="name.startsWith('ShiYi::')">✅ 匹配</span>
+            <span v-else class="not-match">❌ 需要重命名为 <code>ShiYi::{{ name }}</code></span>
           </li>
         </ul>
       </div>
