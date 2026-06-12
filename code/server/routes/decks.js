@@ -5,12 +5,15 @@ const router = Router();
 
 /**
  * GET /api/decks
- * 获取所有 MaiMemo 牌组列表
+ * 获取所有 MaiMemo 牌组列表，以及 Anki 中所有牌组名称（供调试）
  */
 router.get('/', async (req, res) => {
   try {
-    const decks = await ankiService.getMaiMemoDecks();
-    res.json({ decks });
+    const result = await ankiService.getMaiMemoDecks();
+    res.json({
+      decks: result.decks || [],
+      allDeckNames: result.allDecks || [],
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -26,6 +29,19 @@ router.get('/status', async (req, res) => {
     res.json(status);
   } catch (err) {
     res.json({ available: false, error: err.message });
+  }
+});
+
+/**
+ * GET /api/decks/all
+ * 调试端点 — 返回 Anki 中所有牌组名称（不做 MaiMemo 过滤）
+ */
+router.get('/all', async (req, res) => {
+  try {
+    const allDecks = await ankiService.getAllDeckNames();
+    res.json({ allDecks });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

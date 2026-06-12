@@ -26,8 +26,27 @@
 
     <div v-else-if="decks.length === 0" class="empty">
       <h3>📭 没有找到 MaiMemo 牌组</h3>
-      <p>请在 Anki 中创建以 <code>MaiMemo::</code> 开头的牌组。</p>
-      <p>例如：<code>MaiMemo::日常交流</code>、<code>MaiMemo::工作英语</code></p>
+      <p>本应用需要以 <code>MaiMemo::</code> 为前缀的牌组。</p>
+      <p><strong>如何在 Anki 中创建：</strong></p>
+      <ol class="setup-guide">
+        <li>打开 Anki，点击底部 <strong>"创建牌组"</strong></li>
+        <li>输入 <code>MaiMemo::日常交流</code>（这会创建一个名为"日常交流"的子牌组）</li>
+        <li>或者先创建 <code>MaiMemo</code>，再在其下创建子牌组</li>
+      </ol>
+      <div v-if="allDeckNames.length > 0" class="detected-decks">
+        <p>🔍 Anki 中检测到的牌组（{{ allDeckNames.length }} 个）：</p>
+        <ul>
+          <li v-for="name in allDeckNames" :key="name">
+            <code>{{ name }}</code>
+            <span v-if="name.startsWith('MaiMemo::')">✅ 匹配</span>
+            <span v-else class="not-match">❌ 需要重命名为 <code>MaiMemo::{{ name }}</code></span>
+          </li>
+        </ul>
+      </div>
+      <div v-else class="detected-decks">
+        <p>⚠️ Anki 中似乎没有任何牌组。请先在 Anki 中创建牌组。</p>
+      </div>
+      <button @click="loadDecks" class="btn-refresh">🔄 刷新检测</button>
     </div>
 
     <div v-else class="deck-grid">
@@ -55,6 +74,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const decks = ref([])
+const allDeckNames = ref([])
 const loading = ref(true)
 const error = ref('')
 const ankiConnected = ref(false)
@@ -82,6 +102,7 @@ async function loadDecks() {
     const res = await fetch('/api/decks')
     const data = await res.json()
     decks.value = data.decks || []
+    allDeckNames.value = data.allDeckNames || []
   } catch (err) {
     error.value = '加载牌组失败：' + err.message
   } finally {
