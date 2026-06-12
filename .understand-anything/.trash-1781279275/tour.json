@@ -1,0 +1,124 @@
+[
+  {
+    "order": 1,
+    "title": "项目概览",
+    "description": "从 README 开始了解 ShiYi 项目的基本信息：这是一个基于 Vue 3 + Vite 构建的前端应用，采用 Script Setup 语法编写组件。虽然这份 README 较为简短，但它标记了项目的技术栈起点，为后续深入探索项目丰富的文档体系和代码结构提供了入口。",
+    "nodeIds": [
+      "document:code/README.md"
+    ]
+  },
+  {
+    "order": 2,
+    "title": "产品需求与背景",
+    "description": "产品需求文档（PRD）揭示了 ShiYi 的核心定位：一款结合 Anki 间隔重复与 AI 的英语学习应用。它针对传统英语学习中「死记硬背单词」「缺乏真实场景练习」等痛点，提出了基于 AI 生成场景的交互式学习方案。需求分析索引文档汇总了 PRD、学习理念资料和 Anki-Connect API 参考等关键资源，是理解项目全貌的导航页。",
+    "nodeIds": [
+      "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "document:doc/01-需求分析/需求分析.md"
+    ]
+  },
+  {
+    "order": 3,
+    "title": "学习理念：英语作为运动类技能",
+    "description": "这三篇文档构成了 ShiYi 的教育理论基础。核心观点是：英语的听说读写是运动类技能而非知识类技能——正确的训练路径是「声音到意思」（听）、「想法到发声」（说）、「文字到意思」（读）、「想法到打字」（写），且应以句子为最小学习单元。同时指出了三个常见误区：应试教育模式、孤立记单词、插入中文思考。这些理念直接塑造了后续 LearnView 的交互设计。",
+    "nodeIds": [
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md"
+    ]
+  },
+  {
+    "order": 4,
+    "title": "技术实现计划",
+    "description": "这份完整的实现计划文档是项目的技术蓝图，涵盖 12 个章节：技术栈选型（Vue 3 + Express + Web Speech API + OpenAI 兼容 API）、整体架构设计（前后端分离，Vite 代理转发 /api 请求）、数据模型设计、核心业务流程（选择牌组→AI 生成场景→用户回复→AI 评判→更新 Anki）、前端路由配置以及分四阶段实现的任务清单。阅读此文档可对整个项目的技术骨架获得全局认知。",
+    "nodeIds": [
+      "document:doc/Claude Code Plan方案.md"
+    ],
+    "languageLesson": "技术方案文档（Implementation Plan）是大型项目的设计蓝图。好的方案应包含：背景与动机、技术选型理由、架构分层图、数据模型、核心业务流程（通常用时序图或伪代码描述）、路由与API设计、分阶段任务拆解及验证标准。"
+  },
+  {
+    "order": 5,
+    "title": "项目构建与环境配置",
+    "description": "package.json 定义了项目的脚本命令（Vite 开发/构建、Express 后端启动、concurrently 并行运行前后端）和核心依赖（Vue 3、Express、OpenAI SDK、cors、dotenv）。vite.config.js 通过代理规则将前端 /api 请求转发到本地 Express 后端（端口 3001），实现开发环境下的前后端联调。.env.example 提供了环境变量模板，配置 Anki-Connect 地址和服务端口。",
+    "nodeIds": [
+      "config:code/package.json",
+      "file:code/vite.config.js",
+      "config:code/.env.example"
+    ],
+    "languageLesson": "Vite 的 server.proxy 配置可在开发阶段将特定路径的请求代理到后端服务器，解决跨域问题而无需后端单独配置 CORS。concurrently 工具允许一条命令同时启动前端开发服务器和后端服务，简化开发工作流。"
+  },
+  {
+    "order": 6,
+    "title": "前端启动链路：从 HTML 到路由",
+    "description": "Vue 应用从 index.html 的 #app 挂载点开始，通过 ES Module 方式加载 main.js。main.js 使用 createApp 创建 Vue 实例，注册全局样式（style.css）和路由插件后挂载到 DOM。App.vue 定义了整体布局骨架（顶部导航栏 + router-view 内容出口）。路由模块（router/index.js）使用哈希历史模式定义三条路由：牌组选择（/）、学习（/learn/:deckId）、设置（/settings）。这五个文件构成了前端的启动骨架。",
+    "nodeIds": [
+      "file:code/index.html",
+      "file:code/src/main.js",
+      "file:code/src/App.vue",
+      "file:code/src/router/index.js",
+      "file:code/src/style.css"
+    ],
+    "languageLesson": "Vue 3 应用通过 createApp() 创建实例，使用 app.use() 注册插件（如 Router），最终调用 app.mount('#app') 挂载。Hash 历史模式（createWebHashHistory）在 URL 中使用 # 符号，无需服务端配置即可支持 SPA 路由，适合无服务端渲染的纯前端项目。"
+  },
+  {
+    "order": 7,
+    "title": "辅助视图：牌组选择与设置",
+    "description": "DeckSelect 是用户进入学习流程的入口视图，它检测 Anki-Connect 连接状态，加载以 ShiYi:: 为前缀的牌组列表，用户点击即可进入对应牌组的学习流程。SettingsView 提供 AI 服务商（OpenAI/千问/豆包/自定义）的配置界面，包括 API Key 和模型名称，支持连接测试；配置通过 Vue 的 watch 自动持久化到 localStorage。这两个视图共同构成了学习主流程的前置环节。",
+    "nodeIds": [
+      "file:code/src/views/DeckSelect.vue",
+      "file:code/src/views/SettingsView.vue"
+    ],
+    "languageLesson": "Vue 的 watch API 可以监听响应式数据的变化并执行副作用（如持久化到 localStorage），是实现「设置即保存」体验的常用模式。通过 watch 的 immediate 选项可在组件挂载时立即执行一次回调，用于从 localStorage 恢复初始配置。"
+  },
+  {
+    "order": 8,
+    "title": "核心学习体验：场景对话与语音交互",
+    "description": "LearnView 是整个应用的核心视图，承载基于 AI 场景的英语对话学习流程。它支持四种卡片类型（读/写/听/说），集成语音输入（STT）和朗读（TTS）功能，由 AI 自动评判用户回复的掌握程度。PhilosophyPanel 以信息面板形式展示学习理念（不借助中文思考、以句子为单位等原则），与 Step 3 的教育理论形成呼应。useSpeech 封装了浏览器的 Web Speech API，提供 useTTS（文本转语音）和 useSTT（语音转文本）两个组合式函数，是实现听说训练的关键技术组件。",
+    "nodeIds": [
+      "file:code/src/views/LearnView.vue",
+      "file:code/src/components/PhilosophyPanel.vue",
+      "file:code/src/composables/useSpeech.js"
+    ],
+    "languageLesson": "Vue 3 的 Composables（组合式函数）是复用有状态逻辑的标准模式，约定以 use 开头命名。Web Speech API 包含 SpeechSynthesis（文本转语音，TTS）和 SpeechRecognition（语音转文本，STT）两个接口，均为浏览器原生能力，无需额外依赖。使用时需注意浏览器兼容性和 HTTPS 环境要求。"
+  },
+  {
+    "order": 9,
+    "title": "后端服务入口",
+    "description": "Express 后端从 server/index.js 启动，挂载 CORS 和 JSON 解析中间件后，注册 /api/decks、/api/learn、/api/ai 三个路由模块，并提供 /api/health 健康检查端点和全局错误处理，监听 3001 端口。这是前后端分离架构中「后」的那一半——前端通过 Step 5 中 Vite 配置的代理将 /api 请求转发至此。",
+    "nodeIds": [
+      "file:code/server/index.js"
+    ],
+    "languageLesson": "Express 的模块化路由通过 express.Router() 创建独立的路由实例，在主文件中用 app.use() 挂载。这种模式将不同业务域的路由逻辑分离到独立文件，避免主文件膨胀。中间件（如 cors、express.json）通过 app.use() 注册，按声明顺序对每个请求依次执行。"
+  },
+  {
+    "order": 10,
+    "title": "API 路由层：学习流程的 HTTP 接口",
+    "description": "三个路由模块构成了后端对外的 API 面。decks 路由提供牌组列表和 Anki-Connect 连接状态检测；learn 路由编排完整的卡片学习生命周期（开始→回复→完成→下一张→进度），需要协调 ankiService、aiService 和 sessionService 三个服务；ai 路由提供 AI 连接测试和预设模型配置。其中 learn 路由是核心枢纽，其端点映射了 Step 8 中 LearnView 的每个用户操作。",
+    "nodeIds": [
+      "file:code/server/routes/decks.js",
+      "file:code/server/routes/learn.js",
+      "file:code/server/routes/ai.js"
+    ],
+    "languageLesson": "RESTful API 设计中，路由层应保持「薄」——仅负责请求参数提取、响应格式化，将业务逻辑完全委托给服务层。这种分层使得路由易于测试（mock 服务层），也让服务层的业务逻辑可被多个路由甚至非 HTTP 入口复用。"
+  },
+  {
+    "order": 11,
+    "title": "核心服务层：AI、Anki 与会话管理",
+    "description": "三个服务构成了项目的业务核心。aiService 封装了 OpenAI 兼容 API 调用，支持千问、豆包、OpenAI 等多模型提供商，提供场景生成（generateScenario）和回复评判（judgeResponse）能力，内置健壮的 JSON 解析器处理各模型不规范的输出。ankiService 封装与本地 Anki 应用的 JSON-RPC 通信，处理牌组查询、卡片获取和评分提交。sessionService 基于内存 Map 管理学习会话状态，跟踪对话历史和评分统计，支持 2 小时 TTL 自动过期。这三个服务协同工作，实现了从 Step 10 的 learn 路由到 Step 8 的 LearnView 的完整学习闭环。",
+    "nodeIds": [
+      "file:code/server/services/aiService.js",
+      "file:code/server/services/ankiService.js",
+      "file:code/server/services/sessionService.js"
+    ],
+    "languageLesson": "JSON-RPC 是一种轻量级远程调用协议，与 REST 不同，它通过统一的 POST 端点传递 method 和 params。Anki-Connect 使用此协议让外部应用操控 Anki 的牌组和卡片数据。在封装第三方 API 时，统一的错误处理和重试逻辑是服务层的重要职责，而非散落在各路由中。"
+  },
+  {
+    "order": 12,
+    "title": "测试与质量保障",
+    "description": "两个测试脚本覆盖了项目中风险最高的两个环节。test_parse_json 验证 AI JSON 解析器对各种不规范输出的处理能力（纯 JSON、Markdown 代码块包裹、前后附带文本、嵌套花括号、转义引号），确保即使 AI 模型返回格式不规范，系统也能正确解析。test_qwen_api 是千问多模态 API 的快速诊断脚本，依次测试三个模型（qwen-omni-turbo、qwen-vl-plus、qwen-vl-max）的图片理解能力。这种针对性的测试策略——重点覆盖外部依赖和不稳定环节——在小型项目中尤为高效。",
+    "nodeIds": [
+      "file:code/test_parse_json.mjs",
+      "file:code/test_qwen_api.mjs"
+    ],
+    "languageLesson": ".mjs 扩展名明确告知 Node.js 该文件使用 ES Module 语法（import/export），而非 CommonJS（require）。在混合使用两种模块系统的项目中，.mjs 和 .cjs 扩展名是避免模块解析冲突的推荐做法。AI 应用的测试重点应放在「模型输出解析」和「API 连通性」上，因为这两者是系统中最不可控的环节。"
+  }
+]

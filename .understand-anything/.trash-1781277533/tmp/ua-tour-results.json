@@ -1,0 +1,571 @@
+{
+  "scriptCompleted": true,
+  "entryPointCandidates": [
+    {
+      "id": "file:code/src/router/index.js",
+      "score": 5,
+      "name": "index.js",
+      "summary": "Vue Router config with 3 routes using hash history mode."
+    },
+    {
+      "id": "document:code/README.md",
+      "score": 5,
+      "name": "README.md",
+      "summary": "Starter documentation for Vue 3 + Vite frontend."
+    },
+    {
+      "id": "file:code/server/index.js",
+      "score": 4,
+      "name": "index.js",
+      "summary": "Express server entry point bootstrapping backend on port 3001 with route modules and health-check endpoint."
+    },
+    {
+      "id": "file:code/src/main.js",
+      "score": 4,
+      "name": "main.js",
+      "summary": "Vue 3 bootstrap creating and mounting app with router plugin."
+    },
+    {
+      "id": "file:code/server/routes/learn.js",
+      "score": 2,
+      "name": "learn.js",
+      "summary": "Express router implementing the core learning flow with 5 endpoints for session, AI, and card review."
+    }
+  ],
+  "fanInRanking": [
+    {
+      "id": "file:code/src/main.js",
+      "fanIn": 3,
+      "name": "main.js"
+    },
+    {
+      "id": "file:code/src/components/PhilosophyPanel.vue",
+      "fanIn": 3,
+      "name": "PhilosophyPanel.vue"
+    },
+    {
+      "id": "file:code/src/composables/useSpeech.js",
+      "fanIn": 3,
+      "name": "useSpeech.js"
+    },
+    {
+      "id": "file:code/server/index.js",
+      "fanIn": 2,
+      "name": "index.js"
+    },
+    {
+      "id": "file:code/server/services/aiService.js",
+      "fanIn": 2,
+      "name": "aiService.js"
+    },
+    {
+      "id": "file:code/server/services/ankiService.js",
+      "fanIn": 2,
+      "name": "ankiService.js"
+    },
+    {
+      "id": "file:code/src/style.css",
+      "fanIn": 2,
+      "name": "style.css"
+    },
+    {
+      "id": "file:code/server/routes/ai.js",
+      "fanIn": 1,
+      "name": "ai.js"
+    },
+    {
+      "id": "file:code/server/routes/decks.js",
+      "fanIn": 1,
+      "name": "decks.js"
+    },
+    {
+      "id": "file:code/server/routes/learn.js",
+      "fanIn": 1,
+      "name": "learn.js"
+    },
+    {
+      "id": "file:code/server/services/sessionService.js",
+      "fanIn": 1,
+      "name": "sessionService.js"
+    },
+    {
+      "id": "file:code/src/App.vue",
+      "fanIn": 1,
+      "name": "App.vue"
+    },
+    {
+      "id": "file:code/src/router/index.js",
+      "fanIn": 1,
+      "name": "index.js"
+    },
+    {
+      "id": "file:code/src/views/DeckSelect.vue",
+      "fanIn": 1,
+      "name": "DeckSelect.vue"
+    },
+    {
+      "id": "file:code/src/views/LearnView.vue",
+      "fanIn": 1,
+      "name": "LearnView.vue"
+    },
+    {
+      "id": "file:code/src/views/SettingsView.vue",
+      "fanIn": 1,
+      "name": "SettingsView.vue"
+    },
+    {
+      "id": "file:code/index.html",
+      "fanIn": 1,
+      "name": "index.html"
+    },
+    {
+      "id": "file:code/vite.config.js",
+      "fanIn": 1,
+      "name": "vite.config.js"
+    },
+    {
+      "id": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "fanIn": 1,
+      "name": "1.1-产品需求文档.md"
+    },
+    {
+      "id": "file:code/test_parse_json.mjs",
+      "fanIn": 0,
+      "name": "test_parse_json.mjs"
+    }
+  ],
+  "fanOutRanking": [
+    {
+      "id": "document:doc/Claude Code Plan方案.md",
+      "fanOut": 4,
+      "name": "Claude Code Plan方案.md"
+    },
+    {
+      "id": "file:code/server/index.js",
+      "fanOut": 3,
+      "name": "index.js"
+    },
+    {
+      "id": "file:code/server/routes/learn.js",
+      "fanOut": 3,
+      "name": "learn.js"
+    },
+    {
+      "id": "file:code/src/main.js",
+      "fanOut": 3,
+      "name": "main.js"
+    },
+    {
+      "id": "file:code/src/router/index.js",
+      "fanOut": 3,
+      "name": "index.js"
+    },
+    {
+      "id": "config:code/package.json",
+      "fanOut": 3,
+      "name": "package.json"
+    },
+    {
+      "id": "file:code/src/views/LearnView.vue",
+      "fanOut": 2,
+      "name": "LearnView.vue"
+    },
+    {
+      "id": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "fanOut": 2,
+      "name": "1.1-产品需求文档.md"
+    },
+    {
+      "id": "file:code/server/routes/ai.js",
+      "fanOut": 1,
+      "name": "ai.js"
+    },
+    {
+      "id": "file:code/server/routes/decks.js",
+      "fanOut": 1,
+      "name": "decks.js"
+    },
+    {
+      "id": "file:code/src/components/PhilosophyPanel.vue",
+      "fanOut": 1,
+      "name": "PhilosophyPanel.vue"
+    },
+    {
+      "id": "config:code/.env.example",
+      "fanOut": 1,
+      "name": ".env.example"
+    },
+    {
+      "id": "file:code/index.html",
+      "fanOut": 1,
+      "name": "index.html"
+    },
+    {
+      "id": "file:code/vite.config.js",
+      "fanOut": 1,
+      "name": "vite.config.js"
+    },
+    {
+      "id": "file:code/server/services/aiService.js",
+      "fanOut": 0,
+      "name": "aiService.js"
+    },
+    {
+      "id": "file:code/server/services/ankiService.js",
+      "fanOut": 0,
+      "name": "ankiService.js"
+    },
+    {
+      "id": "file:code/server/services/sessionService.js",
+      "fanOut": 0,
+      "name": "sessionService.js"
+    },
+    {
+      "id": "file:code/src/App.vue",
+      "fanOut": 0,
+      "name": "App.vue"
+    },
+    {
+      "id": "file:code/src/views/DeckSelect.vue",
+      "fanOut": 0,
+      "name": "DeckSelect.vue"
+    },
+    {
+      "id": "file:code/src/views/SettingsView.vue",
+      "fanOut": 0,
+      "name": "SettingsView.vue"
+    }
+  ],
+  "bfsTraversal": {
+    "startNode": "file:code/src/router/index.js",
+    "order": [
+      "file:code/src/router/index.js",
+      "file:code/src/views/DeckSelect.vue",
+      "file:code/src/views/LearnView.vue",
+      "file:code/src/views/SettingsView.vue"
+    ],
+    "depthMap": {
+      "file:code/src/router/index.js": 0,
+      "file:code/src/views/DeckSelect.vue": 1,
+      "file:code/src/views/LearnView.vue": 1,
+      "file:code/src/views/SettingsView.vue": 1
+    },
+    "byDepth": {
+      "0": [
+        "file:code/src/router/index.js"
+      ],
+      "1": [
+        "file:code/src/views/DeckSelect.vue",
+        "file:code/src/views/LearnView.vue",
+        "file:code/src/views/SettingsView.vue"
+      ]
+    }
+  },
+  "nonCodeFiles": {
+    "documentation": [
+      {
+        "id": "document:code/README.md",
+        "name": "README.md",
+        "summary": "Starter documentation for Vue 3 + Vite frontend."
+      },
+      {
+        "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+        "name": "使用学习观来设计的英语学习步骤.md",
+        "summary": "Methodology for learning English through scene-based imagination."
+      },
+      {
+        "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+        "name": "学习英语的错误.md",
+        "summary": "Identifies 3 critical mistakes in English learning."
+      },
+      {
+        "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+        "name": "英语的听说读写正确的输入输出与构建方式.md",
+        "summary": "Direct input-output model for four English skills as motor skills."
+      },
+      {
+        "id": "document:doc/01-需求分析/1.1-产品需求文档.md",
+        "name": "1.1-产品需求文档.md",
+        "summary": "PRD defining the ShiYi app combining Anki SRS with AI immersive learning."
+      },
+      {
+        "id": "document:doc/01-需求分析/需求分析.md",
+        "name": "需求分析.md",
+        "summary": "Brief requirements reference linking to PRD and Anki-Connect docs."
+      },
+      {
+        "id": "document:doc/Claude Code Plan方案.md",
+        "name": "Claude Code Plan方案.md",
+        "summary": "Comprehensive implementation plan with tech stack, architecture, and milestones."
+      }
+    ],
+    "infrastructure": [],
+    "data": [],
+    "config": [
+      {
+        "id": "config:code/.env.example",
+        "name": ".env.example",
+        "type": "config",
+        "summary": "Environment variable template for Anki-Connect URL and server port."
+      },
+      {
+        "id": "config:code/package.json",
+        "name": "package.json",
+        "type": "config",
+        "summary": "Project manifest with dependencies and scripts for dev, server, and build."
+      }
+    ]
+  },
+  "clusters": [
+    {
+      "nodes": [
+        "file:code/src/components/PhilosophyPanel.vue",
+        "document:doc/01-需求分析/1.1-产品需求文档.md",
+        "document:doc/Claude Code Plan方案.md",
+        "file:code/src/composables/useSpeech.js",
+        "file:code/src/views/LearnView.vue"
+      ],
+      "edgeCount": 7
+    },
+    {
+      "nodes": [
+        "file:code/src/components/PhilosophyPanel.vue",
+        "document:doc/Claude Code Plan方案.md",
+        "document:doc/01-需求分析/1.1-产品需求文档.md",
+        "file:code/src/composables/useSpeech.js",
+        "file:code/src/views/LearnView.vue"
+      ],
+      "edgeCount": 7
+    },
+    {
+      "nodes": [
+        "file:code/src/composables/useSpeech.js",
+        "document:doc/01-需求分析/1.1-产品需求文档.md",
+        "document:doc/Claude Code Plan方案.md",
+        "file:code/src/components/PhilosophyPanel.vue",
+        "file:code/src/views/LearnView.vue"
+      ],
+      "edgeCount": 7
+    },
+    {
+      "nodes": [
+        "file:code/src/main.js",
+        "config:code/package.json",
+        "file:code/index.html"
+      ],
+      "edgeCount": 3
+    },
+    {
+      "nodes": [
+        "file:code/server/index.js",
+        "file:code/server/routes/ai.js"
+      ],
+      "edgeCount": 1
+    },
+    {
+      "nodes": [
+        "file:code/server/routes/decks.js",
+        "file:code/server/services/ankiService.js"
+      ],
+      "edgeCount": 1
+    },
+    {
+      "nodes": [
+        "file:code/server/routes/learn.js",
+        "file:code/server/services/aiService.js"
+      ],
+      "edgeCount": 1
+    },
+    {
+      "nodes": [
+        "file:code/src/router/index.js",
+        "file:code/src/views/DeckSelect.vue"
+      ],
+      "edgeCount": 1
+    }
+  ],
+  "layers": {
+    "count": 6,
+    "list": [
+      {
+        "id": "layer:api",
+        "name": "API Layer",
+        "description": "Express server entry point and route modules handling HTTP requests for AI, decks, and learning endpoints."
+      },
+      {
+        "id": "layer:service",
+        "name": "Service Layer",
+        "description": "Backend business logic services (AI generation, Anki integration, session management) and frontend speech composables."
+      },
+      {
+        "id": "layer:ui",
+        "name": "UI Layer",
+        "description": "Vue 3 components, views, router, and styles forming the single-page application frontend."
+      },
+      {
+        "id": "layer:config",
+        "name": "Configuration",
+        "description": "Build and runtime configuration files including package.json, Vite config, and environment templates."
+      },
+      {
+        "id": "layer:test",
+        "name": "Test Scripts",
+        "description": "Standalone diagnostic and validation scripts for AI JSON parsing and Qwen API testing."
+      },
+      {
+        "id": "layer:documentation",
+        "name": "Documentation",
+        "description": "Requirements analysis, learning methodology research, product requirements, and implementation plan documents."
+      }
+    ]
+  },
+  "nodeSummaryIndex": {
+    "file:code/server/index.js": {
+      "name": "index.js",
+      "type": "file",
+      "summary": "Express server entry point bootstrapping backend on port 3001 with route modules and health-check endpoint."
+    },
+    "file:code/server/routes/ai.js": {
+      "name": "ai.js",
+      "type": "file",
+      "summary": "Express router for AI endpoints: POST /test and GET /presets."
+    },
+    "file:code/server/routes/decks.js": {
+      "name": "decks.js",
+      "type": "file",
+      "summary": "Express router for deck endpoints: listing ShiYi decks and checking Anki-Connect."
+    },
+    "file:code/server/routes/learn.js": {
+      "name": "learn.js",
+      "type": "file",
+      "summary": "Express router implementing the core learning flow with 5 endpoints for session, AI, and card review."
+    },
+    "file:code/server/services/aiService.js": {
+      "name": "aiService.js",
+      "type": "file",
+      "summary": "AI multi-model service for generating scenarios and judging responses with Qwen/Doubao/OpenAI."
+    },
+    "file:code/server/services/ankiService.js": {
+      "name": "ankiService.js",
+      "type": "file",
+      "summary": "Anki-Connect proxy service for deck listing, card retrieval, and vocabulary extraction."
+    },
+    "file:code/server/services/sessionService.js": {
+      "name": "sessionService.js",
+      "type": "file",
+      "summary": "In-memory learning session manager with 2-hour TTL Map-based state."
+    },
+    "file:code/src/App.vue": {
+      "name": "App.vue",
+      "type": "file",
+      "summary": "Root Vue 3 shell with navigation header and router-view outlet."
+    },
+    "file:code/src/main.js": {
+      "name": "main.js",
+      "type": "file",
+      "summary": "Vue 3 bootstrap creating and mounting app with router plugin."
+    },
+    "file:code/src/router/index.js": {
+      "name": "index.js",
+      "type": "file",
+      "summary": "Vue Router config with 3 routes using hash history mode."
+    },
+    "file:code/src/views/DeckSelect.vue": {
+      "name": "DeckSelect.vue",
+      "type": "file",
+      "summary": "Deck selection view with Anki-Connect detection and ShiYi deck listing."
+    },
+    "file:code/src/views/LearnView.vue": {
+      "name": "LearnView.vue",
+      "type": "file",
+      "summary": "Core learning interface with chat-based AI interaction, speech, and card review."
+    },
+    "file:code/src/views/SettingsView.vue": {
+      "name": "SettingsView.vue",
+      "type": "file",
+      "summary": "Settings view for AI model provider and connection testing."
+    },
+    "file:code/src/components/PhilosophyPanel.vue": {
+      "name": "PhilosophyPanel.vue",
+      "type": "file",
+      "summary": "Presentational component displaying English learning philosophy."
+    },
+    "file:code/src/composables/useSpeech.js": {
+      "name": "useSpeech.js",
+      "type": "file",
+      "summary": "Vue composable for browser-native TTS/STT via Web Speech API."
+    },
+    "file:code/src/style.css": {
+      "name": "style.css",
+      "type": "file",
+      "summary": "Global stylesheet with CSS custom properties and layout structures."
+    },
+    "file:code/test_parse_json.mjs": {
+      "name": "test_parse_json.mjs",
+      "type": "file",
+      "summary": "Test harness for parseAIJson against various AI response formats."
+    },
+    "file:code/test_qwen_api.mjs": {
+      "name": "test_qwen_api.mjs",
+      "type": "file",
+      "summary": "Diagnostic script testing Qwen multimodal API with image recognition."
+    },
+    "config:code/.env.example": {
+      "name": ".env.example",
+      "type": "config",
+      "summary": "Environment variable template for Anki-Connect URL and server port."
+    },
+    "document:code/README.md": {
+      "name": "README.md",
+      "type": "document",
+      "summary": "Starter documentation for Vue 3 + Vite frontend."
+    },
+    "file:code/index.html": {
+      "name": "index.html",
+      "type": "file",
+      "summary": "HTML entry point for the Vue 3 application."
+    },
+    "config:code/package.json": {
+      "name": "package.json",
+      "type": "config",
+      "summary": "Project manifest with dependencies and scripts for dev, server, and build."
+    },
+    "file:code/vite.config.js": {
+      "name": "vite.config.js",
+      "type": "file",
+      "summary": "Vite build config with Vue plugin and /api proxy to Express."
+    },
+    "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md": {
+      "name": "使用学习观来设计的英语学习步骤.md",
+      "type": "document",
+      "summary": "Methodology for learning English through scene-based imagination."
+    },
+    "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md": {
+      "name": "学习英语的错误.md",
+      "type": "document",
+      "summary": "Identifies 3 critical mistakes in English learning."
+    },
+    "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md": {
+      "name": "英语的听说读写正确的输入输出与构建方式.md",
+      "type": "document",
+      "summary": "Direct input-output model for four English skills as motor skills."
+    },
+    "document:doc/01-需求分析/1.1-产品需求文档.md": {
+      "name": "1.1-产品需求文档.md",
+      "type": "document",
+      "summary": "PRD defining the ShiYi app combining Anki SRS with AI immersive learning."
+    },
+    "document:doc/01-需求分析/需求分析.md": {
+      "name": "需求分析.md",
+      "type": "document",
+      "summary": "Brief requirements reference linking to PRD and Anki-Connect docs."
+    },
+    "document:doc/Claude Code Plan方案.md": {
+      "name": "Claude Code Plan方案.md",
+      "type": "document",
+      "summary": "Comprehensive implementation plan with tech stack, architecture, and milestones."
+    }
+  },
+  "totalNodes": 29,
+  "totalEdges": 29
+}

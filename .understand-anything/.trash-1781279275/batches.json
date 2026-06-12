@@ -1,0 +1,611 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 68,
+  "totalBatches": 8,
+  "exportsByPath": {
+    ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js": [],
+    ".understand-anything/.understandignore": [],
+    "code/server/index.js": [],
+    "code/server/routes/ai.js": [],
+    "code/server/routes/decks.js": [],
+    "code/server/routes/learn.js": [],
+    "code/server/services/aiService.js": [],
+    "code/server/services/ankiService.js": [],
+    "code/server/services/sessionService.js": [],
+    "code/src/App.vue": [],
+    "code/src/components/PhilosophyPanel.vue": [],
+    "code/src/composables/useSpeech.js": [
+      "useTTS",
+      "useSTT"
+    ],
+    "code/src/main.js": [],
+    "code/src/router/index.js": [],
+    "code/src/views/DeckSelect.vue": [],
+    "code/src/views/LearnView.vue": [],
+    "code/src/views/SettingsView.vue": [],
+    "code/test_parse_json.mjs": [],
+    "code/test_qwen_api.mjs": [],
+    "code/vite.config.js": []
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": "code/server/index.js",
+          "language": "javascript",
+          "sizeLines": 39,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/server/routes/ai.js",
+          "language": "javascript",
+          "sizeLines": 33,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/server/routes/decks.js",
+          "language": "javascript",
+          "sizeLines": 48,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/server/routes/learn.js",
+          "language": "javascript",
+          "sizeLines": 256,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/server/services/aiService.js",
+          "language": "javascript",
+          "sizeLines": 370,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/server/services/ankiService.js",
+          "language": "javascript",
+          "sizeLines": 258,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/server/services/sessionService.js",
+          "language": "javascript",
+          "sizeLines": 147,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "code/server/index.js": [
+          "code/server/routes/ai.js",
+          "code/server/routes/decks.js",
+          "code/server/routes/learn.js"
+        ],
+        "code/server/routes/ai.js": [
+          "code/server/services/aiService.js"
+        ],
+        "code/server/routes/decks.js": [
+          "code/server/services/ankiService.js"
+        ],
+        "code/server/routes/learn.js": [
+          "code/server/services/aiService.js",
+          "code/server/services/ankiService.js",
+          "code/server/services/sessionService.js"
+        ],
+        "code/server/services/aiService.js": [],
+        "code/server/services/ankiService.js": [],
+        "code/server/services/sessionService.js": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": "code/src/App.vue",
+          "language": "vue",
+          "sizeLines": 17,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/src/main.js",
+          "language": "javascript",
+          "sizeLines": 8,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/src/router/index.js",
+          "language": "javascript",
+          "sizeLines": 17,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/src/views/DeckSelect.vue",
+          "language": "vue",
+          "sizeLines": 125,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/src/views/LearnView.vue",
+          "language": "vue",
+          "sizeLines": 394,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/src/views/SettingsView.vue",
+          "language": "vue",
+          "sizeLines": 153,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "code/src/App.vue": [],
+        "code/src/main.js": [
+          "code/src/App.vue",
+          "code/src/router/index.js",
+          "code/src/style.css"
+        ],
+        "code/src/router/index.js": [
+          "code/src/views/DeckSelect.vue",
+          "code/src/views/LearnView.vue",
+          "code/src/views/SettingsView.vue"
+        ],
+        "code/src/views/DeckSelect.vue": [],
+        "code/src/views/LearnView.vue": [],
+        "code/src/views/SettingsView.vue": []
+      },
+      "neighborMap": {
+        "code/src/main.js": [
+          {
+            "path": "code/src/style.css",
+            "batchIndex": 8,
+            "symbols": []
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 3,
+      "files": [
+        {
+          "path": ".understand-anything/.trash-1781277533/assemble-review.json",
+          "language": "json",
+          "sizeLines": 17,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/assembled-graph.json",
+          "language": "json",
+          "sizeLines": 1838,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/batch-1.json",
+          "language": "json",
+          "sizeLines": 544,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/batch-2.json",
+          "language": "json",
+          "sizeLines": 289,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/batch-3.json",
+          "language": "json",
+          "sizeLines": 84,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/batch-4.json",
+          "language": "json",
+          "sizeLines": 54,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/batch-5.json",
+          "language": "json",
+          "sizeLines": 259,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/batches.json",
+          "language": "json",
+          "sizeLines": 324,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/fingerprint-input.json",
+          "language": "json",
+          "sizeLines": 34,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/layers.json",
+          "language": "json",
+          "sizeLines": 101,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/review.json",
+          "language": "json",
+          "sizeLines": 32,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tour.json",
+          "language": "json",
+          "sizeLines": 130,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        ".understand-anything/.trash-1781277533/assemble-review.json": [],
+        ".understand-anything/.trash-1781277533/assembled-graph.json": [],
+        ".understand-anything/.trash-1781277533/batch-1.json": [],
+        ".understand-anything/.trash-1781277533/batch-2.json": [],
+        ".understand-anything/.trash-1781277533/batch-3.json": [],
+        ".understand-anything/.trash-1781277533/batch-4.json": [],
+        ".understand-anything/.trash-1781277533/batch-5.json": [],
+        ".understand-anything/.trash-1781277533/batches.json": [],
+        ".understand-anything/.trash-1781277533/fingerprint-input.json": [],
+        ".understand-anything/.trash-1781277533/layers.json": [],
+        ".understand-anything/.trash-1781277533/review.json": [],
+        ".understand-anything/.trash-1781277533/tour.json": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 4,
+      "files": [
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+          "language": "json",
+          "sizeLines": 169,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
+          "language": "json",
+          "sizeLines": 318,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
+          "language": "json",
+          "sizeLines": 33,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
+          "language": "json",
+          "sizeLines": 27,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
+          "language": "json",
+          "sizeLines": 15,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
+          "language": "json",
+          "sizeLines": 13,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
+          "language": "json",
+          "sizeLines": 29,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
+          "language": "json",
+          "sizeLines": 826,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
+          "language": "json",
+          "sizeLines": 64,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
+          "language": "json",
+          "sizeLines": 116,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
+          "language": "json",
+          "sizeLines": 48,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
+          "language": "json",
+          "sizeLines": 646,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
+          "language": "json",
+          "sizeLines": 36,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
+          "language": "json",
+          "sizeLines": 60,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+          "language": "json",
+          "sizeLines": 212,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
+          "language": "json",
+          "sizeLines": 72,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
+          "language": "json",
+          "sizeLines": 570,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        ".understand-anything/.trash-1781277533/tmp/ua-arch-input.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-arch-results.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-scan-files.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-tour-input.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-tour-results.json": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 5,
+      "files": [
+        {
+          "path": ".understand-anything/config.json",
+          "language": "json",
+          "sizeLines": 2,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/fingerprints.json",
+          "language": "json",
+          "sizeLines": 703,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/knowledge-graph.json",
+          "language": "json",
+          "sizeLines": 1838,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/meta.json",
+          "language": "json",
+          "sizeLines": 5,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        ".understand-anything/config.json": [],
+        ".understand-anything/fingerprints.json": [],
+        ".understand-anything/knowledge-graph.json": [],
+        ".understand-anything/meta.json": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 6,
+      "files": [
+        {
+          "path": "code/.env.example",
+          "language": "config",
+          "sizeLines": 5,
+          "fileCategory": "config"
+        },
+        {
+          "path": "code/README.md",
+          "language": "markdown",
+          "sizeLines": 5,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "code/index.html",
+          "language": "html",
+          "sizeLines": 12,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "code/package.json",
+          "language": "json",
+          "sizeLines": 26,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "code/.env.example": [],
+        "code/README.md": [],
+        "code/index.html": [],
+        "code/package.json": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 7,
+      "files": [
+        {
+          "path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+          "language": "markdown",
+          "sizeLines": 15,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+          "language": "markdown",
+          "sizeLines": 7,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+          "language": "markdown",
+          "sizeLines": 5,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md": [],
+        "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md": [],
+        "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 8,
+      "files": [
+        {
+          "path": ".claude/settings.json",
+          "language": "json",
+          "sizeLines": 11,
+          "fileCategory": "config"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
+          "language": "javascript",
+          "sizeLines": 428,
+          "fileCategory": "code"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
+          "language": "javascript",
+          "sizeLines": 63,
+          "fileCategory": "code"
+        },
+        {
+          "path": ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
+          "language": "javascript",
+          "sizeLines": 296,
+          "fileCategory": "code"
+        },
+        {
+          "path": ".understand-anything/.understandignore",
+          "language": "unknown",
+          "sizeLines": 38,
+          "fileCategory": "code"
+        },
+        {
+          "path": ".understand-anything/intermediate/scan-result.json",
+          "language": "json",
+          "sizeLines": 250,
+          "fileCategory": "config"
+        },
+        {
+          "path": "code/src/components/PhilosophyPanel.vue",
+          "language": "vue",
+          "sizeLines": 45,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/src/composables/useSpeech.js",
+          "language": "javascript",
+          "sizeLines": 141,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/src/style.css",
+          "language": "css",
+          "sizeLines": 690,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "code/test_parse_json.mjs",
+          "language": "javascript",
+          "sizeLines": 137,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/test_qwen_api.mjs",
+          "language": "javascript",
+          "sizeLines": 90,
+          "fileCategory": "code"
+        },
+        {
+          "path": "code/vite.config.js",
+          "language": "javascript",
+          "sizeLines": 15,
+          "fileCategory": "code"
+        },
+        {
+          "path": "doc/01-需求分析/1.1-产品需求文档.md",
+          "language": "markdown",
+          "sizeLines": 24,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "doc/01-需求分析/需求分析.md",
+          "language": "markdown",
+          "sizeLines": 5,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "doc/Claude Code Plan方案.md",
+          "language": "markdown",
+          "sizeLines": 193,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        ".claude/settings.json": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs": [],
+        ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js": [],
+        ".understand-anything/.understandignore": [],
+        ".understand-anything/intermediate/scan-result.json": [],
+        "code/src/components/PhilosophyPanel.vue": [],
+        "code/src/composables/useSpeech.js": [],
+        "code/src/style.css": [],
+        "code/test_parse_json.mjs": [],
+        "code/test_qwen_api.mjs": [],
+        "code/vite.config.js": [],
+        "doc/01-需求分析/1.1-产品需求文档.md": [],
+        "doc/01-需求分析/需求分析.md": [],
+        "doc/Claude Code Plan方案.md": []
+      },
+      "neighborMap": {
+        "code/src/style.css": [
+          {
+            "path": "code/src/main.js",
+            "batchIndex": 2,
+            "symbols": []
+          }
+        ]
+      }
+    }
+  ]
+}

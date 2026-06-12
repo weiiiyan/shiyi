@@ -1,0 +1,888 @@
+{
+  "scriptCompleted": true,
+  "entryPointCandidates": [
+    {
+      "id": "document:code/README.md",
+      "score": 7,
+      "name": "README.md",
+      "summary": "项目入门文档，说明项目基于 Vue 3 + Vite 技术栈，提供 Script Setup 语法和 IDE 支持的官方文档链接。"
+    },
+    {
+      "id": "file:code/server/index.js",
+      "score": 5,
+      "name": "index.js",
+      "summary": "Express 后端服务入口文件，挂载 CORS 和 JSON 中间件，注册 /api/decks、/api/learn、/api/ai 三个路由模块，提供健康检查端点和全局错误处理，监听 3001 端口。"
+    },
+    {
+      "id": "file:code/src/main.js",
+      "score": 5,
+      "name": "main.js",
+      "summary": "应用入口文件，创建 Vue 应用实例，注册全局样式与路由，最终挂载到 DOM 的 #app 节点上。"
+    },
+    {
+      "id": "file:code/src/router/index.js",
+      "score": 4,
+      "name": "index.js",
+      "summary": "Vue Router 路由配置，使用哈希历史模式定义牌组选择(/)、学习(/learn/:deckId)、设置(/settings)三条路由。"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "score": 2,
+      "name": ".understandignore",
+      "summary": "Understand-Anything 插件的分析排除规则文件，采用 .gitignore 语法定义不需要分析的文件和目录模式，内置忽略 node_modules、dist 等常见目录。"
+    }
+  ],
+  "fanInRanking": [
+    {
+      "id": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "fanIn": 4,
+      "name": "assembled-graph.json"
+    },
+    {
+      "id": "config:.understand-anything/knowledge-graph.json",
+      "fanIn": 3,
+      "name": "knowledge-graph.json"
+    },
+    {
+      "id": "file:code/index.html",
+      "fanIn": 3,
+      "name": "index.html"
+    },
+    {
+      "id": "file:code/server/services/aiService.js",
+      "fanIn": 2,
+      "name": "aiService.js"
+    },
+    {
+      "id": "file:code/server/services/ankiService.js",
+      "fanIn": 2,
+      "name": "ankiService.js"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-1.json",
+      "fanIn": 2,
+      "name": "batch-1.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-2.json",
+      "fanIn": 2,
+      "name": "batch-2.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-3.json",
+      "fanIn": 2,
+      "name": "batch-3.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-4.json",
+      "fanIn": 2,
+      "name": "batch-4.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-5.json",
+      "fanIn": 2,
+      "name": "batch-5.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batches.json",
+      "fanIn": 2,
+      "name": "batches.json"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "fanIn": 2,
+      "name": "英语的听说读写正确的输入输出与构建方式.md"
+    },
+    {
+      "id": "file:code/src/components/PhilosophyPanel.vue",
+      "fanIn": 2,
+      "name": "PhilosophyPanel.vue"
+    },
+    {
+      "id": "file:code/src/composables/useSpeech.js",
+      "fanIn": 2,
+      "name": "useSpeech.js"
+    },
+    {
+      "id": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "fanIn": 2,
+      "name": "1.1-产品需求文档.md"
+    },
+    {
+      "id": "file:code/server/routes/ai.js",
+      "fanIn": 1,
+      "name": "ai.js"
+    },
+    {
+      "id": "file:code/server/routes/decks.js",
+      "fanIn": 1,
+      "name": "decks.js"
+    },
+    {
+      "id": "file:code/server/routes/learn.js",
+      "fanIn": 1,
+      "name": "learn.js"
+    },
+    {
+      "id": "file:code/server/services/sessionService.js",
+      "fanIn": 1,
+      "name": "sessionService.js"
+    },
+    {
+      "id": "file:code/src/App.vue",
+      "fanIn": 1,
+      "name": "App.vue"
+    }
+  ],
+  "fanOutRanking": [
+    {
+      "id": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "fanOut": 6,
+      "name": "assembled-graph.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batches.json",
+      "fanOut": 5,
+      "name": "batches.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "fanOut": 4,
+      "name": "ua-scan-files.json"
+    },
+    {
+      "id": "file:code/server/index.js",
+      "fanOut": 3,
+      "name": "index.js"
+    },
+    {
+      "id": "file:code/server/routes/learn.js",
+      "fanOut": 3,
+      "name": "learn.js"
+    },
+    {
+      "id": "file:code/src/main.js",
+      "fanOut": 3,
+      "name": "main.js"
+    },
+    {
+      "id": "file:code/src/router/index.js",
+      "fanOut": 3,
+      "name": "index.js"
+    },
+    {
+      "id": "document:doc/Claude Code Plan方案.md",
+      "fanOut": 3,
+      "name": "Claude Code Plan方案.md"
+    },
+    {
+      "id": "file:code/src/views/LearnView.vue",
+      "fanOut": 2,
+      "name": "LearnView.vue"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tour.json",
+      "fanOut": 2,
+      "name": "tour.json"
+    },
+    {
+      "id": "config:.understand-anything/meta.json",
+      "fanOut": 2,
+      "name": "meta.json"
+    },
+    {
+      "id": "config:code/.env.example",
+      "fanOut": 2,
+      "name": ".env.example"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "fanOut": 2,
+      "name": "使用学习观来设计的英语学习步骤.md"
+    },
+    {
+      "id": "file:code/server/routes/ai.js",
+      "fanOut": 1,
+      "name": "ai.js"
+    },
+    {
+      "id": "file:code/server/routes/decks.js",
+      "fanOut": 1,
+      "name": "decks.js"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/assemble-review.json",
+      "fanOut": 1,
+      "name": "assemble-review.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/fingerprint-input.json",
+      "fanOut": 1,
+      "name": "fingerprint-input.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/layers.json",
+      "fanOut": 1,
+      "name": "layers.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/review.json",
+      "fanOut": 1,
+      "name": "review.json"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+      "fanOut": 1,
+      "name": "ua-arch-input.json"
+    }
+  ],
+  "bfsTraversal": {
+    "startNode": "file:code/server/index.js",
+    "order": [
+      "file:code/server/index.js",
+      "file:code/server/routes/ai.js",
+      "file:code/server/routes/decks.js",
+      "file:code/server/routes/learn.js",
+      "file:code/server/services/aiService.js",
+      "file:code/server/services/ankiService.js",
+      "file:code/server/services/sessionService.js"
+    ],
+    "depthMap": {
+      "file:code/server/index.js": 0,
+      "file:code/server/routes/ai.js": 1,
+      "file:code/server/routes/decks.js": 1,
+      "file:code/server/routes/learn.js": 1,
+      "file:code/server/services/aiService.js": 2,
+      "file:code/server/services/ankiService.js": 2,
+      "file:code/server/services/sessionService.js": 2
+    },
+    "byDepth": {
+      "0": [
+        "file:code/server/index.js"
+      ],
+      "1": [
+        "file:code/server/routes/ai.js",
+        "file:code/server/routes/decks.js",
+        "file:code/server/routes/learn.js"
+      ],
+      "2": [
+        "file:code/server/services/aiService.js",
+        "file:code/server/services/ankiService.js",
+        "file:code/server/services/sessionService.js"
+      ]
+    }
+  },
+  "nonCodeFiles": {
+    "documentation": [
+      {
+        "id": "document:code/README.md",
+        "name": "README.md",
+        "summary": "项目入门文档，说明项目基于 Vue 3 + Vite 技术栈，提供 Script Setup 语法和 IDE 支持的官方文档链接。"
+      },
+      {
+        "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+        "name": "使用学习观来设计的英语学习步骤.md",
+        "summary": "基于学习观理论设计的英语学习步骤，涵盖听说读写四个维度的运动类技能训练方法，强调不借助中文思考、直接想象场景的学习理念。"
+      },
+      {
+        "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+        "name": "学习英语的错误.md",
+        "summary": "列举英语学习中的三个核心误区：应试教育的文字到文字模式、孤立记单词而非句子学习、以及插入中文思考导致输出错误和迟缓。"
+      },
+      {
+        "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+        "name": "英语的听说读写正确的输入输出与构建方式.md",
+        "summary": "定义英语听说读写四项技能的正确输入输出映射关系（声音→意思、想法→发声、文字→意思、想法→打字），强调以句子而非单词为最小学习单元。"
+      },
+      {
+        "id": "document:doc/01-需求分析/1.1-产品需求文档.md",
+        "name": "1.1-产品需求文档.md",
+        "summary": "ShiYi 项目产品需求文档（PRD），阐述项目背景（结合 Anki 间隔重复与 AI 的英语学习应用）、目标用户痛点、核心功能需求及英语学习理念引入。"
+      },
+      {
+        "id": "document:doc/01-需求分析/需求分析.md",
+        "name": "需求分析.md",
+        "summary": "需求分析索引文档，引用产品需求文档（PRD）、英语学习理念资料和 Anki-Connect API 参考链接等关键参考资源。"
+      },
+      {
+        "id": "document:doc/Claude Code Plan方案.md",
+        "name": "Claude Code Plan方案.md",
+        "summary": "ShiYi 项目完整实现计划文档，涵盖项目背景、核心学习理念、技术栈选型（Vue 3 + Express + Web Speech API）、整体架构设计、数据模型设计、核心业务流程、前端路由配置、分四阶段实现的任务清单和功能验证流程等12个章节。"
+      }
+    ],
+    "infrastructure": [],
+    "data": [],
+    "config": [
+      {
+        "id": "config:.understand-anything/.trash-1781277533/assemble-review.json",
+        "name": "assemble-review.json",
+        "summary": "图组装后的审查报告，验证节点恢复、边还原、交叉批次边添加、类型重映射和复杂度重映射情况，并附数据质量备注。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+        "name": "assembled-graph.json",
+        "summary": "完整的组装知识图谱输出，包含版本信息、项目元数据、所有节点数组、边数组、架构层定义和导览步骤数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/batch-1.json",
+        "name": "batch-1.json",
+        "summary": "第1批次的知识图谱片段，包含该批次源代码文件提取的节点和边数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/batch-2.json",
+        "name": "batch-2.json",
+        "summary": "第2批次的知识图谱片段，包含该批次源代码文件提取的节点和边数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/batch-3.json",
+        "name": "batch-3.json",
+        "summary": "第3批次的知识图谱片段，包含该批次非代码文件（配置和文档）提取的节点和边数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/batch-4.json",
+        "name": "batch-4.json",
+        "summary": "第4批次的知识图谱片段，包含该批次文档文件提取的节点和边数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/batch-5.json",
+        "name": "batch-5.json",
+        "summary": "第5批次的知识图谱片段，包含该批次剩余源代码文件和配置文档提取的节点和边数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/batches.json",
+        "name": "batches.json",
+        "summary": "批次调度配置文件，定义Louvain算法分区策略、31个源文件的批次分配、导出符号映射和各批次间的导入关系数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/fingerprint-input.json",
+        "name": "fingerprint-input.json",
+        "summary": "指纹生成输入文件，包含项目根目录路径、需要计算指纹的源文件路径列表和当前Git提交哈希。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/layers.json",
+        "name": "layers.json",
+        "summary": "架构层定义文件，将知识图谱节点按API层、服务层、UI层、配置层、测试层和文档层六个逻辑层次进行分组，每层包含节点ID列表和描述。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/review.json",
+        "name": "review.json",
+        "summary": "知识图谱审查输出，列出图组装后发现的问题节点、警告信息（如孤立节点）和节点与边类型的统计概况。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tour.json",
+        "name": "tour.json",
+        "summary": "项目架构导览定义，包含13个步骤依次介绍从项目概览、配置构建、入口点、路由样式、设置视图、核心学习体验到AI服务、Anki集成和教育理论的完整架构遍历。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+        "name": "ua-arch-input.json",
+        "summary": "架构分析输入文件，包含文件节点列表、导入边数据和所有边数据，供架构分析脚本进行目录分组和模式匹配。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
+        "name": "ua-arch-results.json",
+        "summary": "架构分析结果输出，包含目录分组、节点类型分组、跨类别边、组间导入、模式匹配、部署拓扑和数据管道等全面架构分析数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
+        "name": "ua-file-analyzer-input-1.json",
+        "summary": "文件分析器第1批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
+        "name": "ua-file-analyzer-input-2.json",
+        "summary": "文件分析器第2批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
+        "name": "ua-file-analyzer-input-3.json",
+        "summary": "文件分析器第3批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
+        "name": "ua-file-analyzer-input-4.json",
+        "summary": "文件分析器第4批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
+        "name": "ua-file-analyzer-input-5.json",
+        "summary": "文件分析器第5批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
+        "name": "ua-file-extract-results-1.json",
+        "summary": "文件结构提取第1批次结果，包含已分析文件数、跳过的文件和每个文件的函数、类、导出、调用图等结构化数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
+        "name": "ua-file-extract-results-2.json",
+        "summary": "文件结构提取第2批次结果，包含各文件的函数、类、导出和调用图等结构化分析数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
+        "name": "ua-file-extract-results-3.json",
+        "summary": "文件结构提取第3批次结果，包含各文件的段落、指标等结构化分析数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
+        "name": "ua-file-extract-results-4.json",
+        "summary": "文件结构提取第4批次结果，包含各文件的段落、指标等结构化分析数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
+        "name": "ua-file-extract-results-5.json",
+        "summary": "文件结构提取第5批次结果，包含各文件的函数、类、导出和调用图等结构化分析数据。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
+        "name": "ua-import-map-input.json",
+        "summary": "导入映射输入文件，包含项目根目录和需要解析导入关系的文件路径列表。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
+        "name": "ua-import-map-output.json",
+        "summary": "导入映射输出文件，包含脚本完成状态、统计信息和文件间导入关系映射表。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+        "name": "ua-scan-files.json",
+        "summary": "文件扫描结果，包含项目源文件完整列表、被过滤忽略的文件、复杂度估算和按语言分类的统计信息。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
+        "name": "ua-tour-input.json",
+        "summary": "导览生成输入文件，包含知识图谱的节点数组、边数组和层定义数据，供导览生成脚本进行入口点识别和BFS遍历。"
+      },
+      {
+        "id": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
+        "name": "ua-tour-results.json",
+        "summary": "导览生成结果，包含入口点候选列表、出入度排名、BFS遍历路径、非代码文件列表、聚类结果、层分组和节点摘要索引。"
+      },
+      {
+        "id": "config:.understand-anything/config.json",
+        "name": "config.json",
+        "summary": "Understand-Anything 插件配置文件，指定知识图谱文本输出语言为中文（zh）。"
+      },
+      {
+        "id": "config:.understand-anything/fingerprints.json",
+        "name": "fingerprints.json",
+        "summary": "文件指纹数据库，包含版本号、Git提交哈希、生成时间戳和每个项目源文件的指纹哈希值，用于增量分析时检测文件变更。"
+      },
+      {
+        "id": "config:.understand-anything/knowledge-graph.json",
+        "name": "knowledge-graph.json",
+        "summary": "项目的完整知识图谱数据，包含版本信息、项目元数据、所有节点（文件、函数、类、配置、文档）、所有边（导入、调用、包含等关系）、架构层定义和导览步骤。"
+      },
+      {
+        "id": "config:.understand-anything/meta.json",
+        "name": "meta.json",
+        "summary": "分析元数据文件，记录最近一次代码分析的执行时间戳、Git提交哈希、插件版本号和已分析文件总数。"
+      },
+      {
+        "id": "config:code/.env.example",
+        "name": ".env.example",
+        "summary": "环境变量配置模板文件，定义 Anki-Connect 本地连接地址（localhost:8765）和服务端监听端口（3001），供部署时复制为 .env 使用。"
+      },
+      {
+        "id": "config:code/package.json",
+        "name": "package.json",
+        "summary": "npm 项目配置文件，定义脚本命令（Vite 开发/构建、Express 服务端启动、concurrently 并行运行）、运行时依赖（Vue 3、Express、OpenAI、cors、dotenv）和 Vite 开发插件。"
+      },
+      {
+        "id": "config:.claude/settings.json",
+        "name": "settings.json",
+        "summary": "Claude Code 权限配置，允许执行 Understand-Anything 插件相关的 Bash 脚本和临时文件读取操作。"
+      },
+      {
+        "id": "config:.understand-anything/intermediate/scan-result.json",
+        "name": "scan-result.json",
+        "summary": "项目扫描结果中间产物，包含项目元信息（名称、描述）、文件清单、编程语言列表、框架检测、导入映射和复杂度评估等扫描阶段输出。"
+      }
+    ]
+  },
+  "clusters": [],
+  "layers": {
+    "count": 7,
+    "list": [
+      {
+        "id": "layer:api",
+        "name": "API 层",
+        "description": "Express 后端入口与路由处理层，负责注册 CORS/JSON 中间件，挂载 /api/decks、/api/learn、/api/ai 三个路由模块，并将请求分发给服务层处理学习流程、牌组查询和 AI 交互。"
+      },
+      {
+        "id": "layer:service",
+        "name": "服务层",
+        "description": "核心业务逻辑服务层，封装 OpenAI 兼容多模型 AI 调用（千问/豆包/OpenAI）的场景生成与回复评判、Anki-Connect JSON-RPC 通信的牌组与卡片管理、以及基于内存 Map 的学习会话状态跟踪。"
+      },
+      {
+        "id": "layer:ui",
+        "name": "UI 层",
+        "description": "Vue 3 前端界面层，包含应用根组件、路由配置、牌组选择/学习/设置三个视图、学习理念展示组件、Web Speech API 语音合成与识别封装、全局样式表及 SPA 入口 HTML 文件。"
+      },
+      {
+        "id": "layer:config",
+        "name": "配置层",
+        "description": "项目构建与运行配置层，包含 npm 依赖脚本定义、Vite 构建代理配置、环境变量模板及 Claude Code 权限设置。"
+      },
+      {
+        "id": "layer:test",
+        "name": "测试层",
+        "description": "API 与解析器测试脚本层，包含 AI JSON 解析的健壮性验证和千问多模态 API 的诊断测试。"
+      },
+      {
+        "id": "layer:documentation",
+        "name": "文档层",
+        "description": "项目文档层，包含产品需求文档、需求分析索引、基于学习观理论的英语学习步骤指南、常见误区分析、听说读写技能映射说明及完整的分阶段实现计划。"
+      },
+      {
+        "id": "layer:analysis-artifacts",
+        "name": "分析产物层",
+        "description": "Understand-Anything 插件的代码分析中间产物与元数据，包含知识图谱数据、批次分析片段、文件结构提取结果、导入映射、架构分析输入输出、导览数据、指纹信息及审查报告。"
+      }
+    ]
+  },
+  "nodeSummaryIndex": {
+    "file:code/server/index.js": {
+      "name": "index.js",
+      "type": "file",
+      "summary": "Express 后端服务入口文件，挂载 CORS 和 JSON 中间件，注册 /api/decks、/api/learn、/api/ai 三个路由模块，提供健康检查端点和全局错误处理，监听 3001 端口。"
+    },
+    "file:code/server/routes/ai.js": {
+      "name": "ai.js",
+      "type": "file",
+      "summary": "AI 相关路由模块，提供 POST /api/ai/test（测试 AI 连接）和 GET /api/ai/presets（获取预设模型配置）两个端点，依赖 aiService 处理业务逻辑。"
+    },
+    "file:code/server/routes/decks.js": {
+      "name": "decks.js",
+      "type": "file",
+      "summary": "牌组相关路由模块，提供 GET /api/decks（获取 ShiYi 牌组列表）、GET /api/decks/status（检查 Anki-Connect 连接状态）和 GET /api/decks/all（调试端点返回全部牌组），依赖 ankiService 处理业务逻辑。"
+    },
+    "file:code/server/routes/learn.js": {
+      "name": "learn.js",
+      "type": "file",
+      "summary": "学习流程核心路由模块，编排完整的卡片学习生命周期：POST /start（开始学习并生成 AI 场景）、POST /respond（用户回复后 AI 评判掌握程度）、POST /complete（完成当前卡片并更新 Anki）、POST /next（获取下一张卡片）、GET /progress（查询学习进度），协调 ankiService、aiService 和 sessionService 三个服务层。"
+    },
+    "file:code/server/services/aiService.js": {
+      "name": "aiService.js",
+      "type": "file",
+      "summary": "AI 多模型服务层，封装 OpenAI 兼容 API 调用，支持千问/豆包/OpenAI 等模型提供商，提供学习场景生成（generateScenario）和用户回复评判（judgeResponse）两大核心能力，内置鲁棒的 AI JSON 响应解析器（parseAIJson）处理各模型不规范的 JSON 输出。"
+    },
+    "file:code/server/services/ankiService.js": {
+      "name": "ankiService.js",
+      "type": "file",
+      "summary": "Anki-Connect API 服务层，封装与本地 Anki 应用的 JSON-RPC 通信（localhost:8765），提供牌组查询、到期卡片获取、已知词汇收集、卡片评分提交和连接状态检查等功能，特别处理 Windows 下中文牌组名 UTF-8 编码问题（统一使用 did: 牌组 ID 查询）。"
+    },
+    "file:code/server/services/sessionService.js": {
+      "name": "sessionService.js",
+      "type": "file",
+      "summary": "学习会话管理服务，基于内存 Map 存储每个牌组的会话状态，跟踪当前卡片、对话历史、连续失败次数和评分统计，支持 2 小时 TTL 自动过期机制，提供 formatScenarioMessage 将 AI 生成的场景 JSON 格式化为可读文本。"
+    },
+    "file:code/src/App.vue": {
+      "name": "App.vue",
+      "type": "file",
+      "summary": "Vue 根组件，定义应用整体布局结构，包含顶部导航栏（牌组/设置路由链接）和 <router-view /> 主内容出口区域。"
+    },
+    "file:code/src/main.js": {
+      "name": "main.js",
+      "type": "file",
+      "summary": "应用入口文件，创建 Vue 应用实例，注册全局样式与路由，最终挂载到 DOM 的 #app 节点上。"
+    },
+    "file:code/src/router/index.js": {
+      "name": "index.js",
+      "type": "file",
+      "summary": "Vue Router 路由配置，使用哈希历史模式定义牌组选择(/)、学习(/learn/:deckId)、设置(/settings)三条路由。"
+    },
+    "file:code/src/views/DeckSelect.vue": {
+      "name": "DeckSelect.vue",
+      "type": "file",
+      "summary": "牌组选择视图，检测 Anki-Connect 连接状态，加载并展示以 ShiYi:: 为前缀的牌组列表，支持点击进入对应牌组的学习流程。"
+    },
+    "file:code/src/views/LearnView.vue": {
+      "name": "LearnView.vue",
+      "type": "file",
+      "summary": "核心学习视图，提供基于 AI 场景的英语对话学习界面，集成语音输入/朗读、四种卡片类型（读/写/听/说）及 AI 自动评分反馈，学习完成后自动推进下一张卡片。"
+    },
+    "file:code/src/views/SettingsView.vue": {
+      "name": "SettingsView.vue",
+      "type": "file",
+      "summary": "设置视图，配置 AI 服务商（OpenAI/千问/豆包/自定义）、API Key 与模型名称，支持连接测试；管理 Anki-Connect 连接检测；配置通过 watch 自动持久化到 localStorage。"
+    },
+    "config:.understand-anything/.trash-1781277533/assemble-review.json": {
+      "name": "assemble-review.json",
+      "type": "config",
+      "summary": "图组装后的审查报告，验证节点恢复、边还原、交叉批次边添加、类型重映射和复杂度重映射情况，并附数据质量备注。"
+    },
+    "config:.understand-anything/.trash-1781277533/assembled-graph.json": {
+      "name": "assembled-graph.json",
+      "type": "config",
+      "summary": "完整的组装知识图谱输出，包含版本信息、项目元数据、所有节点数组、边数组、架构层定义和导览步骤数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/batch-1.json": {
+      "name": "batch-1.json",
+      "type": "config",
+      "summary": "第1批次的知识图谱片段，包含该批次源代码文件提取的节点和边数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/batch-2.json": {
+      "name": "batch-2.json",
+      "type": "config",
+      "summary": "第2批次的知识图谱片段，包含该批次源代码文件提取的节点和边数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/batch-3.json": {
+      "name": "batch-3.json",
+      "type": "config",
+      "summary": "第3批次的知识图谱片段，包含该批次非代码文件（配置和文档）提取的节点和边数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/batch-4.json": {
+      "name": "batch-4.json",
+      "type": "config",
+      "summary": "第4批次的知识图谱片段，包含该批次文档文件提取的节点和边数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/batch-5.json": {
+      "name": "batch-5.json",
+      "type": "config",
+      "summary": "第5批次的知识图谱片段，包含该批次剩余源代码文件和配置文档提取的节点和边数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/batches.json": {
+      "name": "batches.json",
+      "type": "config",
+      "summary": "批次调度配置文件，定义Louvain算法分区策略、31个源文件的批次分配、导出符号映射和各批次间的导入关系数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/fingerprint-input.json": {
+      "name": "fingerprint-input.json",
+      "type": "config",
+      "summary": "指纹生成输入文件，包含项目根目录路径、需要计算指纹的源文件路径列表和当前Git提交哈希。"
+    },
+    "config:.understand-anything/.trash-1781277533/layers.json": {
+      "name": "layers.json",
+      "type": "config",
+      "summary": "架构层定义文件，将知识图谱节点按API层、服务层、UI层、配置层、测试层和文档层六个逻辑层次进行分组，每层包含节点ID列表和描述。"
+    },
+    "config:.understand-anything/.trash-1781277533/review.json": {
+      "name": "review.json",
+      "type": "config",
+      "summary": "知识图谱审查输出，列出图组装后发现的问题节点、警告信息（如孤立节点）和节点与边类型的统计概况。"
+    },
+    "config:.understand-anything/.trash-1781277533/tour.json": {
+      "name": "tour.json",
+      "type": "config",
+      "summary": "项目架构导览定义，包含13个步骤依次介绍从项目概览、配置构建、入口点、路由样式、设置视图、核心学习体验到AI服务、Anki集成和教育理论的完整架构遍历。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json": {
+      "name": "ua-arch-input.json",
+      "type": "config",
+      "summary": "架构分析输入文件，包含文件节点列表、导入边数据和所有边数据，供架构分析脚本进行目录分组和模式匹配。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-arch-results.json": {
+      "name": "ua-arch-results.json",
+      "type": "config",
+      "summary": "架构分析结果输出，包含目录分组、节点类型分组、跨类别边、组间导入、模式匹配、部署拓扑和数据管道等全面架构分析数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json": {
+      "name": "ua-file-analyzer-input-1.json",
+      "type": "config",
+      "summary": "文件分析器第1批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json": {
+      "name": "ua-file-analyzer-input-2.json",
+      "type": "config",
+      "summary": "文件分析器第2批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json": {
+      "name": "ua-file-analyzer-input-3.json",
+      "type": "config",
+      "summary": "文件分析器第3批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json": {
+      "name": "ua-file-analyzer-input-4.json",
+      "type": "config",
+      "summary": "文件分析器第4批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json": {
+      "name": "ua-file-analyzer-input-5.json",
+      "type": "config",
+      "summary": "文件分析器第5批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json": {
+      "name": "ua-file-extract-results-1.json",
+      "type": "config",
+      "summary": "文件结构提取第1批次结果，包含已分析文件数、跳过的文件和每个文件的函数、类、导出、调用图等结构化数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json": {
+      "name": "ua-file-extract-results-2.json",
+      "type": "config",
+      "summary": "文件结构提取第2批次结果，包含各文件的函数、类、导出和调用图等结构化分析数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json": {
+      "name": "ua-file-extract-results-3.json",
+      "type": "config",
+      "summary": "文件结构提取第3批次结果，包含各文件的段落、指标等结构化分析数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json": {
+      "name": "ua-file-extract-results-4.json",
+      "type": "config",
+      "summary": "文件结构提取第4批次结果，包含各文件的段落、指标等结构化分析数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json": {
+      "name": "ua-file-extract-results-5.json",
+      "type": "config",
+      "summary": "文件结构提取第5批次结果，包含各文件的函数、类、导出和调用图等结构化分析数据。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json": {
+      "name": "ua-import-map-input.json",
+      "type": "config",
+      "summary": "导入映射输入文件，包含项目根目录和需要解析导入关系的文件路径列表。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-output.json": {
+      "name": "ua-import-map-output.json",
+      "type": "config",
+      "summary": "导入映射输出文件，包含脚本完成状态、统计信息和文件间导入关系映射表。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json": {
+      "name": "ua-scan-files.json",
+      "type": "config",
+      "summary": "文件扫描结果，包含项目源文件完整列表、被过滤忽略的文件、复杂度估算和按语言分类的统计信息。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json": {
+      "name": "ua-tour-input.json",
+      "type": "config",
+      "summary": "导览生成输入文件，包含知识图谱的节点数组、边数组和层定义数据，供导览生成脚本进行入口点识别和BFS遍历。"
+    },
+    "config:.understand-anything/.trash-1781277533/tmp/ua-tour-results.json": {
+      "name": "ua-tour-results.json",
+      "type": "config",
+      "summary": "导览生成结果，包含入口点候选列表、出入度排名、BFS遍历路径、非代码文件列表、聚类结果、层分组和节点摘要索引。"
+    },
+    "config:.understand-anything/config.json": {
+      "name": "config.json",
+      "type": "config",
+      "summary": "Understand-Anything 插件配置文件，指定知识图谱文本输出语言为中文（zh）。"
+    },
+    "config:.understand-anything/fingerprints.json": {
+      "name": "fingerprints.json",
+      "type": "config",
+      "summary": "文件指纹数据库，包含版本号、Git提交哈希、生成时间戳和每个项目源文件的指纹哈希值，用于增量分析时检测文件变更。"
+    },
+    "config:.understand-anything/knowledge-graph.json": {
+      "name": "knowledge-graph.json",
+      "type": "config",
+      "summary": "项目的完整知识图谱数据，包含版本信息、项目元数据、所有节点（文件、函数、类、配置、文档）、所有边（导入、调用、包含等关系）、架构层定义和导览步骤。"
+    },
+    "config:.understand-anything/meta.json": {
+      "name": "meta.json",
+      "type": "config",
+      "summary": "分析元数据文件，记录最近一次代码分析的执行时间戳、Git提交哈希、插件版本号和已分析文件总数。"
+    },
+    "config:code/.env.example": {
+      "name": ".env.example",
+      "type": "config",
+      "summary": "环境变量配置模板文件，定义 Anki-Connect 本地连接地址（localhost:8765）和服务端监听端口（3001），供部署时复制为 .env 使用。"
+    },
+    "document:code/README.md": {
+      "name": "README.md",
+      "type": "document",
+      "summary": "项目入门文档，说明项目基于 Vue 3 + Vite 技术栈，提供 Script Setup 语法和 IDE 支持的官方文档链接。"
+    },
+    "file:code/index.html": {
+      "name": "index.html",
+      "type": "file",
+      "summary": "Vue 应用的前端入口 HTML 文件，声明中文语言与响应式视口，提供 #app 挂载点并通过 ES Module 方式引入 /src/main.js。"
+    },
+    "config:code/package.json": {
+      "name": "package.json",
+      "type": "config",
+      "summary": "npm 项目配置文件，定义脚本命令（Vite 开发/构建、Express 服务端启动、concurrently 并行运行）、运行时依赖（Vue 3、Express、OpenAI、cors、dotenv）和 Vite 开发插件。"
+    },
+    "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md": {
+      "name": "使用学习观来设计的英语学习步骤.md",
+      "type": "document",
+      "summary": "基于学习观理论设计的英语学习步骤，涵盖听说读写四个维度的运动类技能训练方法，强调不借助中文思考、直接想象场景的学习理念。"
+    },
+    "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md": {
+      "name": "学习英语的错误.md",
+      "type": "document",
+      "summary": "列举英语学习中的三个核心误区：应试教育的文字到文字模式、孤立记单词而非句子学习、以及插入中文思考导致输出错误和迟缓。"
+    },
+    "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md": {
+      "name": "英语的听说读写正确的输入输出与构建方式.md",
+      "type": "document",
+      "summary": "定义英语听说读写四项技能的正确输入输出映射关系（声音→意思、想法→发声、文字→意思、想法→打字），强调以句子而非单词为最小学习单元。"
+    },
+    "config:.claude/settings.json": {
+      "name": "settings.json",
+      "type": "config",
+      "summary": "Claude Code 权限配置，允许执行 Understand-Anything 插件相关的 Bash 脚本和临时文件读取操作。"
+    },
+    "file:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js": {
+      "name": "ua-arch-analyze.js",
+      "type": "file",
+      "summary": "Understand-Anything 插件的架构分析脚本，计算目录分组、导入邻接矩阵、跨类别依赖关系、部署拓扑和数据管道检测等结构模式。"
+    },
+    "file:.understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs": {
+      "name": "ua-inline-validate.cjs",
+      "type": "file",
+      "summary": "知识图谱数据的内联验证脚本，检查节点字段完整性（id/type/name/summary/tags）、边引用有效性、层级分配一致性及孤立节点检测。"
+    },
+    "file:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js": {
+      "name": "ua-tour-analyze.js",
+      "type": "file",
+      "summary": "知识图谱拓扑分析脚本，计算入口点评分、扇入扇出排名、BFS 遍历路径、紧耦合聚簇识别和非代码文件清单。"
+    },
+    "file:.understand-anything/.understandignore": {
+      "name": ".understandignore",
+      "type": "file",
+      "summary": "Understand-Anything 插件的分析排除规则文件，采用 .gitignore 语法定义不需要分析的文件和目录模式，内置忽略 node_modules、dist 等常见目录。"
+    },
+    "config:.understand-anything/intermediate/scan-result.json": {
+      "name": "scan-result.json",
+      "type": "config",
+      "summary": "项目扫描结果中间产物，包含项目元信息（名称、描述）、文件清单、编程语言列表、框架检测、导入映射和复杂度评估等扫描阶段输出。"
+    },
+    "file:code/src/components/PhilosophyPanel.vue": {
+      "name": "PhilosophyPanel.vue",
+      "type": "file",
+      "summary": "学习理念展示组件，呈现英语作为运动类技能的核心原则（不思考中文、想象场景、以句子为单位学习），展示听说读写的正确映射方式及常见学习误区。"
+    },
+    "file:code/src/composables/useSpeech.js": {
+      "name": "useSpeech.js",
+      "type": "file",
+      "summary": "Web Speech API 封装模块，提供 useTTS（文本转语音）和 useSTT（语音转文本）两个 Vue 组合式函数，支持浏览器原生语音合成与识别能力。"
+    },
+    "file:code/src/style.css": {
+      "name": "style.css",
+      "type": "file",
+      "summary": "应用全局样式表，定义 CSS 自定义属性（颜色、圆角、阴影）、基础重置（box-sizing）、布局系统、表单组件样式、按钮组件样式和学习界面特定区域样式。"
+    },
+    "file:code/test_parse_json.mjs": {
+      "name": "test_parse_json.mjs",
+      "type": "file",
+      "summary": "AI JSON 解析函数的健壮性测试脚本，验证 parseAIJson 对多种 AI 返回格式（纯JSON、Markdown代码块包裹、前后附带文本、嵌套花括号、转义引号）的处理能力。"
+    },
+    "file:code/test_qwen_api.mjs": {
+      "name": "test_qwen_api.mjs",
+      "type": "file",
+      "summary": "千问多模态 API 快速诊断脚本，选取本地最小 PNG 图片转换为 base64，依次测试 qwen-omni-turbo、qwen-vl-plus、qwen-vl-max 三个模型的图片理解能力。"
+    },
+    "file:code/vite.config.js": {
+      "name": "vite.config.js",
+      "type": "file",
+      "summary": "Vite 构建配置文件，启用 Vue 3 插件并设置开发服务器代理规则，将 /api 路径请求转发至本地 Express 后端（端口 3001）。"
+    },
+    "document:doc/01-需求分析/1.1-产品需求文档.md": {
+      "name": "1.1-产品需求文档.md",
+      "type": "document",
+      "summary": "ShiYi 项目产品需求文档（PRD），阐述项目背景（结合 Anki 间隔重复与 AI 的英语学习应用）、目标用户痛点、核心功能需求及英语学习理念引入。"
+    },
+    "document:doc/01-需求分析/需求分析.md": {
+      "name": "需求分析.md",
+      "type": "document",
+      "summary": "需求分析索引文档，引用产品需求文档（PRD）、英语学习理念资料和 Anki-Connect API 参考链接等关键参考资源。"
+    },
+    "document:doc/Claude Code Plan方案.md": {
+      "name": "Claude Code Plan方案.md",
+      "type": "document",
+      "summary": "ShiYi 项目完整实现计划文档，涵盖项目背景、核心学习理念、技术栈选型（Vue 3 + Express + Web Speech API）、整体架构设计、数据模型设计、核心业务流程、前端路由配置、分四阶段实现的任务清单和功能验证流程等12个章节。"
+    }
+  },
+  "totalNodes": 68,
+  "totalEdges": 63
+}

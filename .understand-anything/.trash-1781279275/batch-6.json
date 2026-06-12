@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "config:code/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "code/.env.example",
+      "summary": "环境变量配置模板文件，定义 Anki-Connect 本地连接地址（localhost:8765）和服务端监听端口（3001），供部署时复制为 .env 使用。",
+      "tags": ["configuration", "environment", "template"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:code/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "code/README.md",
+      "summary": "项目入门文档，说明项目基于 Vue 3 + Vite 技术栈，提供 Script Setup 语法和 IDE 支持的官方文档链接。",
+      "tags": ["documentation", "entry-point", "vue", "vite"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "code/index.html",
+      "summary": "Vue 应用的前端入口 HTML 文件，声明中文语言与响应式视口，提供 #app 挂载点并通过 ES Module 方式引入 /src/main.js。",
+      "tags": ["entry-point", "html", "spa"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:code/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "code/package.json",
+      "summary": "npm 项目配置文件，定义脚本命令（Vite 开发/构建、Express 服务端启动、concurrently 并行运行）、运行时依赖（Vue 3、Express、OpenAI、cors、dotenv）和 Vite 开发插件。",
+      "tags": ["configuration", "build-system", "dependencies", "npm-scripts"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:code/.env.example",
+      "target": "file:code/index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/.env.example",
+      "target": "config:code/package.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:code/README.md",
+      "target": "file:code/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "file:code/index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

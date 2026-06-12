@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "type": "document",
+      "name": "使用学习观来设计的英语学习步骤.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "summary": "Outlines a methodology for learning English through scene-based imagination rather than Chinese-to-English translation, covering material selection, reading, writing, listening, and speaking practice steps. Emphasizes that language acquisition is a motor skill where conscious thought should be avoided during execution.",
+      "tags": ["documentation", "requirements", "learning-methodology", "language-acquisition"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "type": "document",
+      "name": "学习英语的错误.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "summary": "Identifies three critical mistakes in English learning: the exam-oriented text-to-text approach, treating isolated word memorization as language learning instead of understanding words through sentence context, and the fatal error of inserting Chinese as an intermediate translation step in the language processing pipeline.",
+      "tags": ["documentation", "requirements", "learning-pitfalls", "language-acquisition"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "document",
+      "name": "英语的听说读写正确的输入输出与构建方式.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "summary": "Defines the correct direct input-output model for English skills: listening as sound-to-meaning, speaking as thought-to-speech, reading as text-to-meaning, and writing as thought-to-typing, all classified as motor skills operating on full sentences with contextual meaning rather than isolated words.",
+      "tags": ["documentation", "requirements", "learning-model", "language-acquisition"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

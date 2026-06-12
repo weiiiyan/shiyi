@@ -1,0 +1,119 @@
+[
+  {
+    "id": "layer:api",
+    "name": "API 层",
+    "description": "Express 后端入口与路由处理层，负责注册 CORS/JSON 中间件，挂载 /api/decks、/api/learn、/api/ai 三个路由模块，并将请求分发给服务层处理学习流程、牌组查询和 AI 交互。",
+    "nodeIds": [
+      "file:code/server/index.js",
+      "file:code/server/routes/ai.js",
+      "file:code/server/routes/decks.js",
+      "file:code/server/routes/learn.js"
+    ]
+  },
+  {
+    "id": "layer:service",
+    "name": "服务层",
+    "description": "核心业务逻辑服务层，封装 OpenAI 兼容多模型 AI 调用（千问/豆包/OpenAI）的场景生成与回复评判、Anki-Connect JSON-RPC 通信的牌组与卡片管理、以及基于内存 Map 的学习会话状态跟踪。",
+    "nodeIds": [
+      "file:code/server/services/aiService.js",
+      "file:code/server/services/ankiService.js",
+      "file:code/server/services/sessionService.js"
+    ]
+  },
+  {
+    "id": "layer:ui",
+    "name": "UI 层",
+    "description": "Vue 3 前端界面层，包含应用根组件、路由配置、牌组选择/学习/设置三个视图、学习理念展示组件、Web Speech API 语音合成与识别封装、全局样式表及 SPA 入口 HTML 文件。",
+    "nodeIds": [
+      "file:code/src/main.js",
+      "file:code/src/App.vue",
+      "file:code/src/router/index.js",
+      "file:code/src/views/DeckSelect.vue",
+      "file:code/src/views/LearnView.vue",
+      "file:code/src/views/SettingsView.vue",
+      "file:code/src/components/PhilosophyPanel.vue",
+      "file:code/src/composables/useSpeech.js",
+      "file:code/src/style.css",
+      "file:code/index.html"
+    ]
+  },
+  {
+    "id": "layer:config",
+    "name": "配置层",
+    "description": "项目构建与运行配置层，包含 npm 依赖脚本定义、Vite 构建代理配置、环境变量模板及 Claude Code 权限设置。",
+    "nodeIds": [
+      "config:code/package.json",
+      "file:code/vite.config.js",
+      "config:code/.env.example",
+      "config:.claude/settings.json"
+    ]
+  },
+  {
+    "id": "layer:test",
+    "name": "测试层",
+    "description": "API 与解析器测试脚本层，包含 AI JSON 解析的健壮性验证和千问多模态 API 的诊断测试。",
+    "nodeIds": [
+      "file:code/test_parse_json.mjs",
+      "file:code/test_qwen_api.mjs"
+    ]
+  },
+  {
+    "id": "layer:documentation",
+    "name": "文档层",
+    "description": "项目文档层，包含产品需求文档、需求分析索引、基于学习观理论的英语学习步骤指南、常见误区分析、听说读写技能映射说明及完整的分阶段实现计划。",
+    "nodeIds": [
+      "document:code/README.md",
+      "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "document:doc/01-需求分析/需求分析.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "document:doc/Claude Code Plan方案.md"
+    ]
+  },
+  {
+    "id": "layer:analysis-artifacts",
+    "name": "分析产物层",
+    "description": "Understand-Anything 插件的代码分析中间产物与元数据，包含知识图谱数据、批次分析片段、文件结构提取结果、导入映射、架构分析输入输出、导览数据、指纹信息及审查报告。",
+    "nodeIds": [
+      "config:.understand-anything/.trash-1781277533/assemble-review.json",
+      "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "config:.understand-anything/.trash-1781277533/batch-1.json",
+      "config:.understand-anything/.trash-1781277533/batch-2.json",
+      "config:.understand-anything/.trash-1781277533/batch-3.json",
+      "config:.understand-anything/.trash-1781277533/batch-4.json",
+      "config:.understand-anything/.trash-1781277533/batch-5.json",
+      "config:.understand-anything/.trash-1781277533/batches.json",
+      "config:.understand-anything/.trash-1781277533/fingerprint-input.json",
+      "config:.understand-anything/.trash-1781277533/layers.json",
+      "config:.understand-anything/.trash-1781277533/review.json",
+      "config:.understand-anything/.trash-1781277533/tour.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
+      "config:.understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
+      "config:.understand-anything/config.json",
+      "config:.understand-anything/fingerprints.json",
+      "config:.understand-anything/knowledge-graph.json",
+      "config:.understand-anything/meta.json",
+      "config:.understand-anything/intermediate/scan-result.json",
+      "file:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
+      "file:.understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
+      "file:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
+      "file:.understand-anything/.understandignore"
+    ]
+  }
+]

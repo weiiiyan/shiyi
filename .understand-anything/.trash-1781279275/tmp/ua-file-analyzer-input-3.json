@@ -1,0 +1,18 @@
+{
+  "projectRoot": "F:/web/shiyi",
+  "batchFiles": [
+    {"path": ".understand-anything/.trash-1781277533/assemble-review.json", "language": "json", "sizeLines": 17, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/assembled-graph.json", "language": "json", "sizeLines": 1838, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/batch-1.json", "language": "json", "sizeLines": 544, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/batch-2.json", "language": "json", "sizeLines": 289, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/batch-3.json", "language": "json", "sizeLines": 84, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/batch-4.json", "language": "json", "sizeLines": 54, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/batch-5.json", "language": "json", "sizeLines": 259, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/batches.json", "language": "json", "sizeLines": 324, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/fingerprint-input.json", "language": "json", "sizeLines": 34, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/layers.json", "language": "json", "sizeLines": 101, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/review.json", "language": "json", "sizeLines": 32, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tour.json", "language": "json", "sizeLines": 130, "fileCategory": "config"}
+  ],
+  "batchImportData": {".understand-anything/.trash-1781277533/assemble-review.json":[],".understand-anything/.trash-1781277533/assembled-graph.json":[],".understand-anything/.trash-1781277533/batch-1.json":[],".understand-anything/.trash-1781277533/batch-2.json":[],".understand-anything/.trash-1781277533/batch-3.json":[],".understand-anything/.trash-1781277533/batch-4.json":[],".understand-anything/.trash-1781277533/batch-5.json":[],".understand-anything/.trash-1781277533/batches.json":[],".understand-anything/.trash-1781277533/fingerprint-input.json":[],".understand-anything/.trash-1781277533/layers.json":[],".understand-anything/.trash-1781277533/review.json":[],".understand-anything/.trash-1781277533/tour.json":[]}
+}

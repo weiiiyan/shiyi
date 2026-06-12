@@ -1,0 +1,33 @@
+{
+  "issues": [
+    "File node 'file:.understand-anything/.understandignore' not in any layer",
+    "File node 'config:.understand-anything/config.json' not in any layer"
+  ],
+  "warnings": [
+    "Node 'document:code/README.md' has no edges (orphan)",
+    "Node 'file:.understand-anything/.understandignore' has no edges (orphan)",
+    "Node 'config:.understand-anything/config.json' has no edges (orphan)"
+  ],
+  "stats": {
+    "totalNodes": 60,
+    "totalEdges": 89,
+    "totalLayers": 6,
+    "tourSteps": 13,
+    "nodeTypes": {
+      "file": 21,
+      "function": 29,
+      "config": 3,
+      "document": 7
+    },
+    "edgeTypes": {
+      "imports": 14,
+      "contains": 29,
+      "exports": 14,
+      "calls": 11,
+      "depends_on": 4,
+      "configures": 5,
+      "related": 7,
+      "documents": 5
+    }
+  }
+}

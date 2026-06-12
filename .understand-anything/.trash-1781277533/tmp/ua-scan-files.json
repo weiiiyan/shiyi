@@ -1,0 +1,213 @@
+{
+  "scriptCompleted": true,
+  "files": [
+    {
+      "path": ".understand-anything/.understandignore",
+      "language": "unknown",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".understand-anything/config.json",
+      "language": "json",
+      "sizeLines": 1,
+      "fileCategory": "config"
+    },
+    {
+      "path": "code/.env.example",
+      "language": "config",
+      "sizeLines": 5,
+      "fileCategory": "config"
+    },
+    {
+      "path": "code/index.html",
+      "language": "html",
+      "sizeLines": 12,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "code/package.json",
+      "language": "json",
+      "sizeLines": 26,
+      "fileCategory": "config"
+    },
+    {
+      "path": "code/README.md",
+      "language": "markdown",
+      "sizeLines": 5,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "code/server/index.js",
+      "language": "javascript",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/routes/ai.js",
+      "language": "javascript",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/routes/decks.js",
+      "language": "javascript",
+      "sizeLines": 48,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/routes/learn.js",
+      "language": "javascript",
+      "sizeLines": 256,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/services/aiService.js",
+      "language": "javascript",
+      "sizeLines": 370,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/services/ankiService.js",
+      "language": "javascript",
+      "sizeLines": 258,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/services/sessionService.js",
+      "language": "javascript",
+      "sizeLines": 147,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/src/App.vue",
+      "language": "vue",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/src/components/PhilosophyPanel.vue",
+      "language": "vue",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/src/composables/useSpeech.js",
+      "language": "javascript",
+      "sizeLines": 141,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/src/main.js",
+      "language": "javascript",
+      "sizeLines": 8,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/src/router/index.js",
+      "language": "javascript",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/src/style.css",
+      "language": "css",
+      "sizeLines": 690,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "code/src/views/DeckSelect.vue",
+      "language": "vue",
+      "sizeLines": 125,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/src/views/LearnView.vue",
+      "language": "vue",
+      "sizeLines": 394,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/src/views/SettingsView.vue",
+      "language": "vue",
+      "sizeLines": 153,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/test_parse_json.mjs",
+      "language": "javascript",
+      "sizeLines": 137,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/test_qwen_api.mjs",
+      "language": "javascript",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/vite.config.js",
+      "language": "javascript",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "doc/01-需求分析/1.1-产品需求文档.md",
+      "language": "markdown",
+      "sizeLines": 24,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "language": "markdown",
+      "sizeLines": 15,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "language": "markdown",
+      "sizeLines": 7,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "language": "markdown",
+      "sizeLines": 5,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "doc/01-需求分析/需求分析.md",
+      "language": "markdown",
+      "sizeLines": 5,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "doc/Claude Code Plan方案.md",
+      "language": "markdown",
+      "sizeLines": 193,
+      "fileCategory": "docs"
+    }
+  ],
+  "totalFiles": 31,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "moderate",
+  "stats": {
+    "filesScanned": 31,
+    "byCategory": {
+      "code": 19,
+      "config": 3,
+      "markup": 2,
+      "docs": 7
+    },
+    "byLanguage": {
+      "unknown": 1,
+      "json": 2,
+      "config": 1,
+      "html": 1,
+      "markdown": 7,
+      "javascript": 13,
+      "vue": 5,
+      "css": 1
+    }
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "nodes": [
+    {
+      "id": "config:.claude/settings.json",
+      "type": "config",
+      "name": "settings.json",
+      "filePath": ".claude/settings.json",
+      "summary": "Claude Code 权限配置，允许执行 Understand-Anything 插件相关的 Bash 脚本和临时文件读取操作。",
+      "tags": ["configuration", "权限配置", "claude-code"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
+      "type": "file",
+      "name": "ua-arch-analyze.js",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
+      "summary": "Understand-Anything 插件的架构分析脚本，计算目录分组、导入邻接矩阵、跨类别依赖关系、部署拓扑和数据管道检测等结构模式。",
+      "tags": ["utility", "code-analysis", "architecture", "understand-anything"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js:commonPrefix",
+      "type": "function",
+      "name": "commonPrefix",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
+      "lineRange": [41, 53],
+      "summary": "计算文件路径列表的公共目录前缀，通过逐次缩短前缀的方式找到所有路径共享的基路径。",
+      "tags": ["utility", "路径处理", "字符串操作"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
+      "type": "file",
+      "name": "ua-inline-validate.cjs",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
+      "summary": "知识图谱数据的内联验证脚本，检查节点字段完整性（id/type/name/summary/tags）、边引用有效性、层级分配一致性及孤立节点检测。",
+      "tags": ["utility", "validation", "graph-validation", "understand-anything"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
+      "type": "file",
+      "name": "ua-tour-analyze.js",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
+      "summary": "知识图谱拓扑分析脚本，计算入口点评分、扇入扇出排名、BFS 遍历路径、紧耦合聚簇识别和非代码文件清单。",
+      "tags": ["utility", "graph-analysis", "topology", "understand-anything"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js:scoreEntryPoint",
+      "type": "function",
+      "name": "scoreEntryPoint",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
+      "lineRange": [86, 126],
+      "summary": "为图谱节点计算入口点评分，综合文件名匹配（index.ts/main.go 等）、目录深度、扇入扇出排名等指标判断节点作为入口点的可能性。",
+      "tags": ["utility", "scoring", "entry-point-detection"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Understand-Anything 插件的分析排除规则文件，采用 .gitignore 语法定义不需要分析的文件和目录模式，内置忽略 node_modules、dist 等常见目录。",
+      "tags": ["configuration", "ignore-rules", "understand-anything"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/intermediate/scan-result.json",
+      "type": "config",
+      "name": "scan-result.json",
+      "filePath": ".understand-anything/intermediate/scan-result.json",
+      "summary": "项目扫描结果中间产物，包含项目元信息（名称、描述）、文件清单、编程语言列表、框架检测、导入映射和复杂度评估等扫描阶段输出。",
+      "tags": ["configuration", "scan-result", "project-metadata", "understand-anything"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "file",
+      "name": "PhilosophyPanel.vue",
+      "filePath": "code/src/components/PhilosophyPanel.vue",
+      "summary": "学习理念展示组件，呈现英语作为运动类技能的核心原则（不思考中文、想象场景、以句子为单位学习），展示听说读写的正确映射方式及常见学习误区。",
+      "tags": ["component", "vue", "学习理念", "ui"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/composables/useSpeech.js",
+      "type": "file",
+      "name": "useSpeech.js",
+      "filePath": "code/src/composables/useSpeech.js",
+      "summary": "Web Speech API 封装模块，提供 useTTS（文本转语音）和 useSTT（语音转文本）两个 Vue 组合式函数，支持浏览器原生语音合成与识别能力。",
+      "tags": ["composable", "speech", "tts", "stt", "web-speech-api"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "function",
+      "name": "useTTS",
+      "filePath": "code/src/composables/useSpeech.js",
+      "lineRange": [12, 64],
+      "summary": "Vue 组合式函数，封装浏览器 SpeechSynthesis API 实现英文文本朗读，支持语速、音调、音量调节，自动优选 Google 英文语音，并在组件卸载时自动停止。",
+      "tags": ["composable", "tts", "speech-synthesis", "vue"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "function",
+      "name": "useSTT",
+      "filePath": "code/src/composables/useSpeech.js",
+      "lineRange": [69, 141],
+      "summary": "Vue 组合式函数，封装浏览器 SpeechRecognition API 实现语音识别，以 Promise 形式返回转录文本，支持非连续识别模式，在组件卸载时自动停止监听。",
+      "tags": ["composable", "stt", "speech-recognition", "vue"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/src/style.css",
+      "type": "file",
+      "name": "style.css",
+      "filePath": "code/src/style.css",
+      "summary": "应用全局样式表，定义 CSS 自定义属性（颜色、圆角、阴影）、基础重置（box-sizing）、布局系统、表单组件样式、按钮组件样式和学习界面特定区域样式。",
+      "tags": ["stylesheet", "css", "design-tokens", "ui"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/test_parse_json.mjs",
+      "type": "file",
+      "name": "test_parse_json.mjs",
+      "filePath": "code/test_parse_json.mjs",
+      "summary": "AI JSON 解析函数的健壮性测试脚本，验证 parseAIJson 对多种 AI 返回格式（纯JSON、Markdown代码块包裹、前后附带文本、嵌套花括号、转义引号）的处理能力。",
+      "tags": ["test", "json-parsing", "ai-response", "validation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/test_parse_json.mjs:parseAIJson",
+      "type": "function",
+      "name": "parseAIJson",
+      "filePath": "code/test_parse_json.mjs",
+      "lineRange": [7, 50],
+      "summary": "从 AI 原始返回文本中稳健提取并解析 JSON 对象，依次尝试去除 Markdown 代码块、直接 JSON.parse、花括号配对齐三种策略，多层容错。",
+      "tags": ["utility", "json-parsing", "ai-response", "robustness"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/test_qwen_api.mjs",
+      "type": "file",
+      "name": "test_qwen_api.mjs",
+      "filePath": "code/test_qwen_api.mjs",
+      "summary": "千问多模态 API 快速诊断脚本，选取本地最小 PNG 图片转换为 base64，依次测试 qwen-omni-turbo、qwen-vl-plus、qwen-vl-max 三个模型的图片理解能力。",
+      "tags": ["test", "api-test", "multimodal", "qwen"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/test_qwen_api.mjs:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "code/test_qwen_api.mjs",
+      "lineRange": [11, 88],
+      "summary": "测试主入口函数，扫描本地图片目录找最小文件，读取并编码为 base64 Data URL，依次调用三种千问多模态模型进行图片描述测试并输出结果。",
+      "tags": ["test", "entry-point", "api-test", "multimodal"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/vite.config.js",
+      "type": "file",
+      "name": "vite.config.js",
+      "filePath": "code/vite.config.js",
+      "summary": "Vite 构建配置文件，启用 Vue 3 插件并设置开发服务器代理规则，将 /api 路径请求转发至本地 Express 后端（端口 3001）。",
+      "tags": ["configuration", "vite", "build-system", "proxy"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "document",
+      "name": "1.1-产品需求文档.md",
+      "filePath": "doc/01-需求分析/1.1-产品需求文档.md",
+      "summary": "ShiYi 项目产品需求文档（PRD），阐述项目背景（结合 Anki 间隔重复与 AI 的英语学习应用）、目标用户痛点、核心功能需求及英语学习理念引入。",
+      "tags": ["documentation", "product-requirements", "prd", "英语学习"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/需求分析.md",
+      "type": "document",
+      "name": "需求分析.md",
+      "filePath": "doc/01-需求分析/需求分析.md",
+      "summary": "需求分析索引文档，引用产品需求文档（PRD）、英语学习理念资料和 Anki-Connect API 参考链接等关键参考资源。",
+      "tags": ["documentation", "需求分析", "索引", "参考"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/Claude Code Plan方案.md",
+      "type": "document",
+      "name": "Claude Code Plan方案.md",
+      "filePath": "doc/Claude Code Plan方案.md",
+      "summary": "ShiYi 项目完整实现计划文档，涵盖项目背景、核心学习理念、技术栈选型（Vue 3 + Express + Web Speech API）、整体架构设计、数据模型设计、核心业务流程、前端路由配置、分四阶段实现的任务清单和功能验证流程等12个章节。",
+      "tags": ["documentation", "implementation-plan", "architecture", "英语学习", "roadmap"],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
+      "target": "function:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js:commonPrefix",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
+      "target": "function:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js:scoreEntryPoint",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/test_parse_json.mjs",
+      "target": "function:code/test_parse_json.mjs:parseAIJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/test_qwen_api.mjs",
+      "target": "function:code/test_qwen_api.mjs:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "document:doc/01-需求分析/需求分析.md",
+      "target": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "target": "document:doc/Claude Code Plan方案.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/vite.config.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/src/composables/useSpeech.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/src/components/PhilosophyPanel.vue",
+      "target": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:.understand-anything/.understandignore",
+      "target": "config:.understand-anything/intermediate/scan-result.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

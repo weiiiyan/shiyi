@@ -1,0 +1,23 @@
+{
+  "projectRoot": "F:/web/shiyi",
+  "batchFiles": [
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-arch-input.json", "language": "json", "sizeLines": 169, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-arch-results.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-scan-files.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-tour-input.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": ".understand-anything/.trash-1781277533/tmp/ua-tour-results.json", "language": "json", "sizeLines": 1, "fileCategory": "config"}
+  ],
+  "batchImportData": {".understand-anything/.trash-1781277533/tmp/ua-arch-input.json":[],".understand-anything/.trash-1781277533/tmp/ua-arch-results.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json":[],".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json":[],".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json":[],".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json":[],".understand-anything/.trash-1781277533/tmp/ua-scan-files.json":[],".understand-anything/.trash-1781277533/tmp/ua-tour-input.json":[],".understand-anything/.trash-1781277533/tmp/ua-tour-results.json":[]}
+}

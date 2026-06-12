@@ -1,0 +1,102 @@
+[
+  {
+    "id": "layer:api",
+    "name": "API Layer",
+    "description": "Express server entry point and route handlers exposing REST endpoints for AI testing, deck management, and the core learning flow (session start, AI response, card review, next card).",
+    "nodeIds": [
+      "file:code/server/index.js",
+      "file:code/server/routes/ai.js",
+      "file:code/server/routes/decks.js",
+      "file:code/server/routes/learn.js"
+    ]
+  },
+  {
+    "id": "layer:service",
+    "name": "Service Layer",
+    "description": "Backend business logic including multi-model AI interaction (Qwen/Doubao/OpenAI), Anki-Connect proxying, in-memory session management, and frontend speech composables wrapping the Web Speech API.",
+    "nodeIds": [
+      "file:code/server/services/aiService.js",
+      "function:code/server/services/aiService.js:parseAIJson",
+      "function:code/server/services/aiService.js:createClient",
+      "function:code/server/services/aiService.js:generateScenario",
+      "function:code/server/services/aiService.js:judgeResponse",
+      "function:code/server/services/aiService.js:testConnection",
+      "file:code/server/services/ankiService.js",
+      "function:code/server/services/ankiService.js:invoke",
+      "function:code/server/services/ankiService.js:getShiYiDecks",
+      "function:code/server/services/ankiService.js:getDueCards",
+      "function:code/server/services/ankiService.js:getKnownVocabulary",
+      "file:code/server/services/sessionService.js",
+      "function:code/server/services/sessionService.js:createSession",
+      "function:code/server/services/sessionService.js:getSession",
+      "function:code/server/services/sessionService.js:deleteSession",
+      "function:code/server/services/sessionService.js:setCurrentCard",
+      "function:code/server/services/sessionService.js:recordScore",
+      "function:code/server/services/sessionService.js:getProgress",
+      "file:code/src/composables/useSpeech.js",
+      "function:code/src/composables/useSpeech.js:useTTS",
+      "function:code/src/composables/useSpeech.js:useSTT"
+    ]
+  },
+  {
+    "id": "layer:ui",
+    "name": "UI Layer",
+    "description": "Vue 3 frontend including the root App shell, router configuration, page-level views (DeckSelect, LearnView, SettingsView), the PhilosophyPanel presentational component, global stylesheet, and the HTML entry point.",
+    "nodeIds": [
+      "file:code/src/App.vue",
+      "file:code/src/main.js",
+      "file:code/src/router/index.js",
+      "file:code/src/views/DeckSelect.vue",
+      "function:code/src/views/DeckSelect.vue:checkAnkiStatus",
+      "function:code/src/views/DeckSelect.vue:loadDecks",
+      "file:code/src/views/LearnView.vue",
+      "function:code/src/views/LearnView.vue:readAloud",
+      "function:code/src/views/LearnView.vue:toggleVoiceInput",
+      "function:code/src/views/LearnView.vue:startSession",
+      "function:code/src/views/LearnView.vue:sendResponse",
+      "function:code/src/views/LearnView.vue:completeCard",
+      "function:code/src/views/LearnView.vue:nextCard",
+      "function:code/src/views/LearnView.vue:formatScenario",
+      "file:code/src/views/SettingsView.vue",
+      "function:code/src/views/SettingsView.vue:testConnection",
+      "file:code/src/components/PhilosophyPanel.vue",
+      "file:code/src/style.css",
+      "file:code/index.html"
+    ]
+  },
+  {
+    "id": "layer:config",
+    "name": "Configuration",
+    "description": "Project build and environment configuration including the npm package manifest, Vite build setup with API proxy, and environment variable template for Anki-Connect and server port.",
+    "nodeIds": [
+      "config:code/package.json",
+      "config:code/.env.example",
+      "file:code/vite.config.js"
+    ]
+  },
+  {
+    "id": "layer:test",
+    "name": "Test Scripts",
+    "description": "Standalone diagnostic and validation scripts for testing AI JSON response parsing and verifying Qwen multimodal API connectivity.",
+    "nodeIds": [
+      "file:code/test_parse_json.mjs",
+      "function:code/test_parse_json.mjs:parseAIJson",
+      "file:code/test_qwen_api.mjs",
+      "function:code/test_qwen_api.mjs:main"
+    ]
+  },
+  {
+    "id": "layer:documentation",
+    "name": "Documentation",
+    "description": "Project documentation covering the product requirements document, English learning methodology research, common language-learning pitfalls, the input-output model for the four English skills, and the full implementation plan with architecture and roadmap.",
+    "nodeIds": [
+      "document:code/README.md",
+      "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "document:doc/01-需求分析/需求分析.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "document:doc/Claude Code Plan方案.md"
+    ]
+  }
+]

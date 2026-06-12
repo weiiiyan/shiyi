@@ -1,0 +1,1839 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "shiyi",
+    "languages": [
+      "javascript",
+      "vue",
+      "css",
+      "html",
+      "markdown",
+      "json",
+      "config"
+    ],
+    "frameworks": [
+      "Express",
+      "Vite",
+      "Vue",
+      "vue-router"
+    ],
+    "description": "A Vue 3 + Vite + Express English vocabulary learning app with AI-powered flashcard generation and Anki integration.",
+    "analyzedAt": "2026-06-12T15:17:43.788Z",
+    "gitCommitHash": "4f5facfd198fda289f5405ac3dd2d85ba4c9d039"
+  },
+  "nodes": [
+    {
+      "id": "file:code/server/index.js",
+      "type": "file",
+      "name": "index.js",
+      "filePath": "code/server/index.js",
+      "summary": "Express server entry point that bootstraps the ShiYiAiChat backend on port 3001, mounting deck, learn, and AI route modules and providing a health-check endpoint with global error handling.",
+      "tags": [
+        "entry-point",
+        "server",
+        "express",
+        "middleware"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/server/routes/ai.js",
+      "type": "file",
+      "name": "ai.js",
+      "filePath": "code/server/routes/ai.js",
+      "summary": "Express router defining AI-related endpoints: POST /test for verifying AI provider connectivity and GET /presets for listing available model presets (Qwen, Doubao, OpenAI).",
+      "tags": [
+        "api-handler",
+        "express",
+        "router",
+        "ai"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/server/routes/decks.js",
+      "type": "file",
+      "name": "decks.js",
+      "filePath": "code/server/routes/decks.js",
+      "summary": "Express router defining deck-related endpoints: GET / for listing ShiYi-branded Anki decks, GET /status for checking Anki-Connect availability, and GET /all as a debug endpoint returning all Anki deck names.",
+      "tags": [
+        "api-handler",
+        "express",
+        "router",
+        "anki"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/server/routes/learn.js",
+      "type": "file",
+      "name": "learn.js",
+      "filePath": "code/server/routes/learn.js",
+      "summary": "Express router implementing the core learning flow with five endpoints: POST /start (begin session, fetch due cards, generate AI scenario), POST /respond (submit user reply for AI judgment), POST /complete (submit score to Anki and advance), POST /next (load next card), and GET /progress (retrieve session stats).",
+      "tags": [
+        "api-handler",
+        "express",
+        "router",
+        "learning",
+        "session"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/server/services/aiService.js",
+      "type": "file",
+      "name": "aiService.js",
+      "filePath": "code/server/services/aiService.js",
+      "summary": "AI multi-model service layer supporting Qwen, Doubao, and OpenAI providers. Generates immersive English-learning scenarios (read/write/listen/speak) and judges user responses with a supportive scoring philosophy. Includes robust JSON extraction from LLM output that recovers from markdown wrapping and malformed responses.",
+      "tags": [
+        "service",
+        "ai",
+        "language-learning",
+        "prompt-engineering",
+        "multi-model"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/server/services/ankiService.js",
+      "type": "file",
+      "name": "ankiService.js",
+      "filePath": "code/server/services/ankiService.js",
+      "summary": "Anki-Connect API service layer that proxies all Anki interactions (deck listing, due card retrieval, vocabulary extraction, answer submission) via localhost:8765. Works around a Windows UTF-8 encoding bug by querying with deck IDs (did:) rather than Chinese deck names.",
+      "tags": [
+        "service",
+        "anki",
+        "anki-connect",
+        "proxy",
+        "vocabulary"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/server/services/sessionService.js",
+      "type": "file",
+      "name": "sessionService.js",
+      "filePath": "code/server/services/sessionService.js",
+      "summary": "In-memory learning session manager using a Map with 2-hour TTL expiry. Tracks current card, conversation history, fail count, completed cards, and score distribution per deck session. Formats AI scenario messages into styled prompts by card type.",
+      "tags": [
+        "service",
+        "session",
+        "state-management",
+        "in-memory"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses vanilla Map with setTimeout-based TTL for zero-dependency session expiry, avoiding external cache dependencies."
+    },
+    {
+      "id": "function:code/server/services/aiService.js:parseAIJson",
+      "type": "function",
+      "name": "parseAIJson",
+      "filePath": "code/server/services/aiService.js",
+      "lineRange": [
+        24,
+        89
+      ],
+      "summary": "Robustly extracts a JSON object from raw LLM output by trying three strategies in order: stripping markdown code fences, bracket-pair matching for the first complete JSON object, and a final fallback parse with detailed error reporting.",
+      "tags": [
+        "utility",
+        "json-parsing",
+        "error-handling",
+        "llm-output"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/services/aiService.js:createClient",
+      "type": "function",
+      "name": "createClient",
+      "filePath": "code/server/services/aiService.js",
+      "lineRange": [
+        122,
+        134
+      ],
+      "summary": "Creates an OpenAI-compatible client instance by resolving provider presets for baseURL and model, validating that an API key is present.",
+      "tags": [
+        "factory",
+        "ai-client",
+        "openai-compatible"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/aiService.js:generateScenario",
+      "type": "function",
+      "name": "generateScenario",
+      "filePath": "code/server/services/aiService.js",
+      "lineRange": [
+        147,
+        258
+      ],
+      "summary": "Generates an immersive English-learning scenario tailored to card type (read/write/listen/speak) using the configured AI model. Crafts a system prompt enforcing English-only immersion, constrained vocabulary, and meaningful comprehension questions. Returns structured JSON with scenario text, task/question, and optional hints.",
+      "tags": [
+        "ai-generation",
+        "prompt-engineering",
+        "language-learning",
+        "scenario"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses card-type-specific prompt templates with response_format: json_object and high temperature (0.9) for creative scenario generation."
+    },
+    {
+      "id": "function:code/server/services/aiService.js:judgeResponse",
+      "type": "function",
+      "name": "judgeResponse",
+      "filePath": "code/server/services/aiService.js",
+      "lineRange": [
+        274,
+        346
+      ],
+      "summary": "Evaluates a student's response against the target word's meaning using AI judgment. Applies a lenient scoring philosophy (communication over grammar), condenses recent conversation history to the last 4 exchanges, and adapts leniency when the student has repeated failures.",
+      "tags": [
+        "ai-judgment",
+        "scoring",
+        "language-learning",
+        "assessment"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/services/aiService.js:testConnection",
+      "type": "function",
+      "name": "testConnection",
+      "filePath": "code/server/services/aiService.js",
+      "lineRange": [
+        351,
+        363
+      ],
+      "summary": "Tests connectivity to the configured AI provider by sending a trivial chat completion request and returning success status with a response preview or error message.",
+      "tags": [
+        "ai",
+        "connectivity-test",
+        "diagnostic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/ankiService.js:invoke",
+      "type": "function",
+      "name": "invoke",
+      "filePath": "code/server/services/ankiService.js",
+      "lineRange": [
+        12,
+        26
+      ],
+      "summary": "Low-level Anki-Connect API caller that sends POST requests to localhost:8765 with Anki-Connect protocol version 6, parses the JSON response, and throws on error results.",
+      "tags": [
+        "api-client",
+        "anki-connect",
+        "http",
+        "proxy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/ankiService.js:getShiYiDecks",
+      "type": "function",
+      "name": "getShiYiDecks",
+      "filePath": "code/server/services/ankiService.js",
+      "lineRange": [
+        54,
+        120
+      ],
+      "summary": "Retrieves all ShiYi-branded Anki decks (ShiYi:: prefix) with per-deck statistics. Builds deck ID mappings to query via did: for UTF-8 compatibility, then collects total and due card counts for each ShiYi deck.",
+      "tags": [
+        "anki",
+        "deck-management",
+        "stats",
+        "api-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/services/ankiService.js:getDueCards",
+      "type": "function",
+      "name": "getDueCards",
+      "filePath": "code/server/services/ankiService.js",
+      "lineRange": [
+        128,
+        182
+      ],
+      "summary": "Fetches all due cards for a given deck by querying with deck ID, then hydrates full card info by joining cardsInfo, cardsToNotes, and notesInfo responses. Extracts word, concept, card type, examples, and context from Anki note fields.",
+      "tags": [
+        "anki",
+        "card-retrieval",
+        "data-hydration",
+        "api-handler"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Performs a three-step Anki-Connect join (cardsInfo + cardsToNotes + notesInfo) to hydrate card data with note fields, avoiding multiple round-trips per card."
+    },
+    {
+      "id": "function:code/server/services/ankiService.js:getKnownVocabulary",
+      "type": "function",
+      "name": "getKnownVocabulary",
+      "filePath": "code/server/services/ankiService.js",
+      "lineRange": [
+        188,
+        216
+      ],
+      "summary": "Extracts all word-concept pairs from a deck's notes to build a known-vocabulary list. Uses a Set with JSON stringification for deduplication, then maps back to objects for the AI service to constrain scenario generation.",
+      "tags": [
+        "anki",
+        "vocabulary",
+        "data-extraction",
+        "deduplication"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:createSession",
+      "type": "function",
+      "name": "createSession",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        16,
+        41
+      ],
+      "summary": "Creates or resets a learning session for a deck, clearing any existing timer. Initializes session state with empty history, zero fail count, and a 2-hour auto-expiry timer.",
+      "tags": [
+        "session",
+        "initialization",
+        "state-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:getSession",
+      "type": "function",
+      "name": "getSession",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        43,
+        53
+      ],
+      "summary": "Retrieves an active session by deck ID and refreshes its expiry timer on each access to keep the session alive during active learning.",
+      "tags": [
+        "session",
+        "retrieval",
+        "ttl-refresh"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:deleteSession",
+      "type": "function",
+      "name": "deleteSession",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        55,
+        61
+      ],
+      "summary": "Explicitly removes a session and clears its expiry timer, used when a learning session is manually terminated.",
+      "tags": [
+        "session",
+        "cleanup",
+        "state-management"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:setCurrentCard",
+      "type": "function",
+      "name": "setCurrentCard",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        63,
+        79
+      ],
+      "summary": "Sets the active card and AI-generated scenario for a session, resets conversation history and fail count, and pushes the formatted scenario message as the first assistant message in history.",
+      "tags": [
+        "session",
+        "card-management",
+        "scenario"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:recordScore",
+      "type": "function",
+      "name": "recordScore",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        88,
+        102
+      ],
+      "summary": "Records the ease score (1=again, 3=good, 4=easy) for the current card, updating the score distribution counters and tracking consecutive failures via the failCount field.",
+      "tags": [
+        "session",
+        "scoring",
+        "tracking"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:getProgress",
+      "type": "function",
+      "name": "getProgress",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        111,
+        121
+      ],
+      "summary": "Returns a snapshot of learning progress including completed card count, score distribution, current fail count, and session start time.",
+      "tags": [
+        "session",
+        "progress",
+        "reporting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/App.vue",
+      "type": "file",
+      "name": "App.vue",
+      "filePath": "code/src/App.vue",
+      "summary": "Root Vue 3 application shell component providing the navigation header with router links and a router-view outlet for page content.",
+      "tags": [
+        "entry-point",
+        "component",
+        "layout",
+        "vue-sfc"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/main.js",
+      "type": "file",
+      "name": "main.js",
+      "filePath": "code/src/main.js",
+      "summary": "Application entry point that creates and mounts the Vue 3 app instance, registers the router plugin, and attaches to the #app DOM element.",
+      "tags": [
+        "entry-point",
+        "bootstrap",
+        "vue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/router/index.js",
+      "type": "file",
+      "name": "index.js",
+      "filePath": "code/src/router/index.js",
+      "summary": "Vue Router configuration defining three routes (deck selection, learning view, settings) using hash history mode for the single-page application.",
+      "tags": [
+        "routing",
+        "configuration",
+        "vue-router"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/views/DeckSelect.vue",
+      "type": "file",
+      "name": "DeckSelect.vue",
+      "filePath": "code/src/views/DeckSelect.vue",
+      "summary": "Deck selection view that detects Anki-Connect availability, fetches and filters ShiYi-prefixed decks, and navigates to the learning view on deck selection.",
+      "tags": [
+        "view",
+        "anki-integration",
+        "deck-management",
+        "api-handler"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Vue 3 Composition API with async/await in onMounted lifecycle hook for sequential Anki status check and deck loading."
+    },
+    {
+      "id": "file:code/src/views/LearnView.vue",
+      "type": "file",
+      "name": "LearnView.vue",
+      "filePath": "code/src/views/LearnView.vue",
+      "summary": "Core learning interface with a chat-based AI scenario interaction flow, TTS/STT speech support, and the complete Anki card review cycle (start, respond, judge, advance).",
+      "tags": [
+        "view",
+        "learning",
+        "ai-interaction",
+        "speech",
+        "chat-interface"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses Vue 3 Composition API with ref/computed, composables for TTS/STT (useTTS/useSTT), localStorage for AI config persistence, and async API calls orchestrating a multi-step card review workflow."
+    },
+    {
+      "id": "file:code/src/views/SettingsView.vue",
+      "type": "file",
+      "name": "SettingsView.vue",
+      "filePath": "code/src/views/SettingsView.vue",
+      "summary": "Settings view for configuring AI model provider, API key, model selection with provider-specific presets, and testing both AI and Anki-Connect connections.",
+      "tags": [
+        "view",
+        "settings",
+        "ai-configuration",
+        "form"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses Vue 3 reactive for form state, watch with deep option for automatic config persistence to localStorage, and computed for dynamic model preset lists per provider."
+    },
+    {
+      "id": "function:code/src/views/DeckSelect.vue:checkAnkiStatus",
+      "type": "function",
+      "name": "checkAnkiStatus",
+      "filePath": "code/src/views/DeckSelect.vue",
+      "lineRange": [
+        84,
+        96
+      ],
+      "summary": "Fetches Anki-Connect status from the backend /api/decks/status endpoint and updates the connection state and version display.",
+      "tags": [
+        "api-handler",
+        "anki-integration",
+        "async"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/src/views/DeckSelect.vue:loadDecks",
+      "type": "function",
+      "name": "loadDecks",
+      "filePath": "code/src/views/DeckSelect.vue",
+      "lineRange": [
+        98,
+        111
+      ],
+      "summary": "Fetches available ShiYi-prefixed decks and all Anki deck names from the backend /api/decks endpoint, with error handling.",
+      "tags": [
+        "api-handler",
+        "deck-management",
+        "async"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:readAloud",
+      "type": "function",
+      "name": "readAloud",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        141,
+        162
+      ],
+      "summary": "Triggers TTS speech synthesis for a chat message after stripping display markup (emoji prefixes), with toggle-on/off behavior for the active utterance.",
+      "tags": [
+        "tts",
+        "speech",
+        "audio"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:toggleVoiceInput",
+      "type": "function",
+      "name": "toggleVoiceInput",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        164,
+        181
+      ],
+      "summary": "Toggles STT voice recognition on/off, auto-filling the input field with recognized text and immediately sending it as a user response.",
+      "tags": [
+        "stt",
+        "speech",
+        "voice-input",
+        "async"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:startSession",
+      "type": "function",
+      "name": "startSession",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        211,
+        261
+      ],
+      "summary": "Initiates a learning session via POST /api/learn/start, displays the AI-generated scenario for the first card, and auto-speaks listen-type card audio.",
+      "tags": [
+        "api-handler",
+        "learning",
+        "session-management",
+        "async"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:sendResponse",
+      "type": "function",
+      "name": "sendResponse",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        263,
+        309
+      ],
+      "summary": "Sends the user's answer to POST /api/learn/respond, receives AI judgment and feedback, then immediately completes the card (single-round interaction).",
+      "tags": [
+        "api-handler",
+        "ai-interaction",
+        "async"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:completeCard",
+      "type": "function",
+      "name": "completeCard",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        311,
+        330
+      ],
+      "summary": "Submits the card ease rating to POST /api/learn/complete, updates session scores, and triggers loading the next due card.",
+      "tags": [
+        "api-handler",
+        "card-review",
+        "async"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:nextCard",
+      "type": "function",
+      "name": "nextCard",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        332,
+        367
+      ],
+      "summary": "Fetches the next due card from POST /api/learn/next, displays its AI scenario with card-type-specific formatting, and checks for session completion.",
+      "tags": [
+        "api-handler",
+        "card-review",
+        "async"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:formatScenario",
+      "type": "function",
+      "name": "formatScenario",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        369,
+        382
+      ],
+      "summary": "Formats AI scenario data into a display message string, varying the structure based on card type (read, write, listen, speak).",
+      "tags": [
+        "formatting",
+        "utility",
+        "display"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/src/views/SettingsView.vue:testConnection",
+      "type": "function",
+      "name": "testConnection",
+      "filePath": "code/src/views/SettingsView.vue",
+      "lineRange": [
+        98,
+        121
+      ],
+      "summary": "Tests the AI API connection via POST /api/ai/test with the configured provider, key, base URL, and model, automatically persisting config before testing.",
+      "tags": [
+        "api-handler",
+        "ai-configuration",
+        "testing",
+        "async"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:code/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "code/.env.example",
+      "summary": "Environment variable template defining the Anki-Connect URL and server port for the Express backend.",
+      "tags": [
+        "configuration",
+        "environment",
+        "template",
+        "server"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:code/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "code/README.md",
+      "summary": "Starter documentation for the Vue 3 + Vite frontend, with links to SFC script setup and IDE support guides.",
+      "tags": [
+        "documentation",
+        "getting-started",
+        "vue"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "code/index.html",
+      "summary": "HTML entry point for the Vue 3 application, mounting the app into the DOM and loading the main JavaScript module.",
+      "tags": [
+        "entry-point",
+        "html",
+        "vue",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:code/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "code/package.json",
+      "summary": "Project manifest defining npm scripts for development, server, and build, with dependencies for Vue 3, Vite, Express, and OpenAI integration.",
+      "tags": [
+        "configuration",
+        "package-manager",
+        "build-system",
+        "node"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "type": "document",
+      "name": "使用学习观来设计的英语学习步骤.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "summary": "Outlines a methodology for learning English through scene-based imagination rather than Chinese-to-English translation, covering material selection, reading, writing, listening, and speaking practice steps. Emphasizes that language acquisition is a motor skill where conscious thought should be avoided during execution.",
+      "tags": [
+        "documentation",
+        "requirements",
+        "learning-methodology",
+        "language-acquisition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "type": "document",
+      "name": "学习英语的错误.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "summary": "Identifies three critical mistakes in English learning: the exam-oriented text-to-text approach, treating isolated word memorization as language learning instead of understanding words through sentence context, and the fatal error of inserting Chinese as an intermediate translation step in the language processing pipeline.",
+      "tags": [
+        "documentation",
+        "requirements",
+        "learning-pitfalls",
+        "language-acquisition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "document",
+      "name": "英语的听说读写正确的输入输出与构建方式.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "summary": "Defines the correct direct input-output model for English skills: listening as sound-to-meaning, speaking as thought-to-speech, reading as text-to-meaning, and writing as thought-to-typing, all classified as motor skills operating on full sentences with contextual meaning rather than isolated words.",
+      "tags": [
+        "documentation",
+        "requirements",
+        "learning-model",
+        "language-acquisition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Ignore pattern template for the understand-anything analysis plugin, mirroring .gitignore syntax with all patterns commented out as suggestions for exclusion.",
+      "tags": [
+        "configuration",
+        "analysis",
+        "ignore-patterns",
+        "template"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/config.json",
+      "type": "config",
+      "name": "config.json",
+      "filePath": ".understand-anything/config.json",
+      "summary": "Plugin configuration setting the output language preference for understand-anything generated content.",
+      "tags": [
+        "configuration",
+        "plugin-settings",
+        "localization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "file",
+      "name": "PhilosophyPanel.vue",
+      "filePath": "code/src/components/PhilosophyPanel.vue",
+      "summary": "Presentational Vue component displaying English learning philosophy — language as a motor skill, scene-based imagination, sentence-level learning, and spaced repetition principles.",
+      "tags": [
+        "component",
+        "vue",
+        "learning-philosophy",
+        "presentational"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/composables/useSpeech.js",
+      "type": "file",
+      "name": "useSpeech.js",
+      "filePath": "code/src/composables/useSpeech.js",
+      "summary": "Vue composable providing browser-native text-to-speech and speech-to-text capabilities via the Web Speech API, with voice selection, language filtering, and lifecycle cleanup.",
+      "tags": [
+        "composable",
+        "speech",
+        "tts",
+        "stt",
+        "web-speech-api"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Leverages the browser Web Speech API (SpeechSynthesis and SpeechRecognition) for zero-cost voice capabilities without external services."
+    },
+    {
+      "id": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "function",
+      "name": "useTTS",
+      "filePath": "code/src/composables/useSpeech.js",
+      "lineRange": [
+        12,
+        64
+      ],
+      "summary": "Reactive text-to-speech composable wrapping browser SpeechSynthesis with English voice selection, speak/stop controls, and automatic cleanup on component unmount.",
+      "tags": [
+        "tts",
+        "speech-synthesis",
+        "composable",
+        "voice"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "function",
+      "name": "useSTT",
+      "filePath": "code/src/composables/useSpeech.js",
+      "lineRange": [
+        69,
+        141
+      ],
+      "summary": "Promise-based speech-to-text composable wrapping browser SpeechRecognition with interim results, configurable timeout, and automatic cleanup on component unmount.",
+      "tags": [
+        "stt",
+        "speech-recognition",
+        "composable",
+        "voice-input"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/src/style.css",
+      "type": "file",
+      "name": "style.css",
+      "filePath": "code/src/style.css",
+      "summary": "Global stylesheet defining CSS custom properties, reset styles, base typography, and layout structures for the ShiYi Vue application.",
+      "tags": [
+        "stylesheet",
+        "css-variables",
+        "global-styles",
+        "layout",
+        "design-system"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Uses CSS custom properties for a consistent design token system with variables for colors (primary, success, warning, danger), spacing, border radius, and box shadows."
+    },
+    {
+      "id": "file:code/test_parse_json.mjs",
+      "type": "file",
+      "name": "test_parse_json.mjs",
+      "filePath": "code/test_parse_json.mjs",
+      "summary": "Test harness validating the parseAIJson function against various AI response formats including markdown code fences, partial JSON, and malformed outputs using the OpenAI SDK.",
+      "tags": [
+        "test",
+        "json-parsing",
+        "ai",
+        "openai",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/test_parse_json.mjs:parseAIJson",
+      "type": "function",
+      "name": "parseAIJson",
+      "filePath": "code/test_parse_json.mjs",
+      "lineRange": [
+        7,
+        50
+      ],
+      "summary": "Robust JSON parser handling AI response formats — strips markdown code fences, attempts direct parse, and falls back to substring extraction for partial or malformed JSON.",
+      "tags": [
+        "json-parsing",
+        "ai-output",
+        "robust-parsing",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/test_qwen_api.mjs",
+      "type": "file",
+      "name": "test_qwen_api.mjs",
+      "filePath": "code/test_qwen_api.mjs",
+      "summary": "Diagnostic script testing the Qwen multimodal API by sending local image files and evaluating the model's image recognition and description capabilities.",
+      "tags": [
+        "test",
+        "qwen",
+        "multimodal",
+        "api-test",
+        "openai"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/test_qwen_api.mjs:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "code/test_qwen_api.mjs",
+      "lineRange": [
+        11,
+        88
+      ],
+      "summary": "Async test runner that finds the smallest PNG image in a directory, sends it to Qwen's vision API for recognition, and logs the model's response with token usage statistics.",
+      "tags": [
+        "test-runner",
+        "qwen",
+        "vision-api",
+        "image-analysis"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/vite.config.js",
+      "type": "file",
+      "name": "vite.config.js",
+      "filePath": "code/vite.config.js",
+      "summary": "Vite build configuration enabling the Vue 3 plugin and proxying /api requests to the Express backend at localhost:3001 for development.",
+      "tags": [
+        "build-system",
+        "vite",
+        "configuration",
+        "proxy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "document",
+      "name": "1.1-产品需求文档.md",
+      "filePath": "doc/01-需求分析/1.1-产品需求文档.md",
+      "summary": "Product requirements document defining the ShiYi English learning app — combining Anki spaced repetition with AI-generated immersive learning across reading, writing, listening, and speaking skills.",
+      "tags": [
+        "documentation",
+        "requirements",
+        "prd",
+        "learning-methodology"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/需求分析.md",
+      "type": "document",
+      "name": "需求分析.md",
+      "filePath": "doc/01-需求分析/需求分析.md",
+      "summary": "Brief requirements analysis reference document linking to the PRD, English learning methodology, and Anki-Connect API documentation.",
+      "tags": [
+        "documentation",
+        "requirements",
+        "reference"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/Claude Code Plan方案.md",
+      "type": "document",
+      "name": "Claude Code Plan方案.md",
+      "filePath": "doc/Claude Code Plan方案.md",
+      "summary": "Comprehensive implementation plan covering project background, core learning philosophy, tech stack (Vue 3 + Vite + Express), architecture topology, data model design, route configuration, and four-phase development milestones.",
+      "tags": [
+        "documentation",
+        "implementation-plan",
+        "architecture",
+        "technical-design",
+        "roadmap"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:code/server/index.js",
+      "target": "file:code/server/routes/ai.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/index.js",
+      "target": "file:code/server/routes/decks.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/index.js",
+      "target": "file:code/server/routes/learn.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/ai.js",
+      "target": "file:code/server/services/aiService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/decks.js",
+      "target": "file:code/server/services/ankiService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "file:code/server/services/aiService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "file:code/server/services/ankiService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "file:code/server/services/sessionService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "function:code/server/services/aiService.js:parseAIJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "function:code/server/services/aiService.js:createClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "function:code/server/services/aiService.js:generateScenario",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "function:code/server/services/aiService.js:judgeResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "function:code/server/services/aiService.js:testConnection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:invoke",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:getShiYiDecks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:getDueCards",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:getKnownVocabulary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:createSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:getSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:deleteSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:setCurrentCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:recordScore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:getProgress",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "function:code/server/services/aiService.js:generateScenario",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "function:code/server/services/aiService.js:judgeResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "function:code/server/services/aiService.js:testConnection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:getShiYiDecks",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:getDueCards",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:getKnownVocabulary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:createSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:getSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:deleteSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:setCurrentCard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:recordScore",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:getProgress",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/ai.js",
+      "target": "function:code/server/services/aiService.js:testConnection",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/decks.js",
+      "target": "function:code/server/services/ankiService.js:getShiYiDecks",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/aiService.js:generateScenario",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/aiService.js:judgeResponse",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/ankiService.js:getDueCards",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/ankiService.js:getKnownVocabulary",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/sessionService.js:createSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/sessionService.js:getSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/sessionService.js:setCurrentCard",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/sessionService.js:recordScore",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/sessionService.js:getProgress",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/src/main.js",
+      "target": "file:code/src/App.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/src/main.js",
+      "target": "file:code/src/router/index.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/src/main.js",
+      "target": "file:code/src/style.css",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/src/router/index.js",
+      "target": "file:code/src/views/DeckSelect.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/src/router/index.js",
+      "target": "file:code/src/views/LearnView.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/src/router/index.js",
+      "target": "file:code/src/views/SettingsView.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/src/views/DeckSelect.vue",
+      "target": "function:code/src/views/DeckSelect.vue:checkAnkiStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/DeckSelect.vue",
+      "target": "function:code/src/views/DeckSelect.vue:loadDecks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:readAloud",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:toggleVoiceInput",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:startSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:sendResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:completeCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:nextCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:formatScenario",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/SettingsView.vue",
+      "target": "function:code/src/views/SettingsView.vue:testConnection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "file:code/src/composables/useSpeech.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/.env.example",
+      "target": "file:code/server/index.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/index.html",
+      "target": "file:code/src/main.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "file:code/index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "file:code/src/main.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "file:code/server/index.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "config:code/.env.example",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/test_parse_json.mjs",
+      "target": "function:code/test_parse_json.mjs:parseAIJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/test_qwen_api.mjs",
+      "target": "function:code/test_qwen_api.mjs:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/vite.config.js",
+      "target": "file:code/src/main.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/src/components/PhilosophyPanel.vue",
+      "target": "file:code/src/style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "target": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "target": "file:code/src/composables/useSpeech.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "target": "document:doc/Claude Code Plan方案.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/需求分析.md",
+      "target": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/src/composables/useSpeech.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/vite.config.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:api",
+      "name": "API Layer",
+      "description": "Express server entry point and route handlers exposing REST endpoints for AI testing, deck management, and the core learning flow (session start, AI response, card review, next card).",
+      "nodeIds": [
+        "file:code/server/index.js",
+        "file:code/server/routes/ai.js",
+        "file:code/server/routes/decks.js",
+        "file:code/server/routes/learn.js"
+      ]
+    },
+    {
+      "id": "layer:service",
+      "name": "Service Layer",
+      "description": "Backend business logic including multi-model AI interaction (Qwen/Doubao/OpenAI), Anki-Connect proxying, in-memory session management, and frontend speech composables wrapping the Web Speech API.",
+      "nodeIds": [
+        "file:code/server/services/aiService.js",
+        "function:code/server/services/aiService.js:parseAIJson",
+        "function:code/server/services/aiService.js:createClient",
+        "function:code/server/services/aiService.js:generateScenario",
+        "function:code/server/services/aiService.js:judgeResponse",
+        "function:code/server/services/aiService.js:testConnection",
+        "file:code/server/services/ankiService.js",
+        "function:code/server/services/ankiService.js:invoke",
+        "function:code/server/services/ankiService.js:getShiYiDecks",
+        "function:code/server/services/ankiService.js:getDueCards",
+        "function:code/server/services/ankiService.js:getKnownVocabulary",
+        "file:code/server/services/sessionService.js",
+        "function:code/server/services/sessionService.js:createSession",
+        "function:code/server/services/sessionService.js:getSession",
+        "function:code/server/services/sessionService.js:deleteSession",
+        "function:code/server/services/sessionService.js:setCurrentCard",
+        "function:code/server/services/sessionService.js:recordScore",
+        "function:code/server/services/sessionService.js:getProgress",
+        "file:code/src/composables/useSpeech.js",
+        "function:code/src/composables/useSpeech.js:useTTS",
+        "function:code/src/composables/useSpeech.js:useSTT"
+      ]
+    },
+    {
+      "id": "layer:ui",
+      "name": "UI Layer",
+      "description": "Vue 3 frontend including the root App shell, router configuration, page-level views (DeckSelect, LearnView, SettingsView), the PhilosophyPanel presentational component, global stylesheet, and the HTML entry point.",
+      "nodeIds": [
+        "file:code/src/App.vue",
+        "file:code/src/main.js",
+        "file:code/src/router/index.js",
+        "file:code/src/views/DeckSelect.vue",
+        "function:code/src/views/DeckSelect.vue:checkAnkiStatus",
+        "function:code/src/views/DeckSelect.vue:loadDecks",
+        "file:code/src/views/LearnView.vue",
+        "function:code/src/views/LearnView.vue:readAloud",
+        "function:code/src/views/LearnView.vue:toggleVoiceInput",
+        "function:code/src/views/LearnView.vue:startSession",
+        "function:code/src/views/LearnView.vue:sendResponse",
+        "function:code/src/views/LearnView.vue:completeCard",
+        "function:code/src/views/LearnView.vue:nextCard",
+        "function:code/src/views/LearnView.vue:formatScenario",
+        "file:code/src/views/SettingsView.vue",
+        "function:code/src/views/SettingsView.vue:testConnection",
+        "file:code/src/components/PhilosophyPanel.vue",
+        "file:code/src/style.css",
+        "file:code/index.html"
+      ]
+    },
+    {
+      "id": "layer:config",
+      "name": "Configuration",
+      "description": "Project build and environment configuration including the npm package manifest, Vite build setup with API proxy, and environment variable template for Anki-Connect and server port.",
+      "nodeIds": [
+        "config:code/package.json",
+        "config:code/.env.example",
+        "file:code/vite.config.js",
+        "file:.understand-anything/.understandignore",
+        "config:.understand-anything/config.json"
+      ]
+    },
+    {
+      "id": "layer:test",
+      "name": "Test Scripts",
+      "description": "Standalone diagnostic and validation scripts for testing AI JSON response parsing and verifying Qwen multimodal API connectivity.",
+      "nodeIds": [
+        "file:code/test_parse_json.mjs",
+        "function:code/test_parse_json.mjs:parseAIJson",
+        "file:code/test_qwen_api.mjs",
+        "function:code/test_qwen_api.mjs:main"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentation",
+      "description": "Project documentation covering the product requirements document, English learning methodology research, common language-learning pitfalls, the input-output model for the four English skills, and the full implementation plan with architecture and roadmap.",
+      "nodeIds": [
+        "document:code/README.md",
+        "document:doc/01-需求分析/1.1-产品需求文档.md",
+        "document:doc/01-需求分析/需求分析.md",
+        "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+        "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+        "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+        "document:doc/Claude Code Plan方案.md"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview: What is ShiYi?",
+      "description": "Start with the project README and Product Requirements Document to understand ShiYi's purpose: an English vocabulary learning application that combines Anki's spaced repetition system with AI-powered immersive scenario generation. The PRD outlines the core vision of merging flashcard review with contextual, scene-based language acquisition where learners actively produce English output rather than passively consuming input.",
+      "nodeIds": [
+        "document:code/README.md",
+        "document:doc/01-需求分析/1.1-产品需求文档.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Project Configuration and Build Setup",
+      "description": "The project manifest defines the full-stack architecture with scripts for simultaneous frontend dev server and backend Express server. The Vite config wires the Vue SFC compiler plugin and proxies /api requests to the Express backend on port 3001, enabling seamless local development. The environment template captures the two critical runtime settings: the Anki-Connect URL and the server port.",
+      "nodeIds": [
+        "config:code/package.json",
+        "file:code/vite.config.js",
+        "config:code/.env.example"
+      ],
+      "languageLesson": "Vite's dev server proxy (vite.config.js) forwards /api requests to the Express backend, eliminating CORS issues during development. The proxy configuration uses a simple target URL and path-rewrite pattern, making the frontend and backend appear as a single origin to the browser."
+    },
+    {
+      "order": 3,
+      "title": "Application Entry Points: HTML and Vue Bootstrap",
+      "description": "The index.html provides the minimal HTML shell with a single `<div id='app'>` mount point and a module script tag loading main.js. The main.js entry point creates the Vue 3 application, installs the Vue Router plugin, and mounts the app to that DOM element - the standard Vue 3 creation pattern that serves as the runtime root for the entire frontend.",
+      "nodeIds": [
+        "file:code/index.html",
+        "file:code/src/main.js"
+      ],
+      "languageLesson": "Vue 3's createApp() API returns an application instance that is chainable with .use() for plugin installation (router, state management, etc.) before the final .mount() call. This replaces Vue 2's global new Vue() constructor pattern and enables multiple app instances on the same page."
+    },
+    {
+      "order": 4,
+      "title": "The App Shell: Layout, Routing, and Styles",
+      "description": "The root App.vue component provides the navigation header and a `<router-view>` outlet that renders whichever view the current URL maps to. The router (src/router/index.js) defines three hash-mode routes mapping '/', '/learn', and '/settings' to their respective view components. The global style.css establishes CSS custom properties for the design system's colors, spacing, and layout patterns used throughout all views.",
+      "nodeIds": [
+        "file:code/src/App.vue",
+        "file:code/src/router/index.js",
+        "file:code/src/style.css"
+      ],
+      "languageLesson": "Vue Router's hash history mode (createWebHashHistory) uses the URL hash fragment (#) for routing, which avoids server-side configuration since hash changes never trigger a page reload. This is ideal for static deployments where you cannot configure server-side fallback routing."
+    },
+    {
+      "order": 5,
+      "title": "Setup Views: Deck Selection and Settings",
+      "description": "Building on the routing from Step 4, these two views handle the setup phase of the user journey. DeckSelect.vue detects whether Anki-Connect is available on the user's machine and lists the ShiYi-managed decks for the learner to choose from. SettingsView.vue lets the user select which AI model provider (Qwen, Doubao, or OpenAI) to use and test the connection before starting a learning session.",
+      "nodeIds": [
+        "file:code/src/views/DeckSelect.vue",
+        "file:code/src/views/SettingsView.vue"
+      ],
+      "languageLesson": "Vue 3's `<script setup>` syntax is syntactic sugar for the Composition API that automatically exposes top-level bindings to the template. Imported components are auto-registered, and reactive state declared with ref() or reactive() is directly available in the template without returning from a setup function."
+    },
+    {
+      "order": 6,
+      "title": "The Core Learning Experience",
+      "description": "LearnView.vue is the heart of ShiYi, implementing a chat-based AI tutoring interface. It orchestrates the learning session lifecycle: starting a session, receiving AI-generated English scenarios, capturing the learner's spoken or typed responses, submitting them for AI judgment, and reviewing vocabulary cards. This single view integrates with the speech composable, the philosophy panel, and the backend learning API from Step 9 to deliver the complete immersive learning flow.",
+      "nodeIds": [
+        "file:code/src/views/LearnView.vue"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Speech Interaction and Learning Philosophy",
+      "description": "These two components directly support LearnView's immersive experience. The useSpeech composable wraps the browser's Web Speech API, providing reactive TTS (text-to-speech) for reading AI scenarios aloud and STT (speech-to-text) for capturing the learner's spoken English responses. PhilosophyPanel.vue is a presentational component that renders ShiYi's scene-based learning methodology directly in the UI, reinforcing the pedagogical approach that underpins every interaction in the LearnView.",
+      "nodeIds": [
+        "file:code/src/composables/useSpeech.js",
+        "file:code/src/components/PhilosophyPanel.vue"
+      ],
+      "languageLesson": "Vue composables (files prefixed with 'use') encapsulate reactive stateful logic following the Composition API pattern. They return refs and functions that components can destructure and use directly in their templates, enabling clean separation of concerns without mixins or higher-order components."
+    },
+    {
+      "order": 8,
+      "title": "Backend Server Bootstrap",
+      "description": "The Express server entry point (code/server/index.js) initializes the backend on port 3001 with CORS enabled, JSON body parsing, and three mounted route modules for AI, decks, and learning. It also exposes a simple health-check endpoint at GET /api/health, which the frontend uses to verify server availability. This is the backend counterpart to the Vue bootstrap from Step 3, together forming the full-stack architecture.",
+      "nodeIds": [
+        "file:code/server/index.js"
+      ],
+      "languageLesson": "Express's app.use() mounts routers at specific path prefixes (e.g., '/api/ai', '/api/decks', '/api/learn'), creating a modular route structure. Each router file is self-contained and only imports the services it needs, keeping the server entry point clean and focused on middleware configuration."
+    },
+    {
+      "order": 9,
+      "title": "The Learning API: Sessions, Scenarios, and Review",
+      "description": "The learning route module (routes/learn.js) implements the five endpoints that power the core learning flow from Step 6: starting a new session, fetching an AI-generated scenario, submitting the learner's response for AI judgment, reviewing vocabulary cards, and ending the session. It depends on all three backend services (AI, Anki, and session management), making it the most connected node in the backend. The sessionService manages in-memory state with a 2-hour TTL using JavaScript's Map, storing active learning sessions so each learner's progress is isolated.",
+      "nodeIds": [
+        "file:code/server/routes/learn.js",
+        "file:code/server/services/sessionService.js"
+      ],
+      "languageLesson": "In-memory session storage with TTL (Time-To-Live) is suitable for single-server prototypes where sessions do not need to survive server restarts. The Map-based approach with setTimeout cleanup provides O(1) lookup and automatic garbage collection, avoiding the complexity of Redis or database-backed sessions for early-stage development."
+    },
+    {
+      "order": 10,
+      "title": "AI-Powered Scenario Generation and Response Judging",
+      "description": "The aiService module is the intelligence behind ShiYi's immersive learning. It abstracts over multiple AI providers (Qwen, Doubao, and OpenAI), generating English-language scenarios based on vocabulary from the learner's Anki deck and judging the learner's English responses for correctness and fluency. The companion AI route module (routes/ai.js) exposes POST /api/ai/test for testing AI connectivity and GET /api/ai/presets for listing available model configurations, both used by the SettingsView from Step 5.",
+      "nodeIds": [
+        "file:code/server/services/aiService.js",
+        "file:code/server/routes/ai.js"
+      ],
+      "languageLesson": "Multi-model AI abstraction layers use a provider-agnostic interface so the application code does not need to know which vendor's API is being called. This pattern enables easy model switching (via the SettingsView) and future provider additions without modifying the core learning logic — only the aiService needs to understand each provider's specific API format."
+    },
+    {
+      "order": 11,
+      "title": "Anki-Connect Integration: Bridging SRS and AI",
+      "description": "The ankiService acts as a proxy to the local Anki-Connect HTTP API, enabling ShiYi to list the user's Anki decks, retrieve vocabulary cards for scenario generation, and extract word data for review. The decks route module (routes/decks.js) exposes this functionality to the frontend via GET endpoints that the DeckSelect.vue from Step 5 calls to populate its deck listing and verify Anki connectivity. This bridge between Anki's proven spaced repetition system and ShiYi's AI scenarios is the project's defining architectural feature.",
+      "nodeIds": [
+        "file:code/server/services/ankiService.js",
+        "file:code/server/routes/decks.js"
+      ],
+      "languageLesson": "Anki-Connect is a local HTTP API (default: http://localhost:8765) exposed by the Anki desktop application. It uses JSON-RPC style requests with an 'action' field specifying the operation and a 'params' field for arguments. The proxy pattern here keeps Anki-specific communication logic isolated in a single service, so if the Anki-Connect API changes, only ankiService needs updating."
+    },
+    {
+      "order": 12,
+      "title": "The Pedagogy: Learning Theory Behind ShiYi",
+      "description": "These three methodology documents articulate the educational theory that drives ShiYi's design. The core document proposes learning English through scene-based imagination — constructing vivid mental scenarios where the learner actively produces language. The companion documents identify three critical mistakes in traditional English learning (over-reliance on passive input, neglecting output practice, and separating vocabulary from context) and present a direct input-output model treating the four language skills (listening, speaking, reading, writing) as motor skills requiring deliberate practice. Together they explain why the PhilosophyPanel from Step 7 advocates the approach it does.",
+      "nodeIds": [
+        "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+        "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+        "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md"
+      ]
+    },
+    {
+      "order": 13,
+      "title": "Validation, Diagnostics, and Architecture Blueprint",
+      "description": "The two test scripts validate critical parts of the AI pipeline: test_parse_json.mjs stress-tests the JSON parsing logic against various real-world AI response formats (since AI models sometimes return malformed JSON), while test_qwen_api.mjs performs end-to-end diagnostics of the Qwen multimodal API with image recognition. The Claude Code Plan document ties everything together as the architectural blueprint, documenting the full tech stack, component architecture, and development milestones that produced the system you have now toured.",
+      "nodeIds": [
+        "file:code/test_parse_json.mjs",
+        "file:code/test_qwen_api.mjs",
+        "document:doc/Claude Code Plan方案.md"
+      ],
+      "languageLesson": "Standalone test scripts (.mjs files runnable with 'node script.mjs') are a lightweight alternative to full test frameworks for prototyping phases. They validate specific integration points (AI API response formats, multimodal image recognition) without requiring Jest/Vitest setup, making them ideal for diagnosing issues in external service interactions during early development."
+    }
+  ]
+}

@@ -1,0 +1,233 @@
+{
+  "nodes": [
+    {
+      "id": "config:.understand-anything/.trash-1781277533/assemble-review.json",
+      "type": "config",
+      "name": "assemble-review.json",
+      "filePath": ".understand-anything/.trash-1781277533/assemble-review.json",
+      "summary": "图组装后的审查报告，验证节点恢复、边还原、交叉批次边添加、类型重映射和复杂度重映射情况，并附数据质量备注。",
+      "tags": ["审查报告", "质量验证", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "type": "config",
+      "name": "assembled-graph.json",
+      "filePath": ".understand-anything/.trash-1781277533/assembled-graph.json",
+      "summary": "完整的组装知识图谱输出，包含版本信息、项目元数据、所有节点数组、边数组、架构层定义和导览步骤数据。",
+      "tags": ["知识图谱", "图组装", "输出产物", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-1.json",
+      "type": "config",
+      "name": "batch-1.json",
+      "filePath": ".understand-anything/.trash-1781277533/batch-1.json",
+      "summary": "第1批次的知识图谱片段，包含该批次源代码文件提取的节点和边数据。",
+      "tags": ["批次输出", "图片段", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-2.json",
+      "type": "config",
+      "name": "batch-2.json",
+      "filePath": ".understand-anything/.trash-1781277533/batch-2.json",
+      "summary": "第2批次的知识图谱片段，包含该批次源代码文件提取的节点和边数据。",
+      "tags": ["批次输出", "图片段", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-3.json",
+      "type": "config",
+      "name": "batch-3.json",
+      "filePath": ".understand-anything/.trash-1781277533/batch-3.json",
+      "summary": "第3批次的知识图谱片段，包含该批次非代码文件（配置和文档）提取的节点和边数据。",
+      "tags": ["批次输出", "图片段", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-4.json",
+      "type": "config",
+      "name": "batch-4.json",
+      "filePath": ".understand-anything/.trash-1781277533/batch-4.json",
+      "summary": "第4批次的知识图谱片段，包含该批次文档文件提取的节点和边数据。",
+      "tags": ["批次输出", "图片段", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batch-5.json",
+      "type": "config",
+      "name": "batch-5.json",
+      "filePath": ".understand-anything/.trash-1781277533/batch-5.json",
+      "summary": "第5批次的知识图谱片段，包含该批次剩余源代码文件和配置文档提取的节点和边数据。",
+      "tags": ["批次输出", "图片段", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/batches.json",
+      "type": "config",
+      "name": "batches.json",
+      "filePath": ".understand-anything/.trash-1781277533/batches.json",
+      "summary": "批次调度配置文件，定义Louvain算法分区策略、31个源文件的批次分配、导出符号映射和各批次间的导入关系数据。",
+      "tags": ["批次调度", "分区配置", "导入映射", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/fingerprint-input.json",
+      "type": "config",
+      "name": "fingerprint-input.json",
+      "filePath": ".understand-anything/.trash-1781277533/fingerprint-input.json",
+      "summary": "指纹生成输入文件，包含项目根目录路径、需要计算指纹的源文件路径列表和当前Git提交哈希。",
+      "tags": ["指纹输入", "文件索引", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/layers.json",
+      "type": "config",
+      "name": "layers.json",
+      "filePath": ".understand-anything/.trash-1781277533/layers.json",
+      "summary": "架构层定义文件，将知识图谱节点按API层、服务层、UI层、配置层、测试层和文档层六个逻辑层次进行分组，每层包含节点ID列表和描述。",
+      "tags": ["架构分层", "层定义", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/review.json",
+      "type": "config",
+      "name": "review.json",
+      "filePath": ".understand-anything/.trash-1781277533/review.json",
+      "summary": "知识图谱审查输出，列出图组装后发现的问题节点、警告信息（如孤立节点）和节点与边类型的统计概况。",
+      "tags": ["审查输出", "质量报告", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tour.json",
+      "type": "config",
+      "name": "tour.json",
+      "filePath": ".understand-anything/.trash-1781277533/tour.json",
+      "summary": "项目架构导览定义，包含13个步骤依次介绍从项目概览、配置构建、入口点、路由样式、设置视图、核心学习体验到AI服务、Anki集成和教育理论的完整架构遍历。",
+      "tags": ["架构导览", "导览定义", "configuration"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:.understand-anything/.trash-1781277533/batches.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-1.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/batches.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-2.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/batches.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-3.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/batches.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-4.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/batches.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-5.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "target": "config:.understand-anything/.trash-1781277533/batches.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-1.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-2.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-3.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-4.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "target": "config:.understand-anything/.trash-1781277533/batch-5.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/assemble-review.json",
+      "target": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/layers.json",
+      "target": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tour.json",
+      "target": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tour.json",
+      "target": "config:.understand-anything/.trash-1781277533/layers.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/fingerprint-input.json",
+      "target": "config:.understand-anything/.trash-1781277533/batches.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/review.json",
+      "target": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

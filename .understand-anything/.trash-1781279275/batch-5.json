@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "config:.understand-anything/config.json",
+      "type": "config",
+      "name": "config.json",
+      "filePath": ".understand-anything/config.json",
+      "summary": "Understand-Anything 插件配置文件，指定知识图谱文本输出语言为中文（zh）。",
+      "tags": ["插件配置", "语言设置", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/fingerprints.json",
+      "type": "config",
+      "name": "fingerprints.json",
+      "filePath": ".understand-anything/fingerprints.json",
+      "summary": "文件指纹数据库，包含版本号、Git提交哈希、生成时间戳和每个项目源文件的指纹哈希值，用于增量分析时检测文件变更。",
+      "tags": ["文件指纹", "增量分析", "变更检测", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/knowledge-graph.json",
+      "type": "config",
+      "name": "knowledge-graph.json",
+      "filePath": ".understand-anything/knowledge-graph.json",
+      "summary": "项目的完整知识图谱数据，包含版本信息、项目元数据、所有节点（文件、函数、类、配置、文档）、所有边（导入、调用、包含等关系）、架构层定义和导览步骤。",
+      "tags": ["知识图谱", "项目架构", "图数据库", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/meta.json",
+      "type": "config",
+      "name": "meta.json",
+      "filePath": ".understand-anything/meta.json",
+      "summary": "分析元数据文件，记录最近一次代码分析的执行时间戳、Git提交哈希、插件版本号和已分析文件总数。",
+      "tags": ["分析元数据", "版本追踪", "configuration"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:.understand-anything/config.json",
+      "target": "config:.understand-anything/knowledge-graph.json",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.understand-anything/fingerprints.json",
+      "target": "config:.understand-anything/knowledge-graph.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/meta.json",
+      "target": "config:.understand-anything/knowledge-graph.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/meta.json",
+      "target": "config:.understand-anything/fingerprints.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

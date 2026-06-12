@@ -1,0 +1,131 @@
+[
+  {
+    "order": 1,
+    "title": "Project Overview: What is ShiYi?",
+    "description": "Start with the project README and Product Requirements Document to understand ShiYi's purpose: an English vocabulary learning application that combines Anki's spaced repetition system with AI-powered immersive scenario generation. The PRD outlines the core vision of merging flashcard review with contextual, scene-based language acquisition where learners actively produce English output rather than passively consuming input.",
+    "nodeIds": [
+      "document:code/README.md",
+      "document:doc/01-需求分析/1.1-产品需求文档.md"
+    ]
+  },
+  {
+    "order": 2,
+    "title": "Project Configuration and Build Setup",
+    "description": "The project manifest defines the full-stack architecture with scripts for simultaneous frontend dev server and backend Express server. The Vite config wires the Vue SFC compiler plugin and proxies /api requests to the Express backend on port 3001, enabling seamless local development. The environment template captures the two critical runtime settings: the Anki-Connect URL and the server port.",
+    "nodeIds": [
+      "config:code/package.json",
+      "file:code/vite.config.js",
+      "config:code/.env.example"
+    ],
+    "languageLesson": "Vite's dev server proxy (vite.config.js) forwards /api requests to the Express backend, eliminating CORS issues during development. The proxy configuration uses a simple target URL and path-rewrite pattern, making the frontend and backend appear as a single origin to the browser."
+  },
+  {
+    "order": 3,
+    "title": "Application Entry Points: HTML and Vue Bootstrap",
+    "description": "The index.html provides the minimal HTML shell with a single `<div id='app'>` mount point and a module script tag loading main.js. The main.js entry point creates the Vue 3 application, installs the Vue Router plugin, and mounts the app to that DOM element - the standard Vue 3 creation pattern that serves as the runtime root for the entire frontend.",
+    "nodeIds": [
+      "file:code/index.html",
+      "file:code/src/main.js"
+    ],
+    "languageLesson": "Vue 3's createApp() API returns an application instance that is chainable with .use() for plugin installation (router, state management, etc.) before the final .mount() call. This replaces Vue 2's global new Vue() constructor pattern and enables multiple app instances on the same page."
+  },
+  {
+    "order": 4,
+    "title": "The App Shell: Layout, Routing, and Styles",
+    "description": "The root App.vue component provides the navigation header and a `<router-view>` outlet that renders whichever view the current URL maps to. The router (src/router/index.js) defines three hash-mode routes mapping '/', '/learn', and '/settings' to their respective view components. The global style.css establishes CSS custom properties for the design system's colors, spacing, and layout patterns used throughout all views.",
+    "nodeIds": [
+      "file:code/src/App.vue",
+      "file:code/src/router/index.js",
+      "file:code/src/style.css"
+    ],
+    "languageLesson": "Vue Router's hash history mode (createWebHashHistory) uses the URL hash fragment (#) for routing, which avoids server-side configuration since hash changes never trigger a page reload. This is ideal for static deployments where you cannot configure server-side fallback routing."
+  },
+  {
+    "order": 5,
+    "title": "Setup Views: Deck Selection and Settings",
+    "description": "Building on the routing from Step 4, these two views handle the setup phase of the user journey. DeckSelect.vue detects whether Anki-Connect is available on the user's machine and lists the ShiYi-managed decks for the learner to choose from. SettingsView.vue lets the user select which AI model provider (Qwen, Doubao, or OpenAI) to use and test the connection before starting a learning session.",
+    "nodeIds": [
+      "file:code/src/views/DeckSelect.vue",
+      "file:code/src/views/SettingsView.vue"
+    ],
+    "languageLesson": "Vue 3's `<script setup>` syntax is syntactic sugar for the Composition API that automatically exposes top-level bindings to the template. Imported components are auto-registered, and reactive state declared with ref() or reactive() is directly available in the template without returning from a setup function."
+  },
+  {
+    "order": 6,
+    "title": "The Core Learning Experience",
+    "description": "LearnView.vue is the heart of ShiYi, implementing a chat-based AI tutoring interface. It orchestrates the learning session lifecycle: starting a session, receiving AI-generated English scenarios, capturing the learner's spoken or typed responses, submitting them for AI judgment, and reviewing vocabulary cards. This single view integrates with the speech composable, the philosophy panel, and the backend learning API from Step 9 to deliver the complete immersive learning flow.",
+    "nodeIds": [
+      "file:code/src/views/LearnView.vue"
+    ]
+  },
+  {
+    "order": 7,
+    "title": "Speech Interaction and Learning Philosophy",
+    "description": "These two components directly support LearnView's immersive experience. The useSpeech composable wraps the browser's Web Speech API, providing reactive TTS (text-to-speech) for reading AI scenarios aloud and STT (speech-to-text) for capturing the learner's spoken English responses. PhilosophyPanel.vue is a presentational component that renders ShiYi's scene-based learning methodology directly in the UI, reinforcing the pedagogical approach that underpins every interaction in the LearnView.",
+    "nodeIds": [
+      "file:code/src/composables/useSpeech.js",
+      "file:code/src/components/PhilosophyPanel.vue"
+    ],
+    "languageLesson": "Vue composables (files prefixed with 'use') encapsulate reactive stateful logic following the Composition API pattern. They return refs and functions that components can destructure and use directly in their templates, enabling clean separation of concerns without mixins or higher-order components."
+  },
+  {
+    "order": 8,
+    "title": "Backend Server Bootstrap",
+    "description": "The Express server entry point (code/server/index.js) initializes the backend on port 3001 with CORS enabled, JSON body parsing, and three mounted route modules for AI, decks, and learning. It also exposes a simple health-check endpoint at GET /api/health, which the frontend uses to verify server availability. This is the backend counterpart to the Vue bootstrap from Step 3, together forming the full-stack architecture.",
+    "nodeIds": [
+      "file:code/server/index.js"
+    ],
+    "languageLesson": "Express's app.use() mounts routers at specific path prefixes (e.g., '/api/ai', '/api/decks', '/api/learn'), creating a modular route structure. Each router file is self-contained and only imports the services it needs, keeping the server entry point clean and focused on middleware configuration."
+  },
+  {
+    "order": 9,
+    "title": "The Learning API: Sessions, Scenarios, and Review",
+    "description": "The learning route module (routes/learn.js) implements the five endpoints that power the core learning flow from Step 6: starting a new session, fetching an AI-generated scenario, submitting the learner's response for AI judgment, reviewing vocabulary cards, and ending the session. It depends on all three backend services (AI, Anki, and session management), making it the most connected node in the backend. The sessionService manages in-memory state with a 2-hour TTL using JavaScript's Map, storing active learning sessions so each learner's progress is isolated.",
+    "nodeIds": [
+      "file:code/server/routes/learn.js",
+      "file:code/server/services/sessionService.js"
+    ],
+    "languageLesson": "In-memory session storage with TTL (Time-To-Live) is suitable for single-server prototypes where sessions do not need to survive server restarts. The Map-based approach with setTimeout cleanup provides O(1) lookup and automatic garbage collection, avoiding the complexity of Redis or database-backed sessions for early-stage development."
+  },
+  {
+    "order": 10,
+    "title": "AI-Powered Scenario Generation and Response Judging",
+    "description": "The aiService module is the intelligence behind ShiYi's immersive learning. It abstracts over multiple AI providers (Qwen, Doubao, and OpenAI), generating English-language scenarios based on vocabulary from the learner's Anki deck and judging the learner's English responses for correctness and fluency. The companion AI route module (routes/ai.js) exposes POST /api/ai/test for testing AI connectivity and GET /api/ai/presets for listing available model configurations, both used by the SettingsView from Step 5.",
+    "nodeIds": [
+      "file:code/server/services/aiService.js",
+      "file:code/server/routes/ai.js"
+    ],
+    "languageLesson": "Multi-model AI abstraction layers use a provider-agnostic interface so the application code does not need to know which vendor's API is being called. This pattern enables easy model switching (via the SettingsView) and future provider additions without modifying the core learning logic — only the aiService needs to understand each provider's specific API format."
+  },
+  {
+    "order": 11,
+    "title": "Anki-Connect Integration: Bridging SRS and AI",
+    "description": "The ankiService acts as a proxy to the local Anki-Connect HTTP API, enabling ShiYi to list the user's Anki decks, retrieve vocabulary cards for scenario generation, and extract word data for review. The decks route module (routes/decks.js) exposes this functionality to the frontend via GET endpoints that the DeckSelect.vue from Step 5 calls to populate its deck listing and verify Anki connectivity. This bridge between Anki's proven spaced repetition system and ShiYi's AI scenarios is the project's defining architectural feature.",
+    "nodeIds": [
+      "file:code/server/services/ankiService.js",
+      "file:code/server/routes/decks.js"
+    ],
+    "languageLesson": "Anki-Connect is a local HTTP API (default: http://localhost:8765) exposed by the Anki desktop application. It uses JSON-RPC style requests with an 'action' field specifying the operation and a 'params' field for arguments. The proxy pattern here keeps Anki-specific communication logic isolated in a single service, so if the Anki-Connect API changes, only ankiService needs updating."
+  },
+  {
+    "order": 12,
+    "title": "The Pedagogy: Learning Theory Behind ShiYi",
+    "description": "These three methodology documents articulate the educational theory that drives ShiYi's design. The core document proposes learning English through scene-based imagination — constructing vivid mental scenarios where the learner actively produces language. The companion documents identify three critical mistakes in traditional English learning (over-reliance on passive input, neglecting output practice, and separating vocabulary from context) and present a direct input-output model treating the four language skills (listening, speaking, reading, writing) as motor skills requiring deliberate practice. Together they explain why the PhilosophyPanel from Step 7 advocates the approach it does.",
+    "nodeIds": [
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md"
+    ]
+  },
+  {
+    "order": 13,
+    "title": "Validation, Diagnostics, and Architecture Blueprint",
+    "description": "The two test scripts validate critical parts of the AI pipeline: test_parse_json.mjs stress-tests the JSON parsing logic against various real-world AI response formats (since AI models sometimes return malformed JSON), while test_qwen_api.mjs performs end-to-end diagnostics of the Qwen multimodal API with image recognition. The Claude Code Plan document ties everything together as the architectural blueprint, documenting the full tech stack, component architecture, and development milestones that produced the system you have now toured.",
+    "nodeIds": [
+      "file:code/test_parse_json.mjs",
+      "file:code/test_qwen_api.mjs",
+      "document:doc/Claude Code Plan方案.md"
+    ],
+    "languageLesson": "Standalone test scripts (.mjs files runnable with 'node script.mjs') are a lightweight alternative to full test frameworks for prototyping phases. They validate specific integration points (AI API response formats, multimodal image recognition) without requiring Jest/Vitest setup, making them ideal for diagnosing issues in external service interactions during early development."
+  }
+]

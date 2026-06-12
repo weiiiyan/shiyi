@@ -1,0 +1,98 @@
+{
+  "scriptCompleted": true,
+  "stats": {
+    "filesScanned": 68,
+    "filesWithImports": 6,
+    "totalEdges": 14
+  },
+  "importMap": {
+    ".claude/settings.json": [],
+    ".understand-anything/.trash-1781277533/assemble-review.json": [],
+    ".understand-anything/.trash-1781277533/assembled-graph.json": [],
+    ".understand-anything/.trash-1781277533/batch-1.json": [],
+    ".understand-anything/.trash-1781277533/batch-2.json": [],
+    ".understand-anything/.trash-1781277533/batch-3.json": [],
+    ".understand-anything/.trash-1781277533/batch-4.json": [],
+    ".understand-anything/.trash-1781277533/batch-5.json": [],
+    ".understand-anything/.trash-1781277533/batches.json": [],
+    ".understand-anything/.trash-1781277533/fingerprint-input.json": [],
+    ".understand-anything/.trash-1781277533/layers.json": [],
+    ".understand-anything/.trash-1781277533/review.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-arch-input.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-arch-results.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-scan-files.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-tour-input.json": [],
+    ".understand-anything/.trash-1781277533/tmp/ua-tour-results.json": [],
+    ".understand-anything/.trash-1781277533/tour.json": [],
+    ".understand-anything/.understandignore": [],
+    ".understand-anything/config.json": [],
+    ".understand-anything/fingerprints.json": [],
+    ".understand-anything/intermediate/scan-result.json": [],
+    ".understand-anything/knowledge-graph.json": [],
+    ".understand-anything/meta.json": [],
+    "code/.env.example": [],
+    "code/index.html": [],
+    "code/package.json": [],
+    "code/README.md": [],
+    "code/server/index.js": [
+      "code/server/routes/ai.js",
+      "code/server/routes/decks.js",
+      "code/server/routes/learn.js"
+    ],
+    "code/server/routes/ai.js": [
+      "code/server/services/aiService.js"
+    ],
+    "code/server/routes/decks.js": [
+      "code/server/services/ankiService.js"
+    ],
+    "code/server/routes/learn.js": [
+      "code/server/services/aiService.js",
+      "code/server/services/ankiService.js",
+      "code/server/services/sessionService.js"
+    ],
+    "code/server/services/aiService.js": [],
+    "code/server/services/ankiService.js": [],
+    "code/server/services/sessionService.js": [],
+    "code/src/App.vue": [],
+    "code/src/components/PhilosophyPanel.vue": [],
+    "code/src/composables/useSpeech.js": [],
+    "code/src/main.js": [
+      "code/src/App.vue",
+      "code/src/router/index.js",
+      "code/src/style.css"
+    ],
+    "code/src/router/index.js": [
+      "code/src/views/DeckSelect.vue",
+      "code/src/views/LearnView.vue",
+      "code/src/views/SettingsView.vue"
+    ],
+    "code/src/style.css": [],
+    "code/src/views/DeckSelect.vue": [],
+    "code/src/views/LearnView.vue": [],
+    "code/src/views/SettingsView.vue": [],
+    "code/test_parse_json.mjs": [],
+    "code/test_qwen_api.mjs": [],
+    "code/vite.config.js": [],
+    "doc/01-需求分析/1.1-产品需求文档.md": [],
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md": [],
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md": [],
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md": [],
+    "doc/01-需求分析/需求分析.md": [],
+    "doc/Claude Code Plan方案.md": []
+  }
+}

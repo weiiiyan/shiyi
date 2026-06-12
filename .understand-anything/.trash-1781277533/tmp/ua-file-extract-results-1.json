@@ -1,0 +1,827 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 7,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "code/server/index.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 32,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/server/routes/ai.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 33,
+      "nonEmptyLines": 27,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/server/routes/decks.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 48,
+      "nonEmptyLines": 43,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/server/routes/learn.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 256,
+      "nonEmptyLines": 211,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/server/services/aiService.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 370,
+      "nonEmptyLines": 319,
+      "functions": [
+        {
+          "name": "parseAIJson",
+          "startLine": 24,
+          "endLine": 89,
+          "params": [
+            "raw"
+          ]
+        },
+        {
+          "name": "createClient",
+          "startLine": 122,
+          "endLine": 134,
+          "params": [
+            "provider",
+            "apiKey",
+            "baseURL",
+            "model"
+          ]
+        },
+        {
+          "name": "generateScenario",
+          "startLine": 147,
+          "endLine": 258,
+          "params": []
+        },
+        {
+          "name": "judgeResponse",
+          "startLine": 274,
+          "endLine": 346,
+          "params": []
+        },
+        {
+          "name": "testConnection",
+          "startLine": 351,
+          "endLine": 363,
+          "params": [
+            "provider",
+            "apiKey",
+            "baseURL",
+            "model"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "parseAIJson",
+          "callee": "raw.trim",
+          "lineNumber": 25
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.match",
+          "lineNumber": 28
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "fenceMatch[1].trim",
+          "lineNumber": 30
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "JSON.parse",
+          "lineNumber": 35
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 38
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 39
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 40
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.slice",
+          "lineNumber": 40
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 41
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.slice",
+          "lineNumber": 41
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.indexOf",
+          "lineNumber": 45
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.slice",
+          "lineNumber": 58
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "JSON.parse",
+          "lineNumber": 60
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 62
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 63
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 64
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "candidate.slice",
+          "lineNumber": 64
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 71
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "console.log",
+          "lineNumber": 75
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "JSON.parse",
+          "lineNumber": 77
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.slice",
+          "lineNumber": 81
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.slice",
+          "lineNumber": 81
+        },
+        {
+          "caller": "generateScenario",
+          "callee": "createClient",
+          "lineNumber": 148
+        },
+        {
+          "caller": "generateScenario",
+          "callee": "(knownWords || []).map((w) => w.word).join",
+          "lineNumber": 155
+        },
+        {
+          "caller": "generateScenario",
+          "callee": "(knownWords || []).map",
+          "lineNumber": 155
+        },
+        {
+          "caller": "generateScenario",
+          "callee": "client.chat.completions.create",
+          "lineNumber": 243
+        },
+        {
+          "caller": "generateScenario",
+          "callee": "console.log",
+          "lineNumber": 254
+        },
+        {
+          "caller": "generateScenario",
+          "callee": "console.log",
+          "lineNumber": 255
+        },
+        {
+          "caller": "generateScenario",
+          "callee": "parseAIJson",
+          "lineNumber": 256
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "createClient",
+          "lineNumber": 284
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "(history || [])\r\n    .slice(-4)\r\n    .map((h) => `${h.role}: ${h.content}`)\r\n    .join",
+          "lineNumber": 309
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "(history || [])\r\n    .slice(-4)\r\n    .map",
+          "lineNumber": 309
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "(history || [])\r\n    .slice",
+          "lineNumber": 309
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "client.chat.completions.create",
+          "lineNumber": 314
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "JSON.stringify",
+          "lineNumber": 324
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "console.log",
+          "lineNumber": 339
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "console.log",
+          "lineNumber": 340
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "parseAIJson",
+          "lineNumber": 341
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "Math.max",
+          "lineNumber": 343
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "Math.min",
+          "lineNumber": 343
+        },
+        {
+          "caller": "judgeResponse",
+          "callee": "Math.round",
+          "lineNumber": 343
+        },
+        {
+          "caller": "testConnection",
+          "callee": "createClient",
+          "lineNumber": 353
+        },
+        {
+          "caller": "testConnection",
+          "callee": "client.chat.completions.create",
+          "lineNumber": 354
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/server/services/ankiService.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 258,
+      "nonEmptyLines": 223,
+      "functions": [
+        {
+          "name": "invoke",
+          "startLine": 12,
+          "endLine": 26,
+          "params": [
+            "action"
+          ]
+        },
+        {
+          "name": "getAllDeckNames",
+          "startLine": 31,
+          "endLine": 33,
+          "params": []
+        },
+        {
+          "name": "getDeckMapping",
+          "startLine": 39,
+          "endLine": 48,
+          "params": []
+        },
+        {
+          "name": "getShiYiDecks",
+          "startLine": 54,
+          "endLine": 120,
+          "params": []
+        },
+        {
+          "name": "getDueCards",
+          "startLine": 128,
+          "endLine": 182,
+          "params": [
+            "deckFullName"
+          ]
+        },
+        {
+          "name": "getKnownVocabulary",
+          "startLine": 188,
+          "endLine": 216,
+          "params": [
+            "deckFullName"
+          ]
+        },
+        {
+          "name": "answerCard",
+          "startLine": 223,
+          "endLine": 228,
+          "params": [
+            "cardId",
+            "ease"
+          ]
+        },
+        {
+          "name": "isAvailable",
+          "startLine": 233,
+          "endLine": 240,
+          "params": []
+        },
+        {
+          "name": "parseJsonField",
+          "startLine": 242,
+          "endLine": 249,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "invoke",
+          "callee": "fetch",
+          "lineNumber": 13
+        },
+        {
+          "caller": "invoke",
+          "callee": "JSON.stringify",
+          "lineNumber": 16
+        },
+        {
+          "caller": "invoke",
+          "callee": "response.json",
+          "lineNumber": 19
+        },
+        {
+          "caller": "getAllDeckNames",
+          "callee": "invoke",
+          "lineNumber": 32
+        },
+        {
+          "caller": "getDeckMapping",
+          "callee": "invoke",
+          "lineNumber": 40
+        },
+        {
+          "caller": "getDeckMapping",
+          "callee": "Object.entries",
+          "lineNumber": 43
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "invoke",
+          "lineNumber": 55
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "allDecks.filter",
+          "lineNumber": 58
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "d.startsWith",
+          "lineNumber": 59
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "getDeckMapping",
+          "lineNumber": 68
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "statsList.push",
+          "lineNumber": 76
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "name.replace",
+          "lineNumber": 78
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "invoke",
+          "lineNumber": 90
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "invoke",
+          "lineNumber": 94
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "statsList.push",
+          "lineNumber": 102
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "name.replace",
+          "lineNumber": 104
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "statsList.map",
+          "lineNumber": 111
+        },
+        {
+          "caller": "getShiYiDecks",
+          "callee": "encodeURIComponent",
+          "lineNumber": 112
+        },
+        {
+          "caller": "getDueCards",
+          "callee": "getDeckMapping",
+          "lineNumber": 130
+        },
+        {
+          "caller": "getDueCards",
+          "callee": "invoke",
+          "lineNumber": 138
+        },
+        {
+          "caller": "getDueCards",
+          "callee": "invoke",
+          "lineNumber": 144
+        },
+        {
+          "caller": "getDueCards",
+          "callee": "invoke",
+          "lineNumber": 145
+        },
+        {
+          "caller": "getDueCards",
+          "callee": "invoke",
+          "lineNumber": 146
+        },
+        {
+          "caller": "getDueCards",
+          "callee": "cardsInfo.map",
+          "lineNumber": 155
+        },
+        {
+          "caller": "getDueCards",
+          "callee": "parseJsonField",
+          "lineNumber": 175
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "getDeckMapping",
+          "lineNumber": 190
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "invoke",
+          "lineNumber": 197
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "invoke",
+          "lineNumber": 201
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "words.add",
+          "lineNumber": 209
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "JSON.stringify",
+          "lineNumber": 210
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "word.trim",
+          "lineNumber": 210
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "concept.trim",
+          "lineNumber": 210
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "[...words].map",
+          "lineNumber": 215
+        },
+        {
+          "caller": "getKnownVocabulary",
+          "callee": "JSON.parse",
+          "lineNumber": 215
+        },
+        {
+          "caller": "answerCard",
+          "callee": "Math.max",
+          "lineNumber": 224
+        },
+        {
+          "caller": "answerCard",
+          "callee": "Math.min",
+          "lineNumber": 224
+        },
+        {
+          "caller": "answerCard",
+          "callee": "Math.round",
+          "lineNumber": 224
+        },
+        {
+          "caller": "answerCard",
+          "callee": "invoke",
+          "lineNumber": 225
+        },
+        {
+          "caller": "isAvailable",
+          "callee": "invoke",
+          "lineNumber": 235
+        },
+        {
+          "caller": "parseJsonField",
+          "callee": "JSON.parse",
+          "lineNumber": 245
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/server/services/sessionService.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 147,
+      "nonEmptyLines": 125,
+      "functions": [
+        {
+          "name": "createSession",
+          "startLine": 16,
+          "endLine": 41,
+          "params": [
+            "deckId",
+            "aiConfig"
+          ]
+        },
+        {
+          "name": "getSession",
+          "startLine": 43,
+          "endLine": 53,
+          "params": [
+            "deckId"
+          ]
+        },
+        {
+          "name": "deleteSession",
+          "startLine": 55,
+          "endLine": 61,
+          "params": [
+            "deckId"
+          ]
+        },
+        {
+          "name": "setCurrentCard",
+          "startLine": 63,
+          "endLine": 79,
+          "params": [
+            "deckId",
+            "card",
+            "scenario"
+          ]
+        },
+        {
+          "name": "addMessage",
+          "startLine": 81,
+          "endLine": 86,
+          "params": [
+            "deckId",
+            "role",
+            "content"
+          ]
+        },
+        {
+          "name": "recordScore",
+          "startLine": 88,
+          "endLine": 102,
+          "params": [
+            "deckId",
+            "ease"
+          ]
+        },
+        {
+          "name": "markCardComplete",
+          "startLine": 104,
+          "endLine": 109,
+          "params": [
+            "deckId",
+            "cardId"
+          ]
+        },
+        {
+          "name": "getProgress",
+          "startLine": 111,
+          "endLine": 121,
+          "params": [
+            "deckId"
+          ]
+        },
+        {
+          "name": "formatScenarioMessage",
+          "startLine": 123,
+          "endLine": 136,
+          "params": [
+            "cardType",
+            "scenario"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createSession",
+          "callee": "sessions.has",
+          "lineNumber": 18
+        },
+        {
+          "caller": "createSession",
+          "callee": "clearTimeout",
+          "lineNumber": 19
+        },
+        {
+          "caller": "createSession",
+          "callee": "sessions.get",
+          "lineNumber": 19
+        },
+        {
+          "caller": "createSession",
+          "callee": "Date.now",
+          "lineNumber": 31
+        },
+        {
+          "caller": "createSession",
+          "callee": "setTimeout",
+          "lineNumber": 35
+        },
+        {
+          "caller": "createSession",
+          "callee": "sessions.delete",
+          "lineNumber": 36
+        },
+        {
+          "caller": "createSession",
+          "callee": "sessions.set",
+          "lineNumber": 39
+        },
+        {
+          "caller": "getSession",
+          "callee": "sessions.get",
+          "lineNumber": 44
+        },
+        {
+          "caller": "getSession",
+          "callee": "clearTimeout",
+          "lineNumber": 47
+        },
+        {
+          "caller": "getSession",
+          "callee": "setTimeout",
+          "lineNumber": 48
+        },
+        {
+          "caller": "getSession",
+          "callee": "sessions.delete",
+          "lineNumber": 49
+        },
+        {
+          "caller": "deleteSession",
+          "callee": "sessions.get",
+          "lineNumber": 56
+        },
+        {
+          "caller": "deleteSession",
+          "callee": "clearTimeout",
+          "lineNumber": 58
+        },
+        {
+          "caller": "deleteSession",
+          "callee": "sessions.delete",
+          "lineNumber": 59
+        },
+        {
+          "caller": "setCurrentCard",
+          "callee": "getSession",
+          "lineNumber": 64
+        },
+        {
+          "caller": "setCurrentCard",
+          "callee": "session.history.push",
+          "lineNumber": 73
+        },
+        {
+          "caller": "setCurrentCard",
+          "callee": "formatScenarioMessage",
+          "lineNumber": 75
+        },
+        {
+          "caller": "addMessage",
+          "callee": "getSession",
+          "lineNumber": 82
+        },
+        {
+          "caller": "addMessage",
+          "callee": "session.history.push",
+          "lineNumber": 85
+        },
+        {
+          "caller": "recordScore",
+          "callee": "getSession",
+          "lineNumber": 89
+        },
+        {
+          "caller": "markCardComplete",
+          "callee": "getSession",
+          "lineNumber": 105
+        },
+        {
+          "caller": "markCardComplete",
+          "callee": "session.completedCards.push",
+          "lineNumber": 108
+        },
+        {
+          "caller": "getProgress",
+          "callee": "getSession",
+          "lineNumber": 112
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 9,
+        "classCount": 0
+      }
+    }
+  ]
+}

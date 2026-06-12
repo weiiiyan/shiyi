@@ -1,0 +1,1121 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "4f5facfd198fda289f5405ac3dd2d85ba4c9d039",
+  "generatedAt": "2026-06-12T15:47:39.400Z",
+  "files": {
+    ".claude/settings.json": {
+      "filePath": ".claude/settings.json",
+      "contentHash": "7bccb4c76fddddb4b9f16521f0987d2950780e53803ed6137991b03936578c79",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/assemble-review.json": {
+      "filePath": ".understand-anything/.trash-1781277533/assemble-review.json",
+      "contentHash": "dee9777f09d923f2e02fef6d837cc84a45f1638941004377fbb1ac838ecf91ab",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/assembled-graph.json": {
+      "filePath": ".understand-anything/.trash-1781277533/assembled-graph.json",
+      "contentHash": "a87c28ff2838af17c6e73443008faeec2c72837f0f11a41f3ddc6c5fc9f46089",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1839,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/batch-1.json": {
+      "filePath": ".understand-anything/.trash-1781277533/batch-1.json",
+      "contentHash": "9f354b2188a0240d7a02fbd19c47e54728e5f9ed7b8c571f070ef8defde02dc0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 545,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/batch-2.json": {
+      "filePath": ".understand-anything/.trash-1781277533/batch-2.json",
+      "contentHash": "e5d08a99920803e07f6c05087c5254881b2d29cfeb9cf9c11669db8dc2d9bd51",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 290,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/batch-3.json": {
+      "filePath": ".understand-anything/.trash-1781277533/batch-3.json",
+      "contentHash": "d5c1e67ab9abbc3c950de468d2f5259cf9341a6bb8022502354bd424679205fc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 85,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/batch-4.json": {
+      "filePath": ".understand-anything/.trash-1781277533/batch-4.json",
+      "contentHash": "a0c28379a8749df58819552981e5c8c8c7caa6c7724dae9d81459a785b630927",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/batch-5.json": {
+      "filePath": ".understand-anything/.trash-1781277533/batch-5.json",
+      "contentHash": "39a64403c18cb8deb4dfcdae13b87dab5974f3f88fb0747f369bfb82eadca0ae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 260,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/batches.json": {
+      "filePath": ".understand-anything/.trash-1781277533/batches.json",
+      "contentHash": "7049eae752bfc8f2d0a8d21938d27fad856bda29ceecbf7fe26e5e49eae26729",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 325,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/fingerprint-input.json": {
+      "filePath": ".understand-anything/.trash-1781277533/fingerprint-input.json",
+      "contentHash": "345cb0c5042e56f75083172ab5a381544b65517e7280f4d35f0d1a833b95adbd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/layers.json": {
+      "filePath": ".understand-anything/.trash-1781277533/layers.json",
+      "contentHash": "18e90478002ac9901ff815a3991fc898413623c0de8c01f43d2af148a26096e4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 102,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/review.json": {
+      "filePath": ".understand-anything/.trash-1781277533/review.json",
+      "contentHash": "c8a3b528d957fa35640b60f551fc8712ca2aabb550655875e2a2ac9aa715cf96",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
+      "contentHash": "de58d5784383db4f8b4f42c3f512e34e0102f377c397f43892bcd288ae6e6087",
+      "functions": [
+        {
+          "name": "commonPrefix",
+          "params": [
+            "paths"
+          ],
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "getGroupKey",
+          "params": [
+            "filePath",
+            "commonPrefix"
+          ],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 429,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-arch-input.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+      "contentHash": "67caf1281430adc2bbe014ccb65eba38b597b1efa61397d45b5e46495c38898b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 170,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-arch-results.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
+      "contentHash": "3adfbee3fdd7a8c3c601a2a8b557e48c544fde27df0ca43c13af2f1c92582732",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 319,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
+      "contentHash": "45af4748d2d5b7b322f1994a3739f6c4a71b3f0122a605e64dca166b80e2a759",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
+      "contentHash": "c43872f64022535b5cffdb9e5e6ca07abc22517901ff277642be7c72fe1561db",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
+      "contentHash": "e7d4b596ca58e86e590440ad250f44f704db1cabefd4645283c030eb7b64fbb4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
+      "contentHash": "7fca2c06ab37abdf386c3164505cf9ef7d02a24b139fa051eed881b7ddec1bd7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
+      "contentHash": "8ea77cf37d5bfb7e227e901edddf3f686af179978ca709de0062bc1454fb5613",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
+      "contentHash": "9010569b50427c0f4fcab09a1a33a32f1ef0cb1a4a21fef3f7f7d28add7705da",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 827,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
+      "contentHash": "b18aaca435045432d285488629c58daedace079d79246f339ede6f638c202bfd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
+      "contentHash": "5a8318c5909a57900f0b36ecc9640426d3e09a931771176bc8e491b79665f4fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 117,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
+      "contentHash": "cc80badb0936911f718e5f2a7e712bde94e471d7dfd54a28677801d1b5654680",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 49,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
+      "contentHash": "f968ce9be2229cebdc63e8679b89ac4a4f5be008270839ce79ebc25f962832d0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 647,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
+      "contentHash": "b6be398550bcca7e977a66afbac2670b6435fcd8ef3ff1bf57739909f8e1d712",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
+      "contentHash": "7e2d9ba0fc85f0863bcee476c52dff4604121236023feb54f3c511471727005b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 61,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
+      "contentHash": "11d35012e97d258954813204d1a92dbf400c03b3b35f88bcb91cdae21cc1e54d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 64,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-scan-files.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "contentHash": "bd1da2a1c8cb9a24bf65553b18f4f4973b7208619ff912b114452b41b4fd8fb5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 213,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
+      "contentHash": "ea9dbc6dd1ca751178aad13cf260707df9309bf553db3fbc77ca57b59112be3a",
+      "functions": [
+        {
+          "name": "scoreEntryPoint",
+          "params": [
+            "node"
+          ],
+          "exported": false,
+          "lineCount": 41
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 297,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-tour-input.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
+      "contentHash": "5dbe78337c47d3f66dff54bf162c201ab9889ef09b0bd0060a0c5d89765fdeb3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 73,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tmp/ua-tour-results.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
+      "contentHash": "ce1b41dbb0ebb9782e0521822ce3e7fd7a14b1505522c1204a81eb5393f360e4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 571,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.trash-1781277533/tour.json": {
+      "filePath": ".understand-anything/.trash-1781277533/tour.json",
+      "contentHash": "9caefbc2ede818c6a1659d118b686026b20c655691e95441a1d1010258c0d83c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 131,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.understandignore": {
+      "filePath": ".understand-anything/.understandignore",
+      "contentHash": "ecd2f79c9457268dcc6e53309a9e7933e29008f7960b508a15306088f385db7e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": false
+    },
+    ".understand-anything/config.json": {
+      "filePath": ".understand-anything/config.json",
+      "contentHash": "de7ae7b841141718a1bd36930e7642f915b847a713410d80cd433977a0691fe0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/fingerprints.json": {
+      "filePath": ".understand-anything/fingerprints.json",
+      "contentHash": "8a97e6c449e1dd73c8aed3f79bfdcce4851d2c3f0ad14f7049d6d6693faf6a37",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 704,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/intermediate/scan-result.json": {
+      "filePath": ".understand-anything/intermediate/scan-result.json",
+      "contentHash": "0c86b108a02b10006c8f28fbd43d4adf016a11623b62c70eb4a71c5d288bb32e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 522,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/knowledge-graph.json": {
+      "filePath": ".understand-anything/knowledge-graph.json",
+      "contentHash": "d91d63839d3f4fc7d78b5e47df16addc46d54d876f1b7247bb657498575ea2d3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2797,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/meta.json": {
+      "filePath": ".understand-anything/meta.json",
+      "contentHash": "e909f38c8a8e95681ad817aed4a6d0192ce70a7befce0f30a6b4e04a0620f754",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "code/.env.example": {
+      "filePath": "code/.env.example",
+      "contentHash": "c66d5ca2e7298be97e3b5a298b86abe8ba452efed97138aafaeaca49fb98373f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "code/index.html": {
+      "filePath": "code/index.html",
+      "contentHash": "59a8aecab9939452262ef5c78e4bbaa904afb07c366b30e07724fc298c6becf3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "code/package.json": {
+      "filePath": "code/package.json",
+      "contentHash": "ce8dbc06a9ee70544f88eaa7dc9461b547dfdb468819c83b617d891904f120be",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "code/README.md": {
+      "filePath": "code/README.md",
+      "contentHash": "309627dbb136135f84b9e5d12c06b4261b9b1f8cb169f8cdb8023f867b7a4165",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "code/server/index.js": {
+      "filePath": "code/server/index.js",
+      "contentHash": "a6f795bc89d0231d0cc977cd57f84aff2e4fca6421ff3be9457f56998225b62b",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "express"
+          ]
+        },
+        {
+          "source": "cors",
+          "specifiers": [
+            "cors"
+          ]
+        },
+        {
+          "source": "./routes/decks.js",
+          "specifiers": [
+            "decksRouter"
+          ]
+        },
+        {
+          "source": "./routes/learn.js",
+          "specifiers": [
+            "learnRouter"
+          ]
+        },
+        {
+          "source": "./routes/ai.js",
+          "specifiers": [
+            "aiRouter"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "code/server/routes/ai.js": {
+      "filePath": "code/server/routes/ai.js",
+      "contentHash": "382655eeea52158bd61553a04d27d1538e9b3e98ea10aea09ff6404f774b6d64",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Router"
+          ]
+        },
+        {
+          "source": "../services/aiService.js",
+          "specifiers": [
+            "aiService"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "code/server/routes/decks.js": {
+      "filePath": "code/server/routes/decks.js",
+      "contentHash": "6dd48b06aac5890c5c9ae3b478654327a4d49f9c8757fb70e23cc4bb05cf6a19",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Router"
+          ]
+        },
+        {
+          "source": "../services/ankiService.js",
+          "specifiers": [
+            "ankiService"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 49,
+      "hasStructuralAnalysis": true
+    },
+    "code/server/routes/learn.js": {
+      "filePath": "code/server/routes/learn.js",
+      "contentHash": "9b267df1de98491e4eb8818e38b47466742bb74d9d9a5d3624222dcb6e190ced",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "express",
+          "specifiers": [
+            "Router"
+          ]
+        },
+        {
+          "source": "../services/ankiService.js",
+          "specifiers": [
+            "ankiService"
+          ]
+        },
+        {
+          "source": "../services/aiService.js",
+          "specifiers": [
+            "aiService"
+          ]
+        },
+        {
+          "source": "../services/sessionService.js",
+          "specifiers": [
+            "sessionService"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 257,
+      "hasStructuralAnalysis": true
+    },
+    "code/server/services/aiService.js": {
+      "filePath": "code/server/services/aiService.js",
+      "contentHash": "f688541abb728bae7455b51e9c893b84f5c117e25d98c28224ba4ceae5161eed",
+      "functions": [
+        {
+          "name": "parseAIJson",
+          "params": [
+            "raw"
+          ],
+          "exported": false,
+          "lineCount": 66
+        },
+        {
+          "name": "createClient",
+          "params": [
+            "provider",
+            "apiKey",
+            "baseURL",
+            "model"
+          ],
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "generateScenario",
+          "params": [],
+          "exported": false,
+          "lineCount": 112
+        },
+        {
+          "name": "judgeResponse",
+          "params": [],
+          "exported": false,
+          "lineCount": 73
+        },
+        {
+          "name": "testConnection",
+          "params": [
+            "provider",
+            "apiKey",
+            "baseURL",
+            "model"
+          ],
+          "exported": false,
+          "lineCount": 13
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "openai",
+          "specifiers": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 371,
+      "hasStructuralAnalysis": true
+    },
+    "code/server/services/ankiService.js": {
+      "filePath": "code/server/services/ankiService.js",
+      "contentHash": "ac339a674b442c0b7dfb9d8f9cdc3b677f195c36f1b615c78085ce85d3b0156c",
+      "functions": [
+        {
+          "name": "invoke",
+          "params": [
+            "action"
+          ],
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "getAllDeckNames",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "getDeckMapping",
+          "params": [],
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "getShiYiDecks",
+          "params": [],
+          "exported": false,
+          "lineCount": 67
+        },
+        {
+          "name": "getDueCards",
+          "params": [
+            "deckFullName"
+          ],
+          "exported": false,
+          "lineCount": 55
+        },
+        {
+          "name": "getKnownVocabulary",
+          "params": [
+            "deckFullName"
+          ],
+          "exported": false,
+          "lineCount": 29
+        },
+        {
+          "name": "answerCard",
+          "params": [
+            "cardId",
+            "ease"
+          ],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "isAvailable",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "parseJsonField",
+          "params": [
+            "value"
+          ],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 259,
+      "hasStructuralAnalysis": true
+    },
+    "code/server/services/sessionService.js": {
+      "filePath": "code/server/services/sessionService.js",
+      "contentHash": "e9547c5fb1b196fd42f3a4fd46b58420080e0376ab3a5ba5420cddcf12fa1a51",
+      "functions": [
+        {
+          "name": "createSession",
+          "params": [
+            "deckId",
+            "aiConfig"
+          ],
+          "exported": false,
+          "lineCount": 26
+        },
+        {
+          "name": "getSession",
+          "params": [
+            "deckId"
+          ],
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "deleteSession",
+          "params": [
+            "deckId"
+          ],
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "setCurrentCard",
+          "params": [
+            "deckId",
+            "card",
+            "scenario"
+          ],
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "addMessage",
+          "params": [
+            "deckId",
+            "role",
+            "content"
+          ],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "recordScore",
+          "params": [
+            "deckId",
+            "ease"
+          ],
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "markCardComplete",
+          "params": [
+            "deckId",
+            "cardId"
+          ],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "getProgress",
+          "params": [
+            "deckId"
+          ],
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "formatScenarioMessage",
+          "params": [
+            "cardType",
+            "scenario"
+          ],
+          "exported": false,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 148,
+      "hasStructuralAnalysis": true
+    },
+    "code/src/App.vue": {
+      "filePath": "code/src/App.vue",
+      "contentHash": "e7934f8ad12f87c6bb2bc99d9985dd31792253c9087ed66428e8672ad329b2b3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "code/src/components/PhilosophyPanel.vue": {
+      "filePath": "code/src/components/PhilosophyPanel.vue",
+      "contentHash": "a93de991ac355951a6a017fcdcb2dcc09f91db62af5af45330bb954dea7798ac",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": false
+    },
+    "code/src/composables/useSpeech.js": {
+      "filePath": "code/src/composables/useSpeech.js",
+      "contentHash": "3173b03c83e717baf1186640a71fd8be92112d0f358e548277dd4b5c4a8a8431",
+      "functions": [
+        {
+          "name": "useTTS",
+          "params": [],
+          "exported": true,
+          "lineCount": 53
+        },
+        {
+          "name": "useSTT",
+          "params": [],
+          "exported": true,
+          "lineCount": 73
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vue",
+          "specifiers": [
+            "ref",
+            "onUnmounted"
+          ]
+        }
+      ],
+      "exports": [
+        "useTTS",
+        "useSTT"
+      ],
+      "totalLines": 142,
+      "hasStructuralAnalysis": true
+    },
+    "code/src/main.js": {
+      "filePath": "code/src/main.js",
+      "contentHash": "d5aa59e31c79434e439de678580509a9d9409fd7bdd2ee7e97399278a2278a43",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vue",
+          "specifiers": [
+            "createApp"
+          ]
+        },
+        {
+          "source": "./style.css",
+          "specifiers": []
+        },
+        {
+          "source": "./App.vue",
+          "specifiers": [
+            "App"
+          ]
+        },
+        {
+          "source": "./router",
+          "specifiers": [
+            "router"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "code/src/router/index.js": {
+      "filePath": "code/src/router/index.js",
+      "contentHash": "08826c7a18432dd08a35c932ce679a358ed4b9a5b4b92f5ef990f65c24e5baa6",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vue-router",
+          "specifiers": [
+            "createRouter",
+            "createWebHashHistory"
+          ]
+        },
+        {
+          "source": "../views/DeckSelect.vue",
+          "specifiers": [
+            "DeckSelect"
+          ]
+        },
+        {
+          "source": "../views/LearnView.vue",
+          "specifiers": [
+            "LearnView"
+          ]
+        },
+        {
+          "source": "../views/SettingsView.vue",
+          "specifiers": [
+            "SettingsView"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "code/src/style.css": {
+      "filePath": "code/src/style.css",
+      "contentHash": "d2cf6ed4593d1f2f6700476336457bc5436cc7e5fbf15c5169180dec4d8b8b60",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 691,
+      "hasStructuralAnalysis": false
+    },
+    "code/src/views/DeckSelect.vue": {
+      "filePath": "code/src/views/DeckSelect.vue",
+      "contentHash": "7100b9605ace33c7e4ffc110ae0c877317b1b40771109aea5ac09ecc4f53e794",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 126,
+      "hasStructuralAnalysis": false
+    },
+    "code/src/views/LearnView.vue": {
+      "filePath": "code/src/views/LearnView.vue",
+      "contentHash": "8e4171ecc31f47ae0fc57688731d8076ab233f6900673df1f095cddca4c9d991",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 395,
+      "hasStructuralAnalysis": false
+    },
+    "code/src/views/SettingsView.vue": {
+      "filePath": "code/src/views/SettingsView.vue",
+      "contentHash": "a082461150c4aa981902f80d47e62331d30213afc4344c802487f5655bb0d4a8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 154,
+      "hasStructuralAnalysis": false
+    },
+    "code/test_parse_json.mjs": {
+      "filePath": "code/test_parse_json.mjs",
+      "contentHash": "1a3b95b015600da6153f935d1c1bec3793ffd53cc33720aecf8d431c56460c49",
+      "functions": [
+        {
+          "name": "parseAIJson",
+          "params": [
+            "raw"
+          ],
+          "exported": false,
+          "lineCount": 44
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "openai",
+          "specifiers": [
+            "OpenAI"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 138,
+      "hasStructuralAnalysis": true
+    },
+    "code/test_qwen_api.mjs": {
+      "filePath": "code/test_qwen_api.mjs",
+      "contentHash": "c7ec4e143b4896465da35c175401238c01405ec6deef465f9471301dc3c4516c",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 78
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "openai",
+          "specifiers": [
+            "OpenAI"
+          ]
+        },
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 91,
+      "hasStructuralAnalysis": true
+    },
+    "code/vite.config.js": {
+      "filePath": "code/vite.config.js",
+      "contentHash": "4d80efbd21369e24f8aa0b48a6e8b6f476b0dc0167d42a5461ad81fdb0c0c366",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "vite",
+          "specifiers": [
+            "defineConfig"
+          ]
+        },
+        {
+          "source": "@vitejs/plugin-vue",
+          "specifiers": [
+            "vue"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "doc/01-需求分析/1.1-产品需求文档.md": {
+      "filePath": "doc/01-需求分析/1.1-产品需求文档.md",
+      "contentHash": "0658ae5c5ca0143c889f212baed060c1e74f9b5e20ad4870258a35bbf45a4784",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md": {
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "contentHash": "207ef93b3390cf058a0609ef0df801e78fbca2d2c1822759710dd3bf4b593a0a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md": {
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "contentHash": "4875c21e29eea872e1fe2dcde0ab8c1ad303da96113d41f9b5d6a616b1583e0e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md": {
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "contentHash": "0eddcbadd906aeef2ae5b35ef7e2116dacfc0991f7b455b20ee29e7a2b1b3b38",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "doc/01-需求分析/需求分析.md": {
+      "filePath": "doc/01-需求分析/需求分析.md",
+      "contentHash": "468ce6e2bfc7e368d4799e22842dd2c467cf3b3c1a8d0b84873451fad2949414",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "doc/Claude Code Plan方案.md": {
+      "filePath": "doc/Claude Code Plan方案.md",
+      "contentHash": "373862bbf41b13dc473023c0404b12a54c3f205f8d622671c63c5348b691fbe9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 194,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

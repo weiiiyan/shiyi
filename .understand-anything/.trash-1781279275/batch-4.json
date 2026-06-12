@@ -1,0 +1,243 @@
+{
+  "nodes": [
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+      "type": "config",
+      "name": "ua-arch-input.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+      "summary": "架构分析输入文件，包含文件节点列表、导入边数据和所有边数据，供架构分析脚本进行目录分组和模式匹配。",
+      "tags": ["架构分析", "输入文件", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
+      "type": "config",
+      "name": "ua-arch-results.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
+      "summary": "架构分析结果输出，包含目录分组、节点类型分组、跨类别边、组间导入、模式匹配、部署拓扑和数据管道等全面架构分析数据。",
+      "tags": ["架构分析", "输出结果", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
+      "type": "config",
+      "name": "ua-file-analyzer-input-1.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
+      "summary": "文件分析器第1批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
+      "tags": ["文件分析", "批次输入", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
+      "type": "config",
+      "name": "ua-file-analyzer-input-2.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
+      "summary": "文件分析器第2批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
+      "tags": ["文件分析", "批次输入", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
+      "type": "config",
+      "name": "ua-file-analyzer-input-3.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
+      "summary": "文件分析器第3批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
+      "tags": ["文件分析", "批次输入", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
+      "type": "config",
+      "name": "ua-file-analyzer-input-4.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
+      "summary": "文件分析器第4批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
+      "tags": ["文件分析", "批次输入", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
+      "type": "config",
+      "name": "ua-file-analyzer-input-5.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
+      "summary": "文件分析器第5批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
+      "tags": ["文件分析", "批次输入", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
+      "type": "config",
+      "name": "ua-file-extract-results-1.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
+      "summary": "文件结构提取第1批次结果，包含已分析文件数、跳过的文件和每个文件的函数、类、导出、调用图等结构化数据。",
+      "tags": ["结构提取", "批次结果", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
+      "type": "config",
+      "name": "ua-file-extract-results-2.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
+      "summary": "文件结构提取第2批次结果，包含各文件的函数、类、导出和调用图等结构化分析数据。",
+      "tags": ["结构提取", "批次结果", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
+      "type": "config",
+      "name": "ua-file-extract-results-3.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
+      "summary": "文件结构提取第3批次结果，包含各文件的段落、指标等结构化分析数据。",
+      "tags": ["结构提取", "批次结果", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
+      "type": "config",
+      "name": "ua-file-extract-results-4.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
+      "summary": "文件结构提取第4批次结果，包含各文件的段落、指标等结构化分析数据。",
+      "tags": ["结构提取", "批次结果", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
+      "type": "config",
+      "name": "ua-file-extract-results-5.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
+      "summary": "文件结构提取第5批次结果，包含各文件的函数、类、导出和调用图等结构化分析数据。",
+      "tags": ["结构提取", "批次结果", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
+      "type": "config",
+      "name": "ua-import-map-input.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
+      "summary": "导入映射输入文件，包含项目根目录和需要解析导入关系的文件路径列表。",
+      "tags": ["导入映射", "输入文件", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
+      "type": "config",
+      "name": "ua-import-map-output.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
+      "summary": "导入映射输出文件，包含脚本完成状态、统计信息和文件间导入关系映射表。",
+      "tags": ["导入映射", "输出结果", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "type": "config",
+      "name": "ua-scan-files.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "summary": "文件扫描结果，包含项目源文件完整列表、被过滤忽略的文件、复杂度估算和按语言分类的统计信息。",
+      "tags": ["文件扫描", "项目索引", "configuration"],
+      "complexity": "complex"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
+      "type": "config",
+      "name": "ua-tour-input.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
+      "summary": "导览生成输入文件，包含知识图谱的节点数组、边数组和层定义数据，供导览生成脚本进行入口点识别和BFS遍历。",
+      "tags": ["导览生成", "输入文件", "configuration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
+      "type": "config",
+      "name": "ua-tour-results.json",
+      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
+      "summary": "导览生成结果，包含入口点候选列表、出入度排名、BFS遍历路径、非代码文件列表、聚类结果、层分组和节点摘要索引。",
+      "tags": ["导览生成", "输出结果", "configuration"],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
+      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

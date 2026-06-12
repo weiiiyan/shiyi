@@ -1,0 +1,860 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 15,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": ".claude/settings.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 11,
+      "nonEmptyLines": 11,
+      "sections": [
+        {
+          "heading": "permissions",
+          "level": 1,
+          "line": 2
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 428,
+      "nonEmptyLines": 373,
+      "functions": [
+        {
+          "name": "commonPrefix",
+          "startLine": 41,
+          "endLine": 53,
+          "params": [
+            "paths"
+          ]
+        },
+        {
+          "name": "getGroupKey",
+          "startLine": 58,
+          "endLine": 65,
+          "params": [
+            "filePath",
+            "commonPrefix"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "commonPrefix",
+          "callee": "paths[i].startsWith",
+          "lineNumber": 45
+        },
+        {
+          "caller": "commonPrefix",
+          "callee": "prefix.substring",
+          "lineNumber": 46
+        },
+        {
+          "caller": "commonPrefix",
+          "callee": "prefix.lastIndexOf",
+          "lineNumber": 46
+        },
+        {
+          "caller": "commonPrefix",
+          "callee": "prefix.lastIndexOf",
+          "lineNumber": 51
+        },
+        {
+          "caller": "commonPrefix",
+          "callee": "prefix.substring",
+          "lineNumber": 52
+        },
+        {
+          "caller": "getGroupKey",
+          "callee": "filePath.startsWith",
+          "lineNumber": 60
+        },
+        {
+          "caller": "getGroupKey",
+          "callee": "filePath.substring",
+          "lineNumber": 61
+        },
+        {
+          "caller": "getGroupKey",
+          "callee": "relative.split('/').filter",
+          "lineNumber": 63
+        },
+        {
+          "caller": "getGroupKey",
+          "callee": "relative.split",
+          "lineNumber": 63
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 63,
+      "nonEmptyLines": 63,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 296,
+      "nonEmptyLines": 260,
+      "functions": [
+        {
+          "name": "scoreEntryPoint",
+          "startLine": 86,
+          "endLine": 126,
+          "params": [
+            "node"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "scoreEntryPoint",
+          "callee": "entryNames.includes",
+          "lineNumber": 98
+        },
+        {
+          "caller": "scoreEntryPoint",
+          "callee": "(node.filePath || '').split('/').filter",
+          "lineNumber": 102
+        },
+        {
+          "caller": "scoreEntryPoint",
+          "callee": "(node.filePath || '').split",
+          "lineNumber": 102
+        },
+        {
+          "caller": "scoreEntryPoint",
+          "callee": "fanOut.get",
+          "lineNumber": 106
+        },
+        {
+          "caller": "scoreEntryPoint",
+          "callee": "fanIn.get",
+          "lineNumber": 110
+        },
+        {
+          "caller": "scoreEntryPoint",
+          "callee": "node.name.endsWith",
+          "lineNumber": 120
+        },
+        {
+          "caller": "scoreEntryPoint",
+          "callee": "(node.filePath || '').split",
+          "lineNumber": 120
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": ".understand-anything/.understandignore",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 38,
+      "nonEmptyLines": 35,
+      "metrics": {}
+    },
+    {
+      "path": ".understand-anything/intermediate/scan-result.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 522,
+      "nonEmptyLines": 522,
+      "sections": [
+        {
+          "heading": "name",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "description",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "languages",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "frameworks",
+          "level": 1,
+          "line": 14
+        },
+        {
+          "heading": "files",
+          "level": 1,
+          "line": 19
+        },
+        {
+          "heading": "totalFiles",
+          "level": 1,
+          "line": 429
+        },
+        {
+          "heading": "filteredByIgnore",
+          "level": 1,
+          "line": 430
+        },
+        {
+          "heading": "estimatedComplexity",
+          "level": 1,
+          "line": 431
+        },
+        {
+          "heading": "importMap",
+          "level": 1,
+          "line": 432
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "code/src/components/PhilosophyPanel.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 45,
+      "nonEmptyLines": 41,
+      "metrics": {}
+    },
+    {
+      "path": "code/src/composables/useSpeech.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 141,
+      "nonEmptyLines": 116,
+      "functions": [
+        {
+          "name": "useTTS",
+          "startLine": 12,
+          "endLine": 64,
+          "params": []
+        },
+        {
+          "name": "useSTT",
+          "startLine": 69,
+          "endLine": 141,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "useTTS",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "useSTT",
+          "line": 69,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "useTTS",
+          "callee": "ref",
+          "lineNumber": 13
+        },
+        {
+          "caller": "useTTS",
+          "callee": "ref",
+          "lineNumber": 14
+        },
+        {
+          "caller": "speak",
+          "callee": "console.warn",
+          "lineNumber": 18
+        },
+        {
+          "caller": "speak",
+          "callee": "window.speechSynthesis.cancel",
+          "lineNumber": 23
+        },
+        {
+          "caller": "speak",
+          "callee": "window.speechSynthesis.getVoices",
+          "lineNumber": 33
+        },
+        {
+          "caller": "speak",
+          "callee": "voices.find",
+          "lineNumber": 35
+        },
+        {
+          "caller": "speak",
+          "callee": "v.name.includes",
+          "lineNumber": 35
+        },
+        {
+          "caller": "speak",
+          "callee": "voices.find",
+          "lineNumber": 36
+        },
+        {
+          "caller": "speak",
+          "callee": "voices.find",
+          "lineNumber": 37
+        },
+        {
+          "caller": "speak",
+          "callee": "v.lang.startsWith",
+          "lineNumber": 37
+        },
+        {
+          "caller": "speak",
+          "callee": "window.speechSynthesis.speak",
+          "lineNumber": 51
+        },
+        {
+          "caller": "stop",
+          "callee": "window.speechSynthesis.cancel",
+          "lineNumber": 55
+        },
+        {
+          "caller": "useTTS",
+          "callee": "onUnmounted",
+          "lineNumber": 59
+        },
+        {
+          "caller": "useTTS",
+          "callee": "stop",
+          "lineNumber": 60
+        },
+        {
+          "caller": "useSTT",
+          "callee": "ref",
+          "lineNumber": 70
+        },
+        {
+          "caller": "useSTT",
+          "callee": "ref",
+          "lineNumber": 71
+        },
+        {
+          "caller": "useSTT",
+          "callee": "ref",
+          "lineNumber": 72
+        },
+        {
+          "caller": "startListening",
+          "callee": "reject",
+          "lineNumber": 97
+        },
+        {
+          "caller": "startListening",
+          "callee": "createRecognition",
+          "lineNumber": 101
+        },
+        {
+          "caller": "startListening",
+          "callee": "reject",
+          "lineNumber": 103
+        },
+        {
+          "caller": "startListening",
+          "callee": "resolve",
+          "lineNumber": 113
+        },
+        {
+          "caller": "startListening",
+          "callee": "reject",
+          "lineNumber": 118
+        },
+        {
+          "caller": "startListening",
+          "callee": "recognition.start",
+          "lineNumber": 125
+        },
+        {
+          "caller": "stopListening",
+          "callee": "recognition.stop",
+          "lineNumber": 131
+        },
+        {
+          "caller": "useSTT",
+          "callee": "onUnmounted",
+          "lineNumber": 136
+        },
+        {
+          "caller": "useSTT",
+          "callee": "stopListening",
+          "lineNumber": 137
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/src/style.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "totalLines": 690,
+      "nonEmptyLines": 583,
+      "metrics": {}
+    },
+    {
+      "path": "code/test_parse_json.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 137,
+      "nonEmptyLines": 129,
+      "functions": [
+        {
+          "name": "parseAIJson",
+          "startLine": 7,
+          "endLine": 50,
+          "params": [
+            "raw"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "parseAIJson",
+          "callee": "raw.trim",
+          "lineNumber": 8
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.match",
+          "lineNumber": 11
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "fenceMatch[1].trim",
+          "lineNumber": 13
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "JSON.parse",
+          "lineNumber": 18
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.indexOf",
+          "lineNumber": 24
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "text.slice",
+          "lineNumber": 37
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "JSON.parse",
+          "lineNumber": 39
+        },
+        {
+          "caller": "parseAIJson",
+          "callee": "JSON.parse",
+          "lineNumber": 49
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/test_qwen_api.mjs",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 81,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 11,
+          "endLine": 88,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "fs.readdirSync(IMG_DIR).filter",
+          "lineNumber": 13
+        },
+        {
+          "caller": "main",
+          "callee": "fs.readdirSync",
+          "lineNumber": 13
+        },
+        {
+          "caller": "main",
+          "callee": "f.endsWith",
+          "lineNumber": 13
+        },
+        {
+          "caller": "main",
+          "callee": "fs.statSync",
+          "lineNumber": 16
+        },
+        {
+          "caller": "main",
+          "callee": "path.join",
+          "lineNumber": 16
+        },
+        {
+          "caller": "main",
+          "callee": "path.join",
+          "lineNumber": 20
+        },
+        {
+          "caller": "main",
+          "callee": "fs.readFileSync(imgPath).toString",
+          "lineNumber": 21
+        },
+        {
+          "caller": "main",
+          "callee": "fs.readFileSync",
+          "lineNumber": 21
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 24
+        },
+        {
+          "caller": "main",
+          "callee": "(smallestSize/1024).toFixed",
+          "lineNumber": 24
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 25
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 33
+        },
+        {
+          "caller": "main",
+          "callee": "client.chat.completions.create",
+          "lineNumber": 35
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 46
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 48
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 52
+        },
+        {
+          "caller": "main",
+          "callee": "client.chat.completions.create",
+          "lineNumber": 54
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 65
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 67
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 71
+        },
+        {
+          "caller": "main",
+          "callee": "client.chat.completions.create",
+          "lineNumber": 73
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 84
+        },
+        {
+          "caller": "main",
+          "callee": "console.log",
+          "lineNumber": 86
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/vite.config.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 15,
+      "nonEmptyLines": 14,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "doc/01-需求分析/1.1-产品需求文档.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 25,
+      "nonEmptyLines": 17,
+      "sections": [
+        {
+          "heading": "产品需求文档 (PRD)",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "项目概述",
+          "level": 2,
+          "line": 4
+        },
+        {
+          "heading": "背景与目标",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "功能需求",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "核心功能",
+          "level": 3,
+          "line": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "doc/01-需求分析/需求分析.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 6,
+      "nonEmptyLines": 4,
+      "sections": [
+        {
+          "heading": "参考：",
+          "level": 2,
+          "line": 3
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "doc/Claude Code Plan方案.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 194,
+      "nonEmptyLines": 172,
+      "sections": [
+        {
+          "heading": "Claude Code Plan 简易方案",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "ShiYi 详细实现计划",
+          "level": 1,
+          "line": 11
+        },
+        {
+          "heading": "一、项目背景",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "二、核心学习理念",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "三、项目目标",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "四、技术栈选型",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "五、整体架构设计",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "5.1 架构拓扑",
+          "level": 3,
+          "line": 45
+        },
+        {
+          "heading": "5.2 后端存在的必要性",
+          "level": 3,
+          "line": 72
+        },
+        {
+          "heading": "六、数据模型设计",
+          "level": 2,
+          "line": 77
+        },
+        {
+          "heading": "6.1 Anki 卡片字段设计",
+          "level": 3,
+          "line": 78
+        },
+        {
+          "heading": "6.2 牌组命名规范",
+          "level": 3,
+          "line": 90
+        },
+        {
+          "heading": "七、核心业务流程",
+          "level": 2,
+          "line": 96
+        },
+        {
+          "heading": "7.1 学习主循环",
+          "level": 3,
+          "line": 97
+        },
+        {
+          "heading": "7.2 AI Prompt 设计要点",
+          "level": 3,
+          "line": 110
+        },
+        {
+          "heading": "八、前端页面与路由",
+          "level": 2,
+          "line": 115
+        },
+        {
+          "heading": "8.1 路由配置",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "8.2 学习主界面布局",
+          "level": 3,
+          "line": 123
+        },
+        {
+          "heading": "九、分阶段实现任务清单",
+          "level": 2,
+          "line": 142
+        },
+        {
+          "heading": "第一阶段：搭建基础架构",
+          "level": 3,
+          "line": 143
+        },
+        {
+          "heading": "第二阶段：打通核心学习流程",
+          "level": 3,
+          "line": 148
+        },
+        {
+          "heading": "第三阶段：集成语音能力",
+          "level": 3,
+          "line": 155
+        },
+        {
+          "heading": "第四阶段：功能完善与容错",
+          "level": 3,
+          "line": 160
+        },
+        {
+          "heading": "十、核心文件目录与职责",
+          "level": 2,
+          "line": 166
+        },
+        {
+          "heading": "十一、待确认开放问题",
+          "level": 2,
+          "line": 183
+        },
+        {
+          "heading": "十二、功能验证流程",
+          "level": 2,
+          "line": 188
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 26
+      }
+    }
+  ]
+}

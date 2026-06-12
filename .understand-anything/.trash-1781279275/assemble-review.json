@@ -1,0 +1,16 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 0,
+  "edgesRestored": 0,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "Input and output counts match exactly (106 nodes, 136 edges in/out) — no nodes or edges were dropped during merge.",
+    "All 136 edges reference valid nodes; zero dangling edges detected.",
+    "All 14 import edges from the import map are present in the assembled graph; no cross-batch gaps.",
+    "All 106 nodes have valid IDs, types (file/function/config/document), complexity values (simple/moderate/complex), and summaries.",
+    "Merge script recovered 0 imports edges from importMap (68 entries scanned), meaning all import edges already existed in the batch files.",
+    "No 'Could not fix' issues reported by the merge script, and manual validation found no data quality problems."
+  ]
+}

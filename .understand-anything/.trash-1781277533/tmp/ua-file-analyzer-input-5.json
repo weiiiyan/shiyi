@@ -1,0 +1,29 @@
+{
+  "projectRoot": "f:/web/shiyi",
+  "batchFiles": [
+    {"path": ".understand-anything/.understandignore", "language": "config", "sizeLines": 38, "fileCategory": "code"},
+    {"path": ".understand-anything/config.json", "language": "json", "sizeLines": 1, "fileCategory": "config"},
+    {"path": "code/src/components/PhilosophyPanel.vue", "language": "vue", "sizeLines": 45, "fileCategory": "code"},
+    {"path": "code/src/composables/useSpeech.js", "language": "javascript", "sizeLines": 141, "fileCategory": "code"},
+    {"path": "code/src/style.css", "language": "css", "sizeLines": 690, "fileCategory": "markup"},
+    {"path": "code/test_parse_json.mjs", "language": "javascript", "sizeLines": 137, "fileCategory": "code"},
+    {"path": "code/test_qwen_api.mjs", "language": "javascript", "sizeLines": 90, "fileCategory": "code"},
+    {"path": "code/vite.config.js", "language": "javascript", "sizeLines": 15, "fileCategory": "code"},
+    {"path": "doc/01-需求分析/1.1-产品需求文档.md", "language": "markdown", "sizeLines": 24, "fileCategory": "docs"},
+    {"path": "doc/01-需求分析/需求分析.md", "language": "markdown", "sizeLines": 5, "fileCategory": "docs"},
+    {"path": "doc/Claude Code Plan方案.md", "language": "markdown", "sizeLines": 193, "fileCategory": "docs"}
+  ],
+  "batchImportData": {
+    ".understand-anything/.understandignore": [],
+    ".understand-anything/config.json": [],
+    "code/src/components/PhilosophyPanel.vue": [],
+    "code/src/composables/useSpeech.js": [],
+    "code/src/style.css": [],
+    "code/test_parse_json.mjs": [],
+    "code/test_qwen_api.mjs": [],
+    "code/vite.config.js": [],
+    "doc/01-需求分析/1.1-产品需求文档.md": [],
+    "doc/01-需求分析/需求分析.md": [],
+    "doc/Claude Code Plan方案.md": []
+  }
+}

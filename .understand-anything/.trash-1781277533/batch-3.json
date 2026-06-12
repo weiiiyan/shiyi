@@ -1,0 +1,84 @@
+{
+  "nodes": [
+    {
+      "id": "config:code/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "code/.env.example",
+      "summary": "Environment variable template defining the Anki-Connect URL and server port for the Express backend.",
+      "tags": ["configuration", "environment", "template", "server"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:code/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "code/README.md",
+      "summary": "Starter documentation for the Vue 3 + Vite frontend, with links to SFC script setup and IDE support guides.",
+      "tags": ["documentation", "getting-started", "vue"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "code/index.html",
+      "summary": "HTML entry point for the Vue 3 application, mounting the app into the DOM and loading the main JavaScript module.",
+      "tags": ["entry-point", "html", "vue", "frontend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:code/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "code/package.json",
+      "summary": "Project manifest defining npm scripts for development, server, and build, with dependencies for Vue 3, Vite, Express, and OpenAI integration.",
+      "tags": ["configuration", "package-manager", "build-system", "node"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:code/.env.example",
+      "target": "file:code/server/index.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/index.html",
+      "target": "file:code/src/main.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "file:code/index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "file:code/src/main.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "file:code/server/index.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "config:code/.env.example",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "nodes": [
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "type": "document",
+      "name": "使用学习观来设计的英语学习步骤.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "summary": "基于学习观理论设计的英语学习步骤，涵盖听说读写四个维度的运动类技能训练方法，强调不借助中文思考、直接想象场景的学习理念。",
+      "tags": ["documentation", "学习理念", "英语学习", "方法论"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "type": "document",
+      "name": "学习英语的错误.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "summary": "列举英语学习中的三个核心误区：应试教育的文字到文字模式、孤立记单词而非句子学习、以及插入中文思考导致输出错误和迟缓。",
+      "tags": ["documentation", "英语学习", "误区分析", "方法论"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "document",
+      "name": "英语的听说读写正确的输入输出与构建方式.md",
+      "filePath": "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "summary": "定义英语听说读写四项技能的正确输入输出映射关系（声音→意思、想法→发声、文字→意思、想法→打字），强调以句子而非单词为最小学习单元。",
+      "tags": ["documentation", "英语学习", "听说读写", "技能训练"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
+      "target": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

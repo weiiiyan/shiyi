@@ -1,0 +1,29 @@
+{
+  "issues": [],
+  "warnings": [
+    "Node 'config:.claude/settings.json' has no edges (orphan)",
+    "Node 'file:.understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs' has no edges (orphan)"
+  ],
+  "stats": {
+    "totalNodes": 106,
+    "totalEdges": 136,
+    "totalLayers": 7,
+    "tourSteps": 12,
+    "nodeTypes": {
+      "file": 24,
+      "function": 38,
+      "config": 37,
+      "document": 7
+    },
+    "edgeTypes": {
+      "imports": 14,
+      "contains": 38,
+      "exports": 19,
+      "calls": 16,
+      "depends_on": 2,
+      "related": 40,
+      "configures": 3,
+      "documents": 4
+    }
+  }
+}

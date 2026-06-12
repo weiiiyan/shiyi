@@ -1,0 +1,259 @@
+{
+  "nodes": [
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Ignore pattern template for the understand-anything analysis plugin, mirroring .gitignore syntax with all patterns commented out as suggestions for exclusion.",
+      "tags": ["configuration", "analysis", "ignore-patterns", "template"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/config.json",
+      "type": "config",
+      "name": "config.json",
+      "filePath": ".understand-anything/config.json",
+      "summary": "Plugin configuration setting the output language preference for understand-anything generated content.",
+      "tags": ["configuration", "plugin-settings", "localization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "file",
+      "name": "PhilosophyPanel.vue",
+      "filePath": "code/src/components/PhilosophyPanel.vue",
+      "summary": "Presentational Vue component displaying English learning philosophy — language as a motor skill, scene-based imagination, sentence-level learning, and spaced repetition principles.",
+      "tags": ["component", "vue", "learning-philosophy", "presentational"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/composables/useSpeech.js",
+      "type": "file",
+      "name": "useSpeech.js",
+      "filePath": "code/src/composables/useSpeech.js",
+      "summary": "Vue composable providing browser-native text-to-speech and speech-to-text capabilities via the Web Speech API, with voice selection, language filtering, and lifecycle cleanup.",
+      "tags": ["composable", "speech", "tts", "stt", "web-speech-api"],
+      "complexity": "moderate",
+      "languageNotes": "Leverages the browser Web Speech API (SpeechSynthesis and SpeechRecognition) for zero-cost voice capabilities without external services."
+    },
+    {
+      "id": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "function",
+      "name": "useTTS",
+      "filePath": "code/src/composables/useSpeech.js",
+      "lineRange": [12, 64],
+      "summary": "Reactive text-to-speech composable wrapping browser SpeechSynthesis with English voice selection, speak/stop controls, and automatic cleanup on component unmount.",
+      "tags": ["tts", "speech-synthesis", "composable", "voice"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "function",
+      "name": "useSTT",
+      "filePath": "code/src/composables/useSpeech.js",
+      "lineRange": [69, 141],
+      "summary": "Promise-based speech-to-text composable wrapping browser SpeechRecognition with interim results, configurable timeout, and automatic cleanup on component unmount.",
+      "tags": ["stt", "speech-recognition", "composable", "voice-input"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/src/style.css",
+      "type": "file",
+      "name": "style.css",
+      "filePath": "code/src/style.css",
+      "summary": "Global stylesheet defining CSS custom properties, reset styles, base typography, and layout structures for the ShiYi Vue application.",
+      "tags": ["stylesheet", "css-variables", "global-styles", "layout", "design-system"],
+      "complexity": "complex",
+      "languageNotes": "Uses CSS custom properties for a consistent design token system with variables for colors (primary, success, warning, danger), spacing, border radius, and box shadows."
+    },
+    {
+      "id": "file:code/test_parse_json.mjs",
+      "type": "file",
+      "name": "test_parse_json.mjs",
+      "filePath": "code/test_parse_json.mjs",
+      "summary": "Test harness validating the parseAIJson function against various AI response formats including markdown code fences, partial JSON, and malformed outputs using the OpenAI SDK.",
+      "tags": ["test", "json-parsing", "ai", "openai", "validation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/test_parse_json.mjs:parseAIJson",
+      "type": "function",
+      "name": "parseAIJson",
+      "filePath": "code/test_parse_json.mjs",
+      "lineRange": [7, 50],
+      "summary": "Robust JSON parser handling AI response formats — strips markdown code fences, attempts direct parse, and falls back to substring extraction for partial or malformed JSON.",
+      "tags": ["json-parsing", "ai-output", "robust-parsing", "utility"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/test_qwen_api.mjs",
+      "type": "file",
+      "name": "test_qwen_api.mjs",
+      "filePath": "code/test_qwen_api.mjs",
+      "summary": "Diagnostic script testing the Qwen multimodal API by sending local image files and evaluating the model's image recognition and description capabilities.",
+      "tags": ["test", "qwen", "multimodal", "api-test", "openai"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/test_qwen_api.mjs:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "code/test_qwen_api.mjs",
+      "lineRange": [11, 88],
+      "summary": "Async test runner that finds the smallest PNG image in a directory, sends it to Qwen's vision API for recognition, and logs the model's response with token usage statistics.",
+      "tags": ["test-runner", "qwen", "vision-api", "image-analysis"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/vite.config.js",
+      "type": "file",
+      "name": "vite.config.js",
+      "filePath": "code/vite.config.js",
+      "summary": "Vite build configuration enabling the Vue 3 plugin and proxying /api requests to the Express backend at localhost:3001 for development.",
+      "tags": ["build-system", "vite", "configuration", "proxy"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "document",
+      "name": "1.1-产品需求文档.md",
+      "filePath": "doc/01-需求分析/1.1-产品需求文档.md",
+      "summary": "Product requirements document defining the ShiYi English learning app — combining Anki spaced repetition with AI-generated immersive learning across reading, writing, listening, and speaking skills.",
+      "tags": ["documentation", "requirements", "prd", "learning-methodology"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/01-需求分析/需求分析.md",
+      "type": "document",
+      "name": "需求分析.md",
+      "filePath": "doc/01-需求分析/需求分析.md",
+      "summary": "Brief requirements analysis reference document linking to the PRD, English learning methodology, and Anki-Connect API documentation.",
+      "tags": ["documentation", "requirements", "reference"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:doc/Claude Code Plan方案.md",
+      "type": "document",
+      "name": "Claude Code Plan方案.md",
+      "filePath": "doc/Claude Code Plan方案.md",
+      "summary": "Comprehensive implementation plan covering project background, core learning philosophy, tech stack (Vue 3 + Vite + Express), architecture topology, data model design, route configuration, and four-phase development milestones.",
+      "tags": ["documentation", "implementation-plan", "architecture", "technical-design", "roadmap"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useTTS",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/src/composables/useSpeech.js",
+      "target": "function:code/src/composables/useSpeech.js:useSTT",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/test_parse_json.mjs",
+      "target": "function:code/test_parse_json.mjs:parseAIJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/test_qwen_api.mjs",
+      "target": "function:code/test_qwen_api.mjs:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:code/vite.config.js",
+      "target": "file:code/src/main.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/src/components/PhilosophyPanel.vue",
+      "target": "file:code/src/style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "target": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "target": "file:code/src/composables/useSpeech.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "target": "document:doc/Claude Code Plan方案.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/01-需求分析/需求分析.md",
+      "target": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/src/composables/useSpeech.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/vite.config.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "document:doc/01-需求分析/1.1-产品需求文档.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

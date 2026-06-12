@@ -1,0 +1,21 @@
+{
+  "projectRoot": "F:/web/shiyi",
+  "batchFiles": [
+    {"path": "code/server/index.js", "language": "javascript", "sizeLines": 39, "fileCategory": "code"},
+    {"path": "code/server/routes/ai.js", "language": "javascript", "sizeLines": 33, "fileCategory": "code"},
+    {"path": "code/server/routes/decks.js", "language": "javascript", "sizeLines": 48, "fileCategory": "code"},
+    {"path": "code/server/routes/learn.js", "language": "javascript", "sizeLines": 256, "fileCategory": "code"},
+    {"path": "code/server/services/aiService.js", "language": "javascript", "sizeLines": 370, "fileCategory": "code"},
+    {"path": "code/server/services/ankiService.js", "language": "javascript", "sizeLines": 258, "fileCategory": "code"},
+    {"path": "code/server/services/sessionService.js", "language": "javascript", "sizeLines": 147, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "code/server/index.js": ["code/server/routes/ai.js", "code/server/routes/decks.js", "code/server/routes/learn.js"],
+    "code/server/routes/ai.js": ["code/server/services/aiService.js"],
+    "code/server/routes/decks.js": ["code/server/services/ankiService.js"],
+    "code/server/routes/learn.js": ["code/server/services/aiService.js", "code/server/services/ankiService.js", "code/server/services/sessionService.js"],
+    "code/server/services/aiService.js": [],
+    "code/server/services/ankiService.js": [],
+    "code/server/services/sessionService.js": []
+  }
+}

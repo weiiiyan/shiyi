@@ -1,0 +1,65 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 6,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "code/src/App.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 16,
+      "metrics": {}
+    },
+    {
+      "path": "code/src/main.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 7,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/src/router/index.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 14,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "code/src/views/DeckSelect.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 125,
+      "nonEmptyLines": 113,
+      "metrics": {}
+    },
+    {
+      "path": "code/src/views/LearnView.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 394,
+      "nonEmptyLines": 348,
+      "metrics": {}
+    },
+    {
+      "path": "code/src/views/SettingsView.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 153,
+      "nonEmptyLines": 133,
+      "metrics": {}
+    }
+  ]
+}

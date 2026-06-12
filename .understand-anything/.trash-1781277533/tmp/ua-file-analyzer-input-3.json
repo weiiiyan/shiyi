@@ -1,0 +1,15 @@
+{
+  "projectRoot": "f:/web/shiyi",
+  "batchFiles": [
+    {"path": "code/.env.example", "language": "config", "sizeLines": 5, "fileCategory": "config"},
+    {"path": "code/README.md", "language": "markdown", "sizeLines": 5, "fileCategory": "docs"},
+    {"path": "code/index.html", "language": "html", "sizeLines": 12, "fileCategory": "markup"},
+    {"path": "code/package.json", "language": "json", "sizeLines": 26, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "code/.env.example": [],
+    "code/README.md": [],
+    "code/index.html": [],
+    "code/package.json": []
+  }
+}

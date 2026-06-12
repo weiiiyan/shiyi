@@ -1,0 +1,13 @@
+{
+  "projectRoot": "f:/web/shiyi",
+  "batchFiles": [
+    {"path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md", "language": "markdown", "sizeLines": 15, "fileCategory": "docs"},
+    {"path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md", "language": "markdown", "sizeLines": 7, "fileCategory": "docs"},
+    {"path": "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md", "language": "markdown", "sizeLines": 5, "fileCategory": "docs"}
+  ],
+  "batchImportData": {
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md": [],
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md": [],
+    "doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md": []
+  }
+}

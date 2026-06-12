@@ -1,0 +1,19 @@
+{
+  "projectRoot": "F:/web/shiyi",
+  "batchFiles": [
+    {"path": "code/src/App.vue", "language": "vue", "sizeLines": 17, "fileCategory": "code"},
+    {"path": "code/src/main.js", "language": "javascript", "sizeLines": 8, "fileCategory": "code"},
+    {"path": "code/src/router/index.js", "language": "javascript", "sizeLines": 17, "fileCategory": "code"},
+    {"path": "code/src/views/DeckSelect.vue", "language": "vue", "sizeLines": 125, "fileCategory": "code"},
+    {"path": "code/src/views/LearnView.vue", "language": "vue", "sizeLines": 394, "fileCategory": "code"},
+    {"path": "code/src/views/SettingsView.vue", "language": "vue", "sizeLines": 153, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "code/src/App.vue": [],
+    "code/src/main.js": ["code/src/App.vue", "code/src/router/index.js", "code/src/style.css"],
+    "code/src/router/index.js": ["code/src/views/DeckSelect.vue", "code/src/views/LearnView.vue", "code/src/views/SettingsView.vue"],
+    "code/src/views/DeckSelect.vue": [],
+    "code/src/views/LearnView.vue": [],
+    "code/src/views/SettingsView.vue": []
+  }
+}
