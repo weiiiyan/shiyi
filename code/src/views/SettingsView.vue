@@ -7,8 +7,8 @@
       <h3>🤖 AI 模型配置</h3>
 
       <div class="form-group">
-        <label>AI 服务商</label>
-        <select v-model="config.provider">
+        <label for="ai-provider">AI 服务商</label>
+        <select id="ai-provider" v-model="config.provider" name="ai-provider">
           <option value="openai">OpenAI</option>
           <option value="qwen">千问 (Qwen)</option>
           <option value="doubao">豆包 (Doubao)</option>
@@ -17,28 +17,28 @@
       </div>
 
       <div class="form-group" v-if="config.provider === 'custom'">
-        <label>API Base URL</label>
-        <input v-model="config.baseURL" placeholder="https://api.openai.com/v1" />
+        <label for="api-base-url">API Base URL</label>
+        <input id="api-base-url" v-model="config.baseURL" type="url" inputmode="url" name="api-base-url" autocomplete="url" placeholder="https://api.openai.com/v1…" />
       </div>
 
       <div class="form-group">
-        <label>API Key</label>
-        <input v-model="config.apiKey" type="password" placeholder="sk-..." />
+        <label for="api-key">API Key</label>
+        <input id="api-key" v-model="config.apiKey" type="password" name="api-key" autocomplete="current-password" spellcheck="false" placeholder="sk-…" />
       </div>
 
       <div class="form-group">
-        <label>模型名称</label>
-        <input v-model="config.model" placeholder="gpt-4o-mini" list="model-list" />
+        <label for="model-name">模型名称</label>
+        <input id="model-name" v-model="config.model" name="model-name" autocomplete="off" placeholder="gpt-4o-mini…" list="model-list" />
         <datalist id="model-list">
           <option v-for="m in modelOptions" :key="m" :value="m" />
         </datalist>
       </div>
 
       <button class="btn-primary" @click="testConnection" :disabled="testing">
-        {{ testing ? '测试中...' : '测试连接' }}
+        {{ testing ? '测试中…' : '测试连接' }}
       </button>
-      <div v-if="testResult !== null" class="test-result" :class="{ ok: testResult.ok }">
-        {{ testResult.ok ? '✅ 连接成功：' + testResult.message : '❌ 连接失败：' + testResult.message }}
+      <div v-if="testResult !== null" class="test-result" :class="{ ok: testResult.ok }" aria-live="polite">
+        {{ testResult.ok ? '✅ 连接成功：' + testResult.message : '❌ 连接失败：' + testResult.message + '。请检查 API Key 是否正确，或切换服务商后重试。' }}
       </div>
     </section>
 
@@ -46,13 +46,13 @@
     <section class="settings-section">
       <h3>📋 Anki-Connect 设置</h3>
       <div class="form-group">
-        <label>Anki-Connect URL</label>
-        <input v-model="ankiUrl" placeholder="http://localhost:8765" disabled />
+        <label for="anki-url">Anki-Connect URL</label>
+        <input id="anki-url" v-model="ankiUrl" type="url" name="anki-url" autocomplete="url" placeholder="http://localhost:8765" disabled />
         <span class="hint">默认使用本地 Anki-Connect</span>
       </div>
       <button class="btn-secondary" @click="checkAnki">检测 Anki 连接</button>
-      <div v-if="ankiStatus !== null" class="test-result" :class="{ ok: ankiStatus }">
-        {{ ankiStatus ? '✅ Anki-Connect 已连接' : '❌ 无法连接到 Anki-Connect' }}
+      <div v-if="ankiStatus !== null" class="test-result" :class="{ ok: ankiStatus }" aria-live="polite">
+        {{ ankiStatus ? '✅ Anki-Connect 已连接' : '❌ 无法连接到 Anki-Connect。请确认 Anki 已启动且 Anki-Connect 插件已安装并运行。' }}
       </div>
     </section>
 
@@ -90,31 +90,44 @@
           class="level-card"
           :class="{ expanded: expandedLevel === lvl.id }"
         >
-          <div class="level-card-header" @click="toggleLevel(lvl.id)">
+          <button class="level-card-header" @click="toggleLevel(lvl.id)" :aria-expanded="expandedLevel === lvl.id ? 'true' : 'false'">
             <span class="level-name">{{ lvl.label }}</span>
             <span v-if="lvl.isBuiltin" class="badge-builtin">内置</span>
             <span v-else class="badge-custom">自定义</span>
-            <button
-              v-if="!lvl.isBuiltin"
+            <span
+              v-if="!lvl.isBuiltin && confirmDeleteId !== lvl.id"
               class="btn-delete-level"
-              @click.stop="deleteLevel(lvl.id)"
-              title="删除此等级"
-            >🗑️</button>
+              role="button"
+              tabindex="0"
+              :aria-label="'删除等级：' + lvl.label"
+              @click.stop="confirmDeleteId = lvl.id"
+              @keydown.enter.stop="confirmDeleteId = lvl.id"
+              @keydown.space.stop.prevent="confirmDeleteId = lvl.id"
+            >🗑️</span>
             <span class="expand-icon">{{ expandedLevel === lvl.id ? '▾' : '▸' }}</span>
+          </button>
+
+          <!-- 删除确认 -->
+          <div v-if="confirmDeleteId === lvl.id" class="delete-confirm-bar">
+            <span>确定删除「{{ lvl.label }}」？此操作不可撤销。</span>
+            <button class="btn-danger-sm" @click.stop="executeDelete(lvl.id)">确认删除</button>
+            <button class="btn-cancel-sm" @click.stop="confirmDeleteId = null">取消</button>
           </div>
 
           <div v-if="expandedLevel === lvl.id" class="level-card-body">
             <div class="form-group">
-              <label>等级名称</label>
-              <input v-model="lvl.label" @input="autoSaveProficiency" />
+              <label :for="'level-name-' + lvl.id">等级名称</label>
+              <input :id="'level-name-' + lvl.id" v-model="lvl.label" :name="'level-name-' + lvl.id" @input="autoSaveProficiency" />
             </div>
             <div class="form-group" v-for="skill in SKILLS" :key="skill.key">
-              <label>{{ skill.icon }} {{ skill.label }}提示词</label>
+              <label :for="'prompt-' + lvl.id + '-' + skill.key">{{ skill.icon }} {{ skill.label }}提示词</label>
               <textarea
+                :id="'prompt-' + lvl.id + '-' + skill.key"
                 v-model="lvl.prompts[skill.key]"
+                :name="'prompt-' + lvl.id + '-' + skill.key"
                 @input="autoSaveProficiency"
                 rows="3"
-                :placeholder="`描述学生在${skill.label}方面的英语水平...`"
+                :placeholder="`描述学生在${skill.label}方面的英语水平…`"
               ></textarea>
             </div>
             <button
@@ -302,6 +315,7 @@ const proficiency = reactive({
 })
 
 const expandedLevel = ref(null)
+const confirmDeleteId = ref(null)
 let proficiencyLoaded = false
 let customIdCounter = 0
 
@@ -378,7 +392,8 @@ function addCustomLevel() {
   saveProficiencyToStorage()
 }
 
-function deleteLevel(levelId) {
+function executeDelete(levelId) {
+  confirmDeleteId.value = null
   const idx = proficiency.levels.findIndex((l) => l.id === levelId)
   if (idx === -1) return
   // 如果有技能选中了被删除的等级，回退到 intermediate

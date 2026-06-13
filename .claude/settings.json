@@ -5,7 +5,10 @@
       "Bash(node -e ' *)",
       "Bash(GRAPH_DIR=f:/web/shiyi npx vite --host 127.0.0.1)",
       "Bash(sleep 5 && cat /c/Users/Admin/AppData/Local/Temp/claude/f--web-shiyi/f60d71a1-6062-45f4-aa58-283bd1ec45c4/tasks/bk8wn25tm.output 2>/dev/null | head -20)",
-      "Read(//c/Users/Admin/AppData/Local/Temp/claude/f--web-shiyi/f60d71a1-6062-45f4-aa58-283bd1ec45c4/tasks/**)"
+      "Read(//c/Users/Admin/AppData/Local/Temp/claude/f--web-shiyi/f60d71a1-6062-45f4-aa58-283bd1ec45c4/tasks/**)",
+      "Bash(bash \"C:/Users/Admin/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/start-server.sh\" --project-dir \"f:/web/shiyi\")",
+      "Skill(commit-commands:commit)",
+      "Skill(commit-commands:commit:*)"
     ]
   }
 }

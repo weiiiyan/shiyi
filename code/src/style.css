@@ -141,6 +141,11 @@
 
 html {
   font-size: 17px;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 body {
@@ -187,7 +192,7 @@ button {
   font-family: var(--font-ui);
   font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.2s var(--ease-out);
+  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
 code {
@@ -290,6 +295,10 @@ code {
 .theme-select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.theme-select:focus-visible {
+  outline: none;
 }
 
 .app-main {
@@ -977,6 +986,10 @@ code {
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
+.input-area input:focus-visible {
+  outline: none;
+}
+
 .input-area button {
   background: var(--accent);
   color: var(--text-inverse);
@@ -1145,8 +1158,14 @@ code {
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--text-primary);
+  transition: background 0.25s var(--ease-out), border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+
+.form-group input:focus-visible,
+.form-group select:focus-visible {
   outline: none;
-  transition: all 0.25s var(--ease-out);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .form-group input::placeholder {
@@ -1272,6 +1291,10 @@ select {
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
+.skill-level-select:focus-visible {
+  outline: none;
+}
+
 .levels-header {
   display: flex;
   align-items: baseline;
@@ -1319,10 +1342,78 @@ select {
   padding: 0.65em 0.85rem;
   cursor: pointer;
   user-select: none;
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
 }
 
 .level-card-header:hover {
   background: var(--bg-hover);
+}
+
+.level-card-header:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: var(--radius);
+}
+
+/* === Delete confirmation bar === */
+.delete-confirm-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55em 0.85rem;
+  background: var(--danger-bg);
+  border-top: 1px solid var(--danger);
+  border-bottom: 1px solid var(--danger);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--danger);
+  font-weight: 500;
+}
+
+.delete-confirm-bar span {
+  flex: 1;
+}
+
+.btn-danger-sm {
+  background: var(--danger);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3em 0.75em;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out);
+}
+
+.btn-danger-sm:hover {
+  background: #d45a56;
+}
+
+.btn-cancel-sm {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.3em 0.75em;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.btn-cancel-sm:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-visible);
 }
 
 .level-name {
@@ -1398,6 +1489,10 @@ select {
 .level-card-body .form-group textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.level-card-body .form-group textarea:focus-visible {
+  outline: none;
 }
 
 .btn-sm {
