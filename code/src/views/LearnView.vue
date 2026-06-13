@@ -22,6 +22,12 @@
         </div>
       </div>
 
+      <!-- 目标单词横幅 -->
+      <div v-if="currentCard" class="target-word-banner">
+        <div class="target-word-main">{{ currentCard.word }}</div>
+        <div class="target-word-concept" v-if="currentConcept">{{ currentConcept }}</div>
+      </div>
+
       <!-- 对话消息 -->
       <div class="messages" ref="messagesContainer">
         <!-- 如果没有活跃会话 -->
@@ -43,7 +49,8 @@
           class="message"
           :class="msg.role"
         >
-          <div class="message-content">{{ msg.content }}</div>
+          <div v-if="msg.role === 'user'" class="message-content">{{ msg.content }}</div>
+          <div v-else class="message-content" v-html="msg.content"></div>
           <div v-if="msg.role === 'assistant' && !msg.ease" class="msg-actions">
             <button
               class="btn-speak"
@@ -119,6 +126,7 @@ const waiting = ref(false)
 const done = ref(false)
 const doneMessage = ref('')
 const currentCard = ref(null)
+const currentConcept = ref('')
 const totalDue = ref(0)
 const remaining = ref(0)
 const messages = ref([])
@@ -148,8 +156,10 @@ function readAloud(text, index) {
     return
   }
 
-  // 清理文本中用于显示的标记
+  // 清理文本中用于显示的标记、HTML 标签和 Markdown 语法
   const cleanText = text
+    .replace(/<[^>]*>/g, '')     // 移除 HTML 标签（如 <mark> 高亮标记）
+    .replace(/\*{1,2}/g, '')     // 移除 Markdown 强调标记 ** 和 *
     .replace(/🎧\s*/g, '')
     .replace(/🗣️\s*/g, '')
     .replace(/✍️\s*/g, '')
@@ -251,6 +261,7 @@ async function startSession() {
     }
 
     currentCard.value = data.card
+    currentConcept.value = data.card.concept || ''
     totalDue.value = data.totalDue
     remaining.value = data.remaining
     started.value = true
@@ -259,7 +270,7 @@ async function startSession() {
     // 显示 AI 生成的场景
     if (data.scenario) {
       currentScenario.value = data.scenario
-      const msg = formatScenario(currentCard.value.cardType, data.scenario)
+      const msg = formatScenario(currentCard.value.cardType, data.scenario, currentCard.value.word)
       messages.value.push({ role: 'assistant', content: msg })
       // listen 卡片自动朗读
       if (currentCard.value.cardType === 'listen' && data.scenario.audioText) {
@@ -305,10 +316,10 @@ async function sendResponse() {
 
     const j = data.judgment
 
-    // 显示反馈
+    // 显示反馈（不含目标词高亮，只做 Markdown → HTML + 转义）
     messages.value.push({
       role: 'assistant',
-      content: j.feedback,
+      content: formatMessageText(j.feedback, null),
       ease: j.ease,
     })
 
@@ -362,6 +373,7 @@ async function nextCard() {
     }
 
     currentCard.value = data.card
+    currentConcept.value = data.card.concept || ''
     totalDue.value = data.totalDue
     remaining.value = data.remaining
     if (data.progress) {
@@ -370,7 +382,7 @@ async function nextCard() {
 
     if (data.scenario) {
       currentScenario.value = data.scenario
-      const msg = formatScenario(currentCard.value.cardType, data.scenario)
+      const msg = formatScenario(currentCard.value.cardType, data.scenario, currentCard.value.word)
       messages.value.push({ role: 'assistant', content: msg })
       // listen 卡片自动朗读
       if (currentCard.value.cardType === 'listen' && data.scenario.audioText) {
@@ -383,19 +395,73 @@ async function nextCard() {
   }
 }
 
-function formatScenario(cardType, scenario) {
+function formatScenario(cardType, scenario, word = '') {
+  let text
   switch (cardType) {
     case 'read':
-      return `${scenario.scenario}\n\n❓ ${scenario.question}`
+      text = `${scenario.scenario}\n\n❓ ${scenario.question}`
+      break
     case 'write':
-      return `✍️ ${scenario.scenario}\n\n❓ ${scenario.task}`
+      text = `✍️ ${scenario.scenario}\n\n❓ ${scenario.task}`
+      break
     case 'listen':
-      return `🎧 ${scenario.audioText}\n\n❓ ${scenario.question}`
+      text = `🎧 ${scenario.audioText}\n\n❓ ${scenario.question}`
+      break
     case 'speak':
-      return `🗣️ ${scenario.scenario}\n\n❓ ${scenario.task}`
+      text = `🗣️ ${scenario.scenario}\n\n❓ ${scenario.task}`
+      break
     default:
-      return scenario.scenario || scenario.question || ''
+      text = scenario.scenario || scenario.question || ''
   }
+  return formatMessageText(text, word)
+}
+
+/**
+ * 安全地将 AI 文本转为可渲染的 HTML
+ *
+ * 策略（顺序很重要）：
+ * 1. Markdown ** 转占位符（避免被后续转义破坏）
+ * 2. 去掉 AI 可能输出的原始 HTML 标签
+ * 3. HTML 转义（防 XSS）
+ * 4. 占位符还原为 <strong>/<em> 标签
+ * 5. \n 转 <br>
+ * 6. 高亮目标单词
+ */
+function formatMessageText(text, word) {
+  if (!text) return text
+
+  // Step 1: Markdown → 占位符
+  let processed = text
+    .replace(/\*\*(.+?)\*\*/g, '\x00STRONG\x00$1\x00/STRONG\x00')
+    .replace(/\*(.+?)\*/g, '\x00EM\x00$1\x00/EM\x00')
+
+  // Step 2: 去掉 AI 可能输出的 HTML 标签（仅匹配真正的标签，<字母...>）
+  processed = processed.replace(/<\/?[a-zA-Z][a-zA-Z0-9]*(?:\s[^>]*)?\/?>/g, '')
+
+  // Step 3: HTML 转义
+  processed = processed
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+
+  // Step 4: 占位符 → HTML 标签
+  processed = processed
+    .replace(/\x00STRONG\x00/g, '<strong>')
+    .replace(/\x00\/STRONG\x00/g, '</strong>')
+    .replace(/\x00EM\x00/g, '<em>')
+    .replace(/\x00\/EM\x00/g, '</em>')
+
+  // Step 5: \n → <br>
+  processed = processed.replace(/\n/g, '<br>')
+
+  // Step 6: 高亮目标单词
+  if (word) {
+    const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const regex = new RegExp(`\\b(${escapedWord})\\b`, 'gi')
+    processed = processed.replace(regex, '<mark class="word-highlight">$1</mark>')
+  }
+
+  return processed
 }
 
 function scrollToBottom() {

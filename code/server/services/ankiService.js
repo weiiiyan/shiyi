@@ -169,9 +169,37 @@ async function getDueCards(deckFullName) {
 
   if (cardIds.length === 0) return [];
 
+  return fetchCardsWithNotes(cardIds);
+}
+
+/**
+ * 获取指定牌组中所有卡片（不限到期状态）
+ * 用于诊断统计等场景
+ */
+async function getAllCardsInDeck(deckFullName) {
+  const cardIds = await invoke('findCards', {
+    query: `deck:"${deckFullName}"`,
+  });
+
+  if (cardIds.length === 0) return [];
+
+  return fetchCardsWithNotes(cardIds);
+}
+
+/**
+ * 根据卡片 ID 批量获取卡片信息并合并 note 字段数据
+ * 共享函数，getDueCards 和 getAllCardsInDeck 均使用此函数
+ *
+ * 关键修复：Anki-Connect 的 cardsInfo 返回的 note ID 字段名是 `note`，不是 `noteId`
+ */
+async function fetchCardsWithNotes(cardIds) {
   const cardsInfo = await invoke('cardsInfo', { cards: cardIds });
-  const noteIds = await invoke('cardsToNotes', { cards: cardIds });
-  const notesInfo = await invoke('notesInfo', { notes: noteIds });
+
+  // 从 cardsInfo 中提取 note ID（Anki-Connect 字段名为 `note`，不是 `noteId`）
+  const noteIds = [...new Set(cardsInfo.map((c) => c.note).filter(Boolean))];
+  const notesInfo = noteIds.length > 0
+    ? await invoke('notesInfo', { notes: noteIds })
+    : [];
 
   // 构建 noteId → note 的映射
   const noteMap = {};
@@ -181,10 +209,13 @@ async function getDueCards(deckFullName) {
 
   // 合并卡片信息和 note 字段
   return cardsInfo.map((card) => {
-    const note = noteMap[card.noteId] || {};
+    // 关键修复：Anki-Connect 的 cardsInfo 返回的 note ID 字段名是 `note`，不是 `noteId`
+    const note = noteMap[card.note] || {};
+
     return {
       cardId: card.cardId,
-      noteId: card.noteId,
+      // 使用 card.note（Anki-Connect 的 note ID 字段名）
+      noteId: card.note,
       deck: card.deckName,
       type: card.type, // 0=new, 1=learning, 2=review
       due: card.due,
@@ -197,7 +228,7 @@ async function getDueCards(deckFullName) {
       cardType:
         note.fields?.CardType?.value ||
         note.fields?.card_type?.value ||
-        'read',
+        randomCardType(card.cardId),
       subDeck:
         note.fields?.SubDeck?.value || note.fields?.sub_deck?.value || '',
       examples: parseJsonField(
@@ -271,10 +302,28 @@ function parseJsonField(value) {
   }
 }
 
+/**
+ * 当 Anki note 未设置 CardType 时，随机分配一种卡片类型
+ * 等概率随机四种类型，使学习体验不再单调
+ */
+const CARD_TYPES = ['read', 'write', 'listen', 'speak'];
+
+/**
+ * 基于卡片 ID 确定性分配卡片类型
+ * 使用乘法哈希确保同一张卡片在不同请求中获得一致的类型，
+ * 避免破坏 pickNextCard 的轮换机制
+ */
+function randomCardType(cardId) {
+  // 乘法哈希：cardId * golden-ratio-like constant, mod length
+  const idx = ((cardId * 2654435761) >>> 0) % CARD_TYPES.length;
+  return CARD_TYPES[idx];
+}
+
 export default {
   getAllDeckNames,
   getShiYiDecks,
   getDueCards,
+  getAllCardsInDeck,
   getKnownVocabulary,
   answerCard,
   isAvailable,

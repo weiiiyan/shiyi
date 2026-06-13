@@ -6,6 +6,58 @@ import sessionService from '../services/sessionService.js';
 const router = Router();
 
 /**
+ * 从待学卡片中按类型轮换选择下一张卡片
+ *
+ * 策略：
+ * 1. 按 cardType 分组
+ * 2. 从上次使用的类型开始轮换 (read → write → listen → speak)
+ * 3. 在选中的类型组内随机抽取一张
+ * 4. 如果该类型无卡片，顺延到下一个类型
+ *
+ * @param {Array} cards - 待选卡片数组
+ * @param {Object} session - 当前学习会话 (会修改 session.lastCardType)
+ * @returns {Object|null} 选中的卡片
+ */
+function pickNextCard(cards, session) {
+  if (!cards || cards.length === 0) return null;
+
+  // 按类型分组
+  const byType = { read: [], write: [], listen: [], speak: [] };
+  for (const card of cards) {
+    const type = card.cardType || 'read';
+    if (byType[type]) {
+      byType[type].push(card);
+    } else {
+      byType.read.push(card); // 未知类型归入 read
+    }
+  }
+
+  const typeOrder = ['read', 'write', 'listen', 'speak'];
+
+  // 从上次类型的下一个开始轮换
+  let startIdx = 0;
+  if (session.lastCardType != null) {
+    const lastIdx = typeOrder.indexOf(session.lastCardType);
+    startIdx = (lastIdx + 1) % typeOrder.length;
+  }
+
+  // 按轮换顺序尝试每种类型
+  for (let i = 0; i < typeOrder.length; i++) {
+    const idx = (startIdx + i) % typeOrder.length;
+    const type = typeOrder[idx];
+    const pool = byType[type];
+    if (pool.length > 0) {
+      // 同类型内随机抽取
+      const j = Math.floor(Math.random() * pool.length);
+      session.lastCardType = type;
+      return pool[j];
+    }
+  }
+
+  return null;
+}
+
+/**
  * POST /api/learn/start
  * 开始学习一个牌组。
  * 从 Anki 获取到期卡片，取第一张，生成学习场景。
@@ -36,9 +88,13 @@ router.post('/start', async (req, res) => {
 
     // 创建会话
     sessionService.createSession(deckId, aiConfig);
+    const session = sessionService.getSession(deckId);
 
-    // 取第一张卡片
-    const card = dueCards[0];
+    // 按类型轮换取下一张卡片
+    const card = pickNextCard(dueCards, session);
+
+    // 获取该单词的历史场景（用于 AI 去重）
+    const previousScenarios = sessionService.getPreviousScenarios(deckId, card.word);
 
     // AI 生成场景
     const scenario = await aiService.generateScenario({
@@ -48,7 +104,11 @@ router.post('/start', async (req, res) => {
       knownWords,
       context: card.context,
       aiConfig,
+      previousScenarios,
     });
+
+    // 记录已生成的场景
+    sessionService.recordScenario(deckId, card.word, scenario);
 
     // 在会话中设置当前卡片
     sessionService.setCurrentCard(deckId, card, scenario);
@@ -58,6 +118,7 @@ router.post('/start', async (req, res) => {
       card: {
         cardId: card.cardId,
         word: card.word,
+        concept: card.concept,
         cardType: card.cardType,
         ankiType: card.type,  // 0=new, 1=learning, 2=review
       },
@@ -182,7 +243,7 @@ router.post('/next', async (req, res) => {
     // 获取到期卡片
     const dueCards = await ankiService.getDueCards(deckFullName);
 
-    // 过滤掉已完成的
+    // 过滤掉已完成的卡片（completedCards 已通过卡片 ID 防止重复练习）
     const remaining = dueCards.filter(
       (c) => !session.completedCards.includes(c.cardId)
     );
@@ -199,8 +260,11 @@ router.post('/next', async (req, res) => {
     // 获取已知词汇
     const knownWords = await ankiService.getKnownVocabulary(deckFullName);
 
-    // 取下一张卡片
-    const card = remaining[0];
+    // 按类型轮换取下一张卡片
+    const card = pickNextCard(remaining, session);
+
+    // 获取该单词的历史场景（用于 AI 去重）
+    const previousScenarios = sessionService.getPreviousScenarios(deckId, card.word);
 
     // AI 生成场景
     const scenario = await aiService.generateScenario({
@@ -210,7 +274,11 @@ router.post('/next', async (req, res) => {
       knownWords,
       context: card.context,
       aiConfig: session.aiConfig,
+      previousScenarios,
     });
+
+    // 记录已生成的场景
+    sessionService.recordScenario(deckId, card.word, scenario);
 
     sessionService.setCurrentCard(deckId, card, scenario);
 
@@ -219,11 +287,12 @@ router.post('/next', async (req, res) => {
       card: {
         cardId: card.cardId,
         word: card.word,
+        concept: card.concept,
         cardType: card.cardType,
         ankiType: card.type,  // 0=new, 1=learning, 2=review
       },
       scenario,
-      totalDue: dueCards.length,
+      totalDue: remaining.length,
       remaining: remaining.length - 1,
       progress: sessionService.getProgress(deckId),
     });

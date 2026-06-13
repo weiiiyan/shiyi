@@ -144,7 +144,7 @@ function createClient(provider, apiKey, baseURL, model) {
  * @param {string} params.context - 场景上下文
  * @param {Object} params.aiConfig - AI 配置 {provider, apiKey, baseURL, model}
  */
-async function generateScenario({ cardType, word, concept, knownWords, context, aiConfig }) {
+async function generateScenario({ cardType, word, concept, knownWords, context, aiConfig, previousScenarios = [] }) {
   const { client, model } = createClient(
     aiConfig.provider,
     aiConfig.apiKey,
@@ -160,6 +160,8 @@ async function generateScenario({ cardType, word, concept, knownWords, context, 
 - Use words the student already knows as much as possible.
 - All communication should be immersive — help students think directly in English.
 - The goal is conveying MEANING, not perfect grammar.
+- BE CONCISE. Every exercise should fit in 2-3 short sentences. Never write paragraphs.
+- VARY your scenarios widely. Rotate through different settings: daily life, travel, food, technology, work, hobbies, shopping, health. Never repeat the same setting consecutively.
 
 The student is learning in this context: "${context}".`;
 
@@ -171,15 +173,17 @@ The meaning/concept is: "${concept}" (you know this but do NOT mention Chinese).
 The student already knows these words: ${knownWordList || '(none yet — use only the most basic English)'}
 
 INSTRUCTIONS:
-1. Write a short paragraph (3-5 sentences) that naturally contains the word "${word}".
+1. Write 2-3 short, punchy sentences that naturally contain the word "${word}". Bold it as **${word}**.
 2. Ask the student a question that tests whether they UNDERSTOOD the meaning (not the translation).
-3. The question should require them to demonstrate comprehension, e.g., "What is happening in the scene?" or "How does the character feel?"
+3. The question should require them to demonstrate comprehension, e.g., "What is happening?" or "How does the character feel?"
+
+VARIETY: Use a completely different setting from any previous exercise. Rotate among: everyday conversation, news headline, social media post, short story, email, review, instruction. Never reuse the same theme consecutively.
 
 Respond in JSON format:
 {
-  "scenario": "the paragraph text here",
+  "scenario": "the paragraph text here (use **word** to bold the target word)",
   "question": "the comprehension question here",
-  "hint": "an optional hint to help if they're stuck (still in English)"
+  "hint": "an optional hint to help if they're stuck (still in English, keep it short)"
 }`,
 
     write: `Generate a WRITING exercise for the word "${word}".
@@ -189,15 +193,17 @@ The meaning/concept is: "${concept}" (you know this but do NOT mention Chinese).
 The student already knows these words: ${knownWordList || '(none yet — use only the most basic English)'}
 
 INSTRUCTIONS:
-1. Describe a real-life scenario where the student needs to express something using the word "${word}" (or its related forms).
+1. In 2-3 sentences, describe a real-life situation where the student needs to express something using the word "${word}" (or its related forms).
 2. Ask them to TYPE what they would say/write in that situation.
 3. Make the scenario concrete and easy to imagine.
 
+VARIETY: Use a different setting than the last exercise. Rotate: everyday conversation, short story, news, social media post, email, travel, food, daily problem.
+
 Respond in JSON format:
 {
-  "scenario": "description of the situation",
+  "scenario": "brief description of the situation",
   "task": "what they need to write (e.g., 'Type what you would say to your friend')",
-  "hint": "an optional hint (still in English)"
+  "hint": "an optional brief hint (still in English)"
 }`,
 
     listen: `Generate a LISTENING exercise for the word "${word}".
@@ -207,16 +213,18 @@ The meaning/concept is: "${concept}" (you know this but do NOT mention Chinese).
 The student already knows these words: ${knownWordList || '(none yet — use only the most basic English)'}
 
 INSTRUCTIONS:
-1. Write a sentence (or short dialogue) that naturally contains the word "${word}".
+1. Write one clear sentence (or 2-line dialogue) that naturally contains the word "${word}".
 2. This will be played as audio to the student.
 3. After they hear it, ask a question that tests if they understood the meaning.
-4. Keep the sentence clear and at an appropriate speed-level.
+4. Keep the sentence short and clear — easy to understand when heard.
+
+VARIETY: Use a different setting than the last exercise. Rotate: advice, observation, question, exclamation, dialogue.
 
 Respond in JSON format:
 {
-  "audioText": "the sentence to be spoken aloud",
+  "audioText": "the short sentence to be spoken aloud",
   "question": "the comprehension question after they hear it",
-  "hint": "an optional hint"
+  "hint": "an optional brief hint"
 }`,
 
     speak: `Generate a SPEAKING exercise for the word "${word}".
@@ -226,19 +234,27 @@ The meaning/concept is: "${concept}" (you know this but do NOT mention Chinese).
 The student already knows these words: ${knownWordList || '(none yet — use only the most basic English)'}
 
 INSTRUCTIONS:
-1. Describe a scenario where the student would naturally want to say something using the word "${word}".
+1. In 2-3 sentences, describe a scenario where the student would naturally want to say something using the word "${word}".
 2. Ask them to SPEAK their response aloud.
 3. Note what pronunciation elements to listen for.
 
+VARIETY: Use a different setting than the last exercise. Rotate: casual chat, formal meeting, phone call, shopping, travel, giving advice, asking for help.
+
 Respond in JSON format:
 {
-  "scenario": "description of the situation",
+  "scenario": "brief description of the situation",
   "task": "what they should say (e.g., 'Say aloud what you would tell your colleague')",
-  "pronunciationNotes": "key sounds to listen for (for the AI to check later)"
+  "pronunciationNotes": "key sounds to listen for"
 }`,
   };
 
-  const prompt = cardTypePrompts[cardType] || cardTypePrompts.read;
+  // 如果该单词已在本会话中学过，提醒 AI 生成全新场景
+  let dedupInstruction = '';
+  if (previousScenarios.length > 0) {
+    dedupInstruction = `\n\nIMPORTANT: This word has already been practiced ${previousScenarios.length} time(s) in this session. Generate a COMPLETELY DIFFERENT scenario — change the setting, characters, and situation entirely. Do NOT reuse any previous theme.`;
+  }
+
+  const prompt = (cardTypePrompts[cardType] || cardTypePrompts.read) + dedupInstruction;
 
   const response = await client.chat.completions.create({
     model,
@@ -269,7 +285,7 @@ Respond in JSON format:
  * @param {Array} params.history - 对话历史 [{role, content}]
  * @param {number} params.failCount - 连续失败次数
  * @param {Object} params.aiConfig - AI 配置
- * @returns {{ ease: number, feedback: string, continue: boolean, newScenario: object|null }}
+ * @returns {{ ease: number, feedback: string }}
  */
 async function judgeResponse({
   cardType,
@@ -293,17 +309,23 @@ async function judgeResponse({
 CORE PRINCIPLES:
 - Judge whether the student CONVEYED THE MEANING, not whether grammar is perfect.
 - Be encouraging. The goal is communication, not perfection.
-- If the student is clearly struggling (failCount=${failCount}), either lower the difficulty or give a low score so they can move on — DON'T let them feel stuck and lose confidence.
+- If the student is clearly struggling (failCount=${failCount}), either lower the difficulty or give a low score so they can move on.
 
 SCORING GUIDE:
-- ease=1 (Again): Student clearly didn't understand the word's meaning, or gave a completely wrong response. They need to retry later.
+- ease=1 (Again): Student clearly didn't understand the word's meaning.
 - ease=3 (Good): Student demonstrated basic understanding. Some errors are fine.
 - ease=4 (Easy): Student clearly understood and responded naturally/correctly.
+
+FEEDBACK RULES (CRITICAL):
+- Write exactly ONE short sentence. Not two. Not a paragraph.
+- NEVER start with "Great job!", "Well done!", "Good work!", "Excellent!", or any generic praise opener. Start directly with substance.
+- Vary your sentence structure. Do not use the same pattern twice.
+- Be specific: mention what they understood well OR what they missed.
 
 RESPOND IN JSON:
 {
   "ease": 1, 3, or 4,
-  "feedback": "brief encouraging feedback in English (1-2 sentences). Include a hint or correction if they struggled."
+  "feedback": "one specific, varied sentence"
 }`;
 
   const historySummary = (history || [])
@@ -328,7 +350,7 @@ ${historySummary}
 
 Student's latest response: "${userResponse}"
 
-Evaluate the student's understanding. Remember: ${failCount > 1 ? 'They have struggled ' + failCount + ' times. Be extra lenient or suggest moving on.' : 'This is attempt ' + (failCount + 1) + '.'}`,
+Evaluate the student's understanding. REMINDER: Do not start with generic praise. One specific, short sentence only. ${failCount > 1 ? 'They have struggled ' + failCount + ' times. Be extra lenient or suggest moving on.' : 'This is attempt ' + (failCount + 1) + '.'}`,
       },
     ],
     temperature: 0.5,

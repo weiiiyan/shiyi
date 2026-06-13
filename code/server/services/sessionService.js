@@ -26,6 +26,8 @@ function createSession(deckId, aiConfig) {
     history: [], // [{role, content}]
     scenario: null, // 当前 AI 生成的学习场景
     failCount: 0,
+    lastCardType: null,   // 卡片类型轮换指针
+    scenarioHistory: {},   // word -> [scenarioHash, ...] 场景去重
     completedCards: [], // 已完成的卡片 ID
     scores: { again: 0, good: 0, easy: 0 },
     startedAt: Date.now(),
@@ -120,6 +122,31 @@ function getProgress(deckId) {
   };
 }
 
+/**
+ * 记录某个单词已生成的场景（用于去重——避免同一单词再次出现时生成雷同场景）
+ */
+function recordScenario(deckId, wordKey, scenario) {
+  const session = getSession(deckId);
+  if (!session) return;
+  if (!session.scenarioHistory[wordKey]) {
+    session.scenarioHistory[wordKey] = [];
+  }
+  // 简单哈希：场景 JSON 前 50 字符 + 长度
+  const hash = JSON.stringify(scenario).slice(0, 50) + '_' + JSON.stringify(scenario).length;
+  if (!session.scenarioHistory[wordKey].includes(hash)) {
+    session.scenarioHistory[wordKey].push(hash);
+  }
+}
+
+/**
+ * 获取某个单词的历史场景（供 AI 生成新场景时参考去重）
+ */
+function getPreviousScenarios(deckId, wordKey) {
+  const session = getSession(deckId);
+  if (!session || !session.scenarioHistory[wordKey]) return [];
+  return session.scenarioHistory[wordKey];
+}
+
 function formatScenarioMessage(cardType, scenario) {
   switch (cardType) {
     case 'read':
@@ -143,5 +170,7 @@ export default {
   addMessage,
   recordScore,
   markCardComplete,
+  recordScenario,
+  getPreviousScenarios,
   getProgress,
 };

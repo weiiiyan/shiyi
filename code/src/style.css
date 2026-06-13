@@ -425,6 +425,43 @@ button {
 .word {
   font-weight: 700;
   font-size: 1.1em;
+  color: var(--primary);
+  background: var(--primary-bg);
+  padding: 0.15em 0.5em;
+  border-radius: 6px;
+}
+
+/* === 目标单词横幅 === */
+.target-word-banner {
+  text-align: center;
+  padding: 1rem 1rem 0.75rem;
+  border-bottom: 2px solid var(--primary-bg);
+  background: linear-gradient(135deg, var(--primary-bg) 0%, #e0e7ff 100%);
+}
+
+.target-word-main {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.target-word-concept {
+  font-size: 0.95rem;
+  color: var(--gray-500);
+  margin-top: 0.25rem;
+}
+
+/* === 场景中目标词高亮 === */
+.word-highlight {
+  background: #fde047;
+  color: #1a1a1a;
+  font-weight: 800;
+  padding: 0.15em 0.3em;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .progress-info {
