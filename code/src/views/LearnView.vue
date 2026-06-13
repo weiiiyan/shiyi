@@ -207,6 +207,15 @@ const aiConfig = computed(() => {
   }
 })
 
+// 英语水平配置 — 从 localStorage 读取
+const proficiencyConfig = computed(() => {
+  try {
+    const saved = localStorage.getItem('ShiYi_proficiency_config')
+    if (saved) return JSON.parse(saved)
+  } catch {}
+  return null
+})
+
 function cardTypeLabel(type) {
   const map = { read: '📖 读', write: '✍️ 写', listen: '🎧 听', speak: '🗣️ 说' }
   return map[type] || type
@@ -242,6 +251,7 @@ async function startSession() {
       body: JSON.stringify({
         deckId: props.deckId,
         aiConfig: aiConfig.value,
+        proficiencyConfig: proficiencyConfig.value,
       }),
     })
     const data = await res.json()

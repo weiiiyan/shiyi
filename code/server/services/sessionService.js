@@ -13,7 +13,7 @@ const SESSION_TTL = 2 * 60 * 60 * 1000;
 /**
  * 创建或重置学习会话
  */
-function createSession(deckId, aiConfig) {
+function createSession(deckId, aiConfig, proficiencyConfig) {
   // 清理旧会话
   if (sessions.has(deckId)) {
     clearTimeout(sessions.get(deckId).timer);
@@ -22,6 +22,7 @@ function createSession(deckId, aiConfig) {
   const session = {
     deckId,
     aiConfig,
+    proficiencyConfig,
     currentCard: null,
     history: [], // [{role, content}]
     scenario: null, // 当前 AI 生成的学习场景

@@ -64,7 +64,7 @@ function pickNextCard(cards, session) {
  */
 router.post('/start', async (req, res) => {
   try {
-    const { deckId, aiConfig } = req.body;
+    const { deckId, aiConfig, proficiencyConfig } = req.body;
 
     if (!deckId) {
       return res.status(400).json({ error: '请选择牌组' });
@@ -87,7 +87,7 @@ router.post('/start', async (req, res) => {
     const knownWords = await ankiService.getKnownVocabulary(deckFullName);
 
     // 创建会话
-    sessionService.createSession(deckId, aiConfig);
+    sessionService.createSession(deckId, aiConfig, proficiencyConfig);
     const session = sessionService.getSession(deckId);
 
     // 按类型轮换取下一张卡片
@@ -105,6 +105,7 @@ router.post('/start', async (req, res) => {
       context: card.context,
       aiConfig,
       previousScenarios,
+      proficiencyConfig,
     });
 
     // 记录已生成的场景
@@ -165,6 +166,7 @@ router.post('/respond', async (req, res) => {
       history: session.history,
       failCount: session.failCount,
       aiConfig: session.aiConfig,
+      proficiencyConfig: session.proficiencyConfig,
     });
 
     // 记录 AI 反馈
@@ -275,6 +277,7 @@ router.post('/next', async (req, res) => {
       context: card.context,
       aiConfig: session.aiConfig,
       previousScenarios,
+      proficiencyConfig: session.proficiencyConfig,
     });
 
     // 记录已生成的场景

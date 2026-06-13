@@ -8,6 +8,7 @@
  */
 
 import OpenAI from 'openai';
+import proficiencyService from './proficiencyService.js';
 
 /**
  * 从 AI 返回的文本中鲁棒地提取 JSON 对象
@@ -144,7 +145,7 @@ function createClient(provider, apiKey, baseURL, model) {
  * @param {string} params.context - 场景上下文
  * @param {Object} params.aiConfig - AI 配置 {provider, apiKey, baseURL, model}
  */
-async function generateScenario({ cardType, word, concept, knownWords, context, aiConfig, previousScenarios = [] }) {
+async function generateScenario({ cardType, word, concept, knownWords, context, aiConfig, previousScenarios = [], proficiencyConfig }) {
   const { client, model } = createClient(
     aiConfig.provider,
     aiConfig.apiKey,
@@ -153,6 +154,8 @@ async function generateScenario({ cardType, word, concept, knownWords, context, 
   );
 
   const knownWordList = (knownWords || []).map((w) => w.word).join(', ');
+
+  const proficiencyPrompt = proficiencyService.buildScenarioProficiency(proficiencyConfig, cardType);
 
   const systemPrompt = `You are an English tutor following a specific teaching philosophy:
 - English is a MOTOR skill, not a thinking skill. Students learn by DOING, not by analyzing.
@@ -163,7 +166,7 @@ async function generateScenario({ cardType, word, concept, knownWords, context, 
 - BE CONCISE. Every exercise should fit in 2-3 short sentences. Never write paragraphs.
 - VARY your scenarios widely. Rotate through different settings: daily life, travel, food, technology, work, hobbies, shopping, health. Never repeat the same setting consecutively.
 
-The student is learning in this context: "${context}".`;
+The student is learning in this context: "${context}".${proficiencyPrompt}`;
 
   const cardTypePrompts = {
     read: `Generate a READING exercise for the word "${word}".
@@ -296,6 +299,7 @@ async function judgeResponse({
   history,
   failCount,
   aiConfig,
+  proficiencyConfig,
 }) {
   const { client, model } = createClient(
     aiConfig.provider,
@@ -303,6 +307,8 @@ async function judgeResponse({
     aiConfig.baseURL,
     aiConfig.model
   );
+
+  const judgeProficiencyPrompt = proficiencyService.buildJudgeProficiency(proficiencyConfig, cardType);
 
   const systemPrompt = `You are a supportive English tutor evaluating a student's response.
 
@@ -314,7 +320,7 @@ CORE PRINCIPLES:
 SCORING GUIDE:
 - ease=1 (Again): Student clearly didn't understand the word's meaning.
 - ease=3 (Good): Student demonstrated basic understanding. Some errors are fine.
-- ease=4 (Easy): Student clearly understood and responded naturally/correctly.
+- ease=4 (Easy): Student clearly understood and responded naturally/correctly.${judgeProficiencyPrompt}
 
 FEEDBACK RULES (CRITICAL):
 - Write exactly ONE short sentence. Not two. Not a paragraph.
