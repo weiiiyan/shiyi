@@ -31,13 +31,6 @@
           <button class="btn-primary" @click="startSession">开始学习</button>
         </div>
 
-        <!-- 完成状态 -->
-        <div v-if="done" class="done-message">
-          <h2>🎉</h2>
-          <p>{{ doneMessage }}</p>
-          <button class="btn-primary" @click="goBack">返回牌组列表</button>
-        </div>
-
         <!-- 加载中 -->
         <div v-if="loading" class="loading-message">
           正在准备学习场景...
@@ -64,6 +57,13 @@
           <div v-if="msg.ease" class="judgment" :class="'ease-' + msg.ease">
             {{ easeLabel(msg.ease) }}
           </div>
+        </div>
+
+        <!-- 完成状态 — 放在消息之后，确保可见 -->
+        <div v-if="done" class="done-message">
+          <h2>🎉</h2>
+          <p>{{ doneMessage }}</p>
+          <button class="btn-primary" @click="goBack">返回牌组列表</button>
         </div>
       </div>
 
@@ -245,6 +245,7 @@ async function startSession() {
     if (data.done) {
       done.value = true
       doneMessage.value = data.message
+      totalDue.value = data.totalDue
       loading.value = false
       return
     }
@@ -356,6 +357,7 @@ async function nextCard() {
     if (data.done) {
       done.value = true
       doneMessage.value = data.message
+      totalDue.value = data.totalDue
       return
     }
 
