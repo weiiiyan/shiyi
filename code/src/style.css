@@ -153,8 +153,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* === Subtle grain overlay === */
-body::after {
+/* === Subtle grain overlay (dark theme only) === */
+[data-theme="dark"] body::after {
   content: '';
   position: fixed;
   inset: 0;
