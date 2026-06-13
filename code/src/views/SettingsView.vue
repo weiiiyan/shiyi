@@ -2,145 +2,196 @@
   <div class="settings-view">
     <h2>设置</h2>
 
-    <!-- AI 模型设置 -->
-    <section class="settings-section">
-      <h3>🤖 AI 模型配置</h3>
-
-      <div class="form-group">
-        <label for="ai-provider">AI 服务商</label>
-        <select id="ai-provider" v-model="config.provider" name="ai-provider">
-          <option value="openai">OpenAI</option>
-          <option value="qwen">千问 (Qwen)</option>
-          <option value="doubao">豆包 (Doubao)</option>
-          <option value="custom">自定义</option>
-        </select>
-      </div>
-
-      <div class="form-group" v-if="config.provider === 'custom'">
-        <label for="api-base-url">API Base URL</label>
-        <input id="api-base-url" v-model="config.baseURL" type="url" inputmode="url" name="api-base-url" autocomplete="url" placeholder="https://api.openai.com/v1…" />
-      </div>
-
-      <div class="form-group">
-        <label for="api-key">API Key</label>
-        <input id="api-key" v-model="config.apiKey" type="password" name="api-key" autocomplete="current-password" spellcheck="false" placeholder="sk-…" />
-      </div>
-
-      <div class="form-group">
-        <label for="model-name">模型名称</label>
-        <input id="model-name" v-model="config.model" name="model-name" autocomplete="off" placeholder="gpt-4o-mini…" list="model-list" />
-        <datalist id="model-list">
-          <option v-for="m in modelOptions" :key="m" :value="m" />
-        </datalist>
-      </div>
-
-      <button class="btn-primary" @click="testConnection" :disabled="testing">
-        {{ testing ? '测试中…' : '测试连接' }}
+    <!-- Tab Navigation -->
+    <div class="tab-nav" role="tablist" :aria-label="'设置类别'">
+      <button
+        v-for="tab in TABS"
+        :key="tab.id"
+        :id="'tab-' + tab.id"
+        class="tab-btn"
+        role="tab"
+        :aria-selected="activeTab === tab.id ? 'true' : 'false'"
+        :tabindex="activeTab === tab.id ? 0 : -1"
+        @click="activeTab = tab.id"
+        @keydown="handleTabKeydown($event, tab.id)"
+      >
+        <span class="tab-icon" aria-hidden="true">{{ tab.icon }}</span>
+        <span class="tab-label">{{ tab.label }}</span>
       </button>
-      <div v-if="testResult !== null" class="test-result" :class="{ ok: testResult.ok }" aria-live="polite">
-        {{ testResult.ok ? '✅ 连接成功：' + testResult.message : '❌ 连接失败：' + testResult.message + '。请检查 API Key 是否正确，或切换服务商后重试。' }}
-      </div>
-    </section>
+    </div>
 
-    <!-- Anki-Connect 设置 -->
-    <section class="settings-section">
-      <h3>📋 Anki-Connect 设置</h3>
-      <div class="form-group">
-        <label for="anki-url">Anki-Connect URL</label>
-        <input id="anki-url" v-model="ankiUrl" type="url" name="anki-url" autocomplete="url" placeholder="http://localhost:8765" disabled />
-        <span class="hint">默认使用本地 Anki-Connect</span>
-      </div>
-      <button class="btn-secondary" @click="checkAnki">检测 Anki 连接</button>
-      <div v-if="ankiStatus !== null" class="test-result" :class="{ ok: ankiStatus }" aria-live="polite">
-        {{ ankiStatus ? '✅ Anki-Connect 已连接' : '❌ 无法连接到 Anki-Connect。请确认 Anki 已启动且 Anki-Connect 插件已安装并运行。' }}
-      </div>
-    </section>
+    <!-- Tab Panels -->
+    <div class="tab-panels">
+      <!-- Panel: AI Model Config -->
+      <section
+        id="panel-ai"
+        class="tab-panel"
+        role="tabpanel"
+        :aria-labelledby="'tab-ai'"
+        :hidden="activeTab !== 'ai'"
+      >
+        <transition name="panel-crossfade" mode="out-in">
+          <div v-if="activeTab === 'ai'" key="ai-panel" class="panel-content">
+            <h3 class="panel-title">AI 模型配置</h3>
 
-    <!-- 英语水平设置 -->
-    <section class="settings-section">
-      <h3>📊 英语水平设置</h3>
-      <p class="section-desc">为读、写、听、说四个维度分别设置英语水平，AI 将据此调整学习内容的词汇难度、句子复杂度和评判标准。</p>
-
-      <div class="proficiency-skills">
-        <div class="skill-row" v-for="skill in SKILLS" :key="skill.key">
-          <span class="skill-icon">{{ skill.icon }}</span>
-          <span class="skill-label">{{ skill.label }}</span>
-          <select
-            class="skill-level-select"
-            :value="proficiency.selected[skill.key]"
-            @change="selectLevel(skill.key, $event.target.value)"
-          >
-            <option v-for="lvl in proficiency.levels" :key="lvl.id" :value="lvl.id">
-              {{ lvl.label }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <!-- 水平等级管理 -->
-      <div class="levels-header">
-        <h4>水平等级管理</h4>
-        <span class="hint">点击展开可编辑每个等级对应的 AI 提示词</span>
-      </div>
-
-      <div class="levels-list">
-        <div
-          v-for="(lvl, idx) in proficiency.levels"
-          :key="lvl.id"
-          class="level-card"
-          :class="{ expanded: expandedLevel === lvl.id }"
-        >
-          <button class="level-card-header" @click="toggleLevel(lvl.id)" :aria-expanded="expandedLevel === lvl.id ? 'true' : 'false'">
-            <span class="level-name">{{ lvl.label }}</span>
-            <span v-if="lvl.isBuiltin" class="badge-builtin">内置</span>
-            <span v-else class="badge-custom">自定义</span>
-            <span
-              v-if="!lvl.isBuiltin && confirmDeleteId !== lvl.id"
-              class="btn-delete-level"
-              role="button"
-              tabindex="0"
-              :aria-label="'删除等级：' + lvl.label"
-              @click.stop="confirmDeleteId = lvl.id"
-              @keydown.enter.stop="confirmDeleteId = lvl.id"
-              @keydown.space.stop.prevent="confirmDeleteId = lvl.id"
-            >🗑️</span>
-            <span class="expand-icon">{{ expandedLevel === lvl.id ? '▾' : '▸' }}</span>
-          </button>
-
-          <!-- 删除确认 -->
-          <div v-if="confirmDeleteId === lvl.id" class="delete-confirm-bar">
-            <span>确定删除「{{ lvl.label }}」？此操作不可撤销。</span>
-            <button class="btn-danger-sm" @click.stop="executeDelete(lvl.id)">确认删除</button>
-            <button class="btn-cancel-sm" @click.stop="confirmDeleteId = null">取消</button>
-          </div>
-
-          <div v-if="expandedLevel === lvl.id" class="level-card-body">
             <div class="form-group">
-              <label :for="'level-name-' + lvl.id">等级名称</label>
-              <input :id="'level-name-' + lvl.id" v-model="lvl.label" :name="'level-name-' + lvl.id" @input="autoSaveProficiency" />
+              <label for="ai-provider">AI 服务商</label>
+              <select id="ai-provider" v-model="config.provider" name="ai-provider">
+                <option value="openai">OpenAI</option>
+                <option value="qwen">千问 (Qwen)</option>
+                <option value="doubao">豆包 (Doubao)</option>
+                <option value="custom">自定义</option>
+              </select>
             </div>
-            <div class="form-group" v-for="skill in SKILLS" :key="skill.key">
-              <label :for="'prompt-' + lvl.id + '-' + skill.key">{{ skill.icon }} {{ skill.label }}提示词</label>
-              <textarea
-                :id="'prompt-' + lvl.id + '-' + skill.key"
-                v-model="lvl.prompts[skill.key]"
-                :name="'prompt-' + lvl.id + '-' + skill.key"
-                @input="autoSaveProficiency"
-                rows="3"
-                :placeholder="`描述学生在${skill.label}方面的英语水平…`"
-              ></textarea>
-            </div>
-            <button
-              v-if="lvl.isBuiltin"
-              class="btn-secondary btn-sm"
-              @click="resetLevelToDefault(lvl.id)"
-            >重置为默认</button>
-          </div>
-        </div>
-      </div>
 
-      <button class="btn-secondary" @click="addCustomLevel">+ 新增自定义等级</button>
-    </section>
+            <div class="form-group" v-if="config.provider === 'custom'">
+              <label for="api-base-url">API Base URL</label>
+              <input id="api-base-url" v-model="config.baseURL" type="url" inputmode="url" name="api-base-url" autocomplete="url" placeholder="https://api.openai.com/v1…" />
+            </div>
+
+            <div class="form-group">
+              <label for="api-key">API Key</label>
+              <input id="api-key" v-model="config.apiKey" type="password" name="api-key" autocomplete="current-password" spellcheck="false" placeholder="sk-…" />
+            </div>
+
+            <div class="form-group">
+              <label for="model-name">模型名称</label>
+              <input id="model-name" v-model="config.model" name="model-name" autocomplete="off" placeholder="gpt-4o-mini…" list="model-list" />
+              <datalist id="model-list">
+                <option v-for="m in modelOptions" :key="m" :value="m" />
+              </datalist>
+            </div>
+
+            <button class="btn-primary" @click="testConnection" :disabled="testing">
+              {{ testing ? '测试中…' : '测试连接' }}
+            </button>
+            <div v-if="testResult !== null" class="test-result" :class="{ ok: testResult.ok }" aria-live="polite">
+              {{ testResult.ok ? '✅ 连接成功：' + testResult.message : '❌ 连接失败：' + testResult.message + '。请检查 API Key 是否正确，或切换服务商后重试。' }}
+            </div>
+          </div>
+        </transition>
+      </section>
+
+      <!-- Panel: Anki-Connect -->
+      <section
+        id="panel-anki"
+        class="tab-panel"
+        role="tabpanel"
+        :aria-labelledby="'tab-anki'"
+        :hidden="activeTab !== 'anki'"
+      >
+        <transition name="panel-crossfade" mode="out-in">
+          <div v-if="activeTab === 'anki'" key="anki-panel" class="panel-content">
+            <h3 class="panel-title">Anki-Connect 设置</h3>
+            <div class="form-group">
+              <label for="anki-url">Anki-Connect URL</label>
+              <input id="anki-url" v-model="ankiUrl" type="url" name="anki-url" autocomplete="url" placeholder="http://localhost:8765" disabled />
+              <span class="hint">默认使用本地 Anki-Connect</span>
+            </div>
+            <button class="btn-secondary" @click="checkAnki">检测 Anki 连接</button>
+            <div v-if="ankiStatus !== null" class="test-result" :class="{ ok: ankiStatus }" aria-live="polite">
+              {{ ankiStatus ? '✅ Anki-Connect 已连接' : '❌ 无法连接到 Anki-Connect。请确认 Anki 已启动且 Anki-Connect 插件已安装并运行。' }}
+            </div>
+          </div>
+        </transition>
+      </section>
+
+      <!-- Panel: Proficiency -->
+      <section
+        id="panel-proficiency"
+        class="tab-panel"
+        role="tabpanel"
+        :aria-labelledby="'tab-proficiency'"
+        :hidden="activeTab !== 'proficiency'"
+      >
+        <transition name="panel-crossfade" mode="out-in">
+          <div v-if="activeTab === 'proficiency'" key="proficiency-panel" class="panel-content">
+            <h3 class="panel-title">英语水平设置</h3>
+            <p class="section-desc">为读、写、听、说四个维度分别设置英语水平，AI 将据此调整学习内容的词汇难度、句子复杂度和评判标准。</p>
+
+            <div class="proficiency-skills">
+              <div class="skill-row" v-for="skill in SKILLS" :key="skill.key">
+                <span class="skill-icon">{{ skill.icon }}</span>
+                <span class="skill-label">{{ skill.label }}</span>
+                <select
+                  class="skill-level-select"
+                  :value="proficiency.selected[skill.key]"
+                  @change="selectLevel(skill.key, $event.target.value)"
+                >
+                  <option v-for="lvl in proficiency.levels" :key="lvl.id" :value="lvl.id">
+                    {{ lvl.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 水平等级管理 -->
+            <div class="levels-header">
+              <h4>水平等级管理</h4>
+              <span class="hint">点击展开可编辑每个等级对应的 AI 提示词</span>
+            </div>
+
+            <div class="levels-list">
+              <div
+                v-for="(lvl, idx) in proficiency.levels"
+                :key="lvl.id"
+                class="level-card"
+                :class="{ expanded: expandedLevel === lvl.id }"
+              >
+                <button class="level-card-header" @click="toggleLevel(lvl.id)" :aria-expanded="expandedLevel === lvl.id ? 'true' : 'false'">
+                  <span class="level-name">{{ lvl.label }}</span>
+                  <span v-if="lvl.isBuiltin" class="badge-builtin">内置</span>
+                  <span v-else class="badge-custom">自定义</span>
+                  <span
+                    v-if="!lvl.isBuiltin && confirmDeleteId !== lvl.id"
+                    class="btn-delete-level"
+                    role="button"
+                    tabindex="0"
+                    :aria-label="'删除等级：' + lvl.label"
+                    @click.stop="confirmDeleteId = lvl.id"
+                    @keydown.enter.stop="confirmDeleteId = lvl.id"
+                    @keydown.space.stop.prevent="confirmDeleteId = lvl.id"
+                  >🗑️</span>
+                  <span class="expand-icon">{{ expandedLevel === lvl.id ? '▾' : '▸' }}</span>
+                </button>
+
+                <!-- 删除确认 -->
+                <div v-if="confirmDeleteId === lvl.id" class="delete-confirm-bar">
+                  <span>确定删除「{{ lvl.label }}」？此操作不可撤销。</span>
+                  <button class="btn-danger-sm" @click.stop="executeDelete(lvl.id)">确认删除</button>
+                  <button class="btn-cancel-sm" @click.stop="confirmDeleteId = null">取消</button>
+                </div>
+
+                <div v-if="expandedLevel === lvl.id" class="level-card-body">
+                  <div class="form-group">
+                    <label :for="'level-name-' + lvl.id">等级名称</label>
+                    <input :id="'level-name-' + lvl.id" v-model="lvl.label" :name="'level-name-' + lvl.id" @input="autoSaveProficiency" />
+                  </div>
+                  <div class="form-group" v-for="skill in SKILLS" :key="skill.key">
+                    <label :for="'prompt-' + lvl.id + '-' + skill.key">{{ skill.icon }} {{ skill.label }}提示词</label>
+                    <textarea
+                      :id="'prompt-' + lvl.id + '-' + skill.key"
+                      v-model="lvl.prompts[skill.key]"
+                      :name="'prompt-' + lvl.id + '-' + skill.key"
+                      @input="autoSaveProficiency"
+                      rows="3"
+                      :placeholder="`描述学生在${skill.label}方面的英语水平…`"
+                    ></textarea>
+                  </div>
+                  <button
+                    v-if="lvl.isBuiltin"
+                    class="btn-secondary btn-sm"
+                    @click="resetLevelToDefault(lvl.id)"
+                  >重置为默认</button>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-secondary" @click="addCustomLevel">+ 新增自定义等级</button>
+          </div>
+        </transition>
+      </section>
+    </div>
 
     <div class="save-bar">
       <button class="btn-primary" @click="saveSettings">保存设置</button>
@@ -150,7 +201,41 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
+
+// ==================== Tab State ====================
+
+const TABS = [
+  { id: 'ai', label: 'AI 模型', icon: '🤖' },
+  { id: 'anki', label: 'Anki 连接', icon: '📋' },
+  { id: 'proficiency', label: '英语水平', icon: '📊' },
+]
+
+const activeTab = ref('ai')
+
+// Keyboard navigation for tabs (left/right arrows + Home/End)
+function handleTabKeydown(event, currentId) {
+  const idx = TABS.findIndex((t) => t.id === currentId)
+  let nextIdx = idx
+
+  if (event.key === 'ArrowRight') {
+    nextIdx = (idx + 1) % TABS.length
+  } else if (event.key === 'ArrowLeft') {
+    nextIdx = (idx - 1 + TABS.length) % TABS.length
+  } else if (event.key === 'Home') {
+    nextIdx = 0
+  } else if (event.key === 'End') {
+    nextIdx = TABS.length - 1
+  } else {
+    return
+  }
+
+  event.preventDefault()
+  activeTab.value = TABS[nextIdx].id
+  nextTick(() => {
+    document.getElementById('tab-' + TABS[nextIdx].id)?.focus()
+  })
+}
 
 const MODEL_PRESETS = {
   qwen: ['qwen-turbo', 'qwen-plus', 'qwen-max', 'qwen-omni-turbo', 'qwen-vl-plus', 'qwen-vl-max'],
