@@ -58,7 +58,8 @@
       >
         <h3>{{ deck.name }}</h3>
         <div class="deck-stats">
-          <span class="due">{{ deck.dueCards }} 待学</span>
+          <span class="new-cards">🆕 {{ deck.newCards }} 未学</span>
+          <span class="review">🔄 {{ deck.reviewCards }} 待复习</span>
           <span class="total">共 {{ deck.totalCards }} 张</span>
         </div>
         <div class="start-hint">点击开始学习 →</div>

@@ -9,6 +9,9 @@
           <span class="card-type-badge" :class="currentCard?.cardType">
             {{ cardTypeLabel(currentCard?.cardType) }}
           </span>
+          <span v-if="cardStateLabel(currentCard?.ankiType)" class="card-state-badge" :class="stateClass(currentCard?.ankiType)">
+            {{ cardStateLabel(currentCard?.ankiType) }}
+          </span>
           <span v-if="currentCard" class="word">{{ currentCard.word }}</span>
         </div>
         <div class="progress-info" v-if="totalDue > 0">
@@ -197,6 +200,18 @@ const aiConfig = computed(() => {
 function cardTypeLabel(type) {
   const map = { read: '📖 读', write: '✍️ 写', listen: '🎧 听', speak: '🗣️ 说' }
   return map[type] || type
+}
+
+function cardStateLabel(ankiType) {
+  if (ankiType === 0) return '🆕 新卡'
+  if (ankiType === 2) return '🔄 复习'
+  return '' // type=1 (learning) or undefined — no badge
+}
+
+function stateClass(ankiType) {
+  if (ankiType === 0) return 'state-new'
+  if (ankiType === 2) return 'state-review'
+  return ''
 }
 
 function easeLabel(ease) {

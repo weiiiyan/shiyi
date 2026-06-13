@@ -314,7 +314,12 @@ button {
   margin-bottom: 0.75rem;
 }
 
-.deck-stats .due {
+.deck-stats .new-cards {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.deck-stats .review {
   color: var(--warning);
   font-weight: 600;
 }
@@ -398,6 +403,23 @@ button {
 .card-type-badge.speak {
   background: #fef3c7;
   color: #92400e;
+}
+
+.card-state-badge {
+  padding: 0.2em 0.6em;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.card-state-badge.state-new {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.card-state-badge.state-review {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .word {
