@@ -59,6 +59,7 @@ router.post('/start', async (req, res) => {
         cardId: card.cardId,
         word: card.word,
         cardType: card.cardType,
+        ankiType: card.type,  // 0=new, 1=learning, 2=review
       },
       scenario,
       totalDue: dueCards.length,
@@ -219,6 +220,7 @@ router.post('/next', async (req, res) => {
         cardId: card.cardId,
         word: card.word,
         cardType: card.cardType,
+        ankiType: card.type,  // 0=new, 1=learning, 2=review
       },
       scenario,
       totalDue: dueCards.length,

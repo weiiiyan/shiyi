@@ -66,13 +66,23 @@ async function getShiYiDecks() {
     console.error('[ankiService] findCards due failed:', err.message);
   }
 
-  // 构建 due 集合用于 O(1) 查找
+  let newCardIds = [];
+  try {
+    newCardIds = await invoke('findCards', {
+      query: 'deck:"ShiYi" is:new',
+    });
+  } catch (err) {
+    console.error('[ankiService] findCards new failed:', err.message);
+  }
+
+  // 构建 due/new 集合用于 O(1) 查找
   const dueSet = new Set(dueCardIds);
+  const newSet = new Set(newCardIds);
 
   // 初始化各牌组统计（先全部归零）
   const deckStats = {};
   for (const name of shiYiDecks) {
-    deckStats[name] = { totalCards: 0, dueCards: 0 };
+    deckStats[name] = { totalCards: 0, newCards: 0, reviewCards: 0 };
   }
 
   // 批量获取卡片信息，按 deckName 分组统计
@@ -83,8 +93,11 @@ async function getShiYiDecks() {
         const stat = deckStats[card.deckName];
         if (stat) {
           stat.totalCards++;
+          if (newSet.has(card.cardId)) {
+            stat.newCards++;
+          }
           if (dueSet.has(card.cardId)) {
-            stat.dueCards++;
+            stat.reviewCards++;
           }
         }
         // 卡片属于 ShiYi 树但不在 shiYiDecks 列表中则忽略
@@ -95,7 +108,8 @@ async function getShiYiDecks() {
       console.error('[ankiService] cardsInfo failed:', err.message);
       for (const name of shiYiDecks) {
         deckStats[name].totalCards = allCardIds.length;
-        deckStats[name].dueCards = dueCardIds.length;
+        deckStats[name].newCards = newCardIds.length;
+        deckStats[name].reviewCards = dueCardIds.length;
       }
     }
   }
@@ -105,14 +119,16 @@ async function getShiYiDecks() {
   for (const name of shiYiDecks) {
     aggregatedStats[name] = {
       totalCards: deckStats[name].totalCards,
-      dueCards: deckStats[name].dueCards,
+      newCards: deckStats[name].newCards,
+      reviewCards: deckStats[name].reviewCards,
     };
     // 累加所有子牌组
     const prefix = name + '::';
     for (const child of shiYiDecks) {
       if (child.startsWith(prefix)) {
         aggregatedStats[name].totalCards += deckStats[child].totalCards;
-        aggregatedStats[name].dueCards += deckStats[child].dueCards;
+        aggregatedStats[name].newCards += deckStats[child].newCards;
+        aggregatedStats[name].reviewCards += deckStats[child].reviewCards;
       }
     }
   }
@@ -121,7 +137,8 @@ async function getShiYiDecks() {
     name,
     displayName: name.replace('ShiYi::', ''),
     totalCards: aggregatedStats[name].totalCards,
-    dueCards: aggregatedStats[name].dueCards,
+    newCards: aggregatedStats[name].newCards,
+    reviewCards: aggregatedStats[name].reviewCards,
   }));
 
   return {
@@ -130,7 +147,9 @@ async function getShiYiDecks() {
       name: s.displayName,
       fullName: s.name,
       totalCards: s.totalCards,
-      dueCards: s.dueCards,
+      newCards: s.newCards,
+      reviewCards: s.reviewCards,
+      dueCards: s.reviewCards,  // backward compat
     })),
     allDecks,
   };
@@ -145,7 +164,7 @@ async function getShiYiDecks() {
 async function getDueCards(deckFullName) {
   // 使用 deck: 查询，Anki 自动递归搜索所有子牌组
   const cardIds = await invoke('findCards', {
-    query: `deck:"${deckFullName}" is:due`,
+    query: `deck:"${deckFullName}" (is:due OR is:new)`,
   });
 
   if (cardIds.length === 0) return [];
