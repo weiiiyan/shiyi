@@ -18,12 +18,20 @@
 
 在牌组选择界面和学习界面中，增加对"未学习"（新卡）状态的展示和区分，让用户可以清楚地看到每个牌组的新卡数量和复习数量，并在学习时知道当前卡片的熟练度状态。
 
+## 关键发现
+
+**`is:due` 不包含新卡。** Anki 中 `is:new` 和 `is:due` 是两个互斥的集合：
+- `is:new`：从未学过的卡片（type=0），没有到期时间，**不会**被 `is:due` 匹配
+- `is:due`：到期待复习的卡片（type=2 到期 + type=1 学习中到期）
+
+这就是为什么用户有 8 张新卡但当前显示 0 待学——因为 `is:due` 查不到它们。需要同时修改统计查询**和**学习队列查询。
+
 ## 设计决策
 
 | 决策 | 选择 | 理由 |
 |------|------|------|
-| 学习队列 | 混合排队 | 新卡和复习卡不分开，统一由 Anki `is:due` 调度 |
-| 排序 | 依靠 Anki 调度 | `is:due` 已按 Anki 算法排序，包含当日限额内的新卡 |
+| 学习队列 | 混合排队 | 新卡和复习卡统一排队，查询改为 `(is:due OR is:new)` |
+| 排序 | 依靠 Anki 调度 | `(is:due OR is:new)` 由 Anki 按内部算法排序（到期时间 + 新卡队列位置） |
 | 统计展示 | 新卡 + 复习 + 总数 | 三项数字让用户清楚每种状态的数量 |
 | 卡片标签 | 显示状态 | 学习时在卡片上显示"新卡"或"复习"标签 |
 
@@ -54,9 +62,9 @@
 │              ankiService.js                        │
 │  ┌────────────────────────────────────────────┐   │
 │  │ is:new → newCards count                     │   │
-│  │ is:due -is:new → reviewCards count          │   │
+│  │ is:due → reviewCards count                   │   │
 │  │ deck:"..." → totalCards count               │   │
-│  │ is:due → learning queue (unchanged)         │   │
+│  │ (is:due OR is:new) → learning queue          │   │
 │  └────────────────────────────────────────────┘   │
 └───────────────────────────────────────────────────┘
 ```
@@ -65,13 +73,29 @@
 
 ### 文件 1：`code/server/services/ankiService.js`
 
+**`getDueCards()` 函数修改：**
+
+当前查询只使用 `is:due`，查不到新卡。改为 `(is:due OR is:new)` 以同时包含新卡和待复习卡片：
+
+```js
+// 旧：只查到期待复习卡片
+const cardIds = await invoke('findCards', {
+  query: `deck:"${deckFullName}" is:due`,
+});
+
+// 新：同时包含新卡和到期待复习卡片
+const cardIds = await invoke('findCards', {
+  query: `deck:"${deckFullName}" (is:due OR is:new)`,
+});
+```
+
 **`getShiYiDecks()` 函数修改：**
 
-当前 `dueCards` 是通过 `is:due` 查询的，包含了新卡和复习卡。需要拆分开：
+当前 `dueCards` 是通过 `is:due` 查询的，只包含复习到期卡片，不包含新卡。需要拆分为新卡和复习两类统计：
 
 1. 新增 `is:new` 查询，获取新卡 ID 并构建 Set
-2. 统计时将 `dueSet` 减去 `newSet` 得到纯复习数量
-3. 返回的每个 deck 对象增加 `newCards` 和 `reviewCards` 字段
+2. `dueSet` 保持 `is:due`（本身就不含新卡）
+3. 返回的每个 deck 对象增加 `newCards` 和 `reviewCards` 字段（`reviewCards` 即原来的 `dueCards`）
 
 ```js
 // 伪代码示意
@@ -81,14 +105,10 @@ const newSet = new Set(newCardIds);
 const dueSet = new Set(dueCardIds);
 
 // 遍历 cardsInfo 统计:
-// stat.newCards++  if newSet.has(card.cardId)
-// stat.reviewCards++ if dueSet.has(card.cardId) && !newSet.has(card.cardId)
+// stat.newCards++     if newSet.has(card.cardId)
+// stat.reviewCards++  if dueSet.has(card.cardId)
+// (new 和 due 互斥，不需要做减法)
 ```
-
-**保持不变的函数：**
-- `getDueCards()` — 继续使用 `is:due`，不改变学习队列逻辑
-- `getKnownVocabulary()` — 不涉及
-- `answerCard()` — 不涉及
 
 ### 文件 2：`code/server/routes/decks.js`
 
@@ -141,7 +161,8 @@ function cardStateLabel(ankiType) {
 
 ## 测试要点
 
-1. DeckSelect 正确显示三项统计（包含 0 的情况）
+1. DeckSelect 正确显示三项统计（特别验证：有新卡无复习时，新卡数 > 0、复习 = 0）
 2. LearnView 新卡显示"🆕 新卡"标签，复习卡显示"🔄 复习"标签
-3. 学习队列不受影响，仍能正常完成学习流程
-4. Anki-Connect 不可用时的错误处理
+3. 学习队列同时包含新卡和复习卡（新卡不再被遗漏）
+4. `answerCard` 正常更新新卡（Anki 会将新卡转为 learning 状态）
+5. Anki-Connect 不可用时的错误处理
