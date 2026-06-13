@@ -262,6 +262,36 @@ code {
   background: var(--accent-subtle);
 }
 
+.theme-select {
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 0.35em 0.55em;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s var(--ease-out);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6' stroke='%23908a80' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.1em center;
+  padding-right: 1.4em;
+}
+
+.theme-select:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+.theme-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
 .app-main {
   flex: 1;
   padding: 2rem;
