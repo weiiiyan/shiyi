@@ -2,9 +2,8 @@
  * Anki-Connect API 服务层
  * Anki-Connect 运行在 localhost:8765，所有请求为 POST JSON
  *
- * 重要：Windows 版 Anki-Connect 存在中文牌组名 UTF-8 编码问题。
- * 所有查询必须使用牌组 ID（did:xxx）而非牌组名称（deck:"xxx"），
- * 否则含中文的牌组名会导致 Anki 内部 Python 进程 UTF-8 解码失败。
+ * 牌组查询统一使用 deck:"名称" 格式，Anki 内置递归搜索所有子牌组。
+ * 经验证，当前 Anki-Connect 版本对中英文牌组名称均能正确处理。
  */
 
 const ANKI_CONNECT_URL = process.env.ANKI_CONNECT_URL || 'http://localhost:8765';
@@ -33,21 +32,6 @@ async function getAllDeckNames() {
 }
 
 /**
- * 构建牌组名称与 ID 的双向映射
- * 返回 { nameToId: {}, idToName: {} }
- */
-async function getDeckMapping() {
-  const mapping = await invoke('deckNamesAndIds');
-  const nameToId = {};
-  const idToName = {};
-  for (const [name, id] of Object.entries(mapping)) {
-    nameToId[name] = id;
-    idToName[id] = name;
-  }
-  return { nameToId, idToName };
-}
-
-/**
  * 获取所有 ShiYi 项目牌组（ShiYi:: 前缀的子牌组）
  * 返回牌组名和统计信息
  */
@@ -55,57 +39,90 @@ async function getShiYiDecks() {
   const allDecks = await invoke('deckNames');
 
   // 匹配 "ShiYi::" 子牌组和顶级 "ShiYi" 牌组
-  const ShiYiDecks = allDecks.filter(
+  const shiYiDecks = allDecks.filter(
     (d) => d === 'ShiYi' || d.startsWith('ShiYi::')
   );
 
   // 如果没有 ShiYi 牌组，直接返回空
-  if (ShiYiDecks.length === 0) {
+  if (shiYiDecks.length === 0) {
     return { decks: [], allDecks };
   }
 
-  // 构建牌组 ID 映射（避免在查询中使用中文牌组名）
-  const { nameToId } = await getDeckMapping();
-
-  // 使用 did: 查询（牌组 ID）避免中文 UTF-8 编码问题
-  const statsList = [];
-  for (const name of ShiYiDecks) {
-    const deckId = nameToId[name];
-    if (!deckId) {
-      // 牌组不存在于映射中，跳过
-      statsList.push({
-        name,
-        displayName: name.replace('ShiYi::', ''),
-        totalCards: 0,
-        dueCards: 0,
-      });
-      continue;
-    }
-
-    let totalCards = 0;
-    let dueCards = 0;
-
-    try {
-      // 用 did: 查询所有卡片数
-      const allCardIds = await invoke('findCards', { query: `did:${deckId}` });
-      totalCards = allCardIds.length;
-
-      // 用到期的卡片数
-      const dueCardIds = await invoke('findCards', {
-        query: `did:${deckId} is:due`,
-      });
-      dueCards = dueCardIds.length;
-    } catch {
-      // 单次查询失败不阻塞其他牌组
-    }
-
-    statsList.push({
-      name,
-      displayName: name.replace('ShiYi::', ''),
-      totalCards,
-      dueCards,
-    });
+  // 用 deck:"ShiYi" 一次性查出整棵树的所有卡片
+  // deck: 自动递归搜索所有子牌组
+  let allCardIds = [];
+  let dueCardIds = [];
+  try {
+    allCardIds = await invoke('findCards', { query: 'deck:"ShiYi"' });
+  } catch (err) {
+    console.error('[ankiService] findCards all failed:', err.message);
   }
+
+  try {
+    dueCardIds = await invoke('findCards', {
+      query: 'deck:"ShiYi" is:due',
+    });
+  } catch (err) {
+    console.error('[ankiService] findCards due failed:', err.message);
+  }
+
+  // 构建 due 集合用于 O(1) 查找
+  const dueSet = new Set(dueCardIds);
+
+  // 初始化各牌组统计（先全部归零）
+  const deckStats = {};
+  for (const name of shiYiDecks) {
+    deckStats[name] = { totalCards: 0, dueCards: 0 };
+  }
+
+  // 批量获取卡片信息，按 deckName 分组统计
+  if (allCardIds.length > 0) {
+    try {
+      const cardsInfo = await invoke('cardsInfo', { cards: allCardIds });
+      for (const card of cardsInfo) {
+        const stat = deckStats[card.deckName];
+        if (stat) {
+          stat.totalCards++;
+          if (dueSet.has(card.cardId)) {
+            stat.dueCards++;
+          }
+        }
+        // 卡片属于 ShiYi 树但不在 shiYiDecks 列表中则忽略
+        // （例如用户曾手动移到已删除的 ShiYi 子牌组）
+      }
+    } catch (err) {
+      // cardsInfo 失败时回退：至少填入 totalCards 总数
+      console.error('[ankiService] cardsInfo failed:', err.message);
+      for (const name of shiYiDecks) {
+        deckStats[name].totalCards = allCardIds.length;
+        deckStats[name].dueCards = dueCardIds.length;
+      }
+    }
+  }
+
+  // 聚合子牌组数据到父牌组：父牌组 = 自身 + 所有后代
+  const aggregatedStats = {};
+  for (const name of shiYiDecks) {
+    aggregatedStats[name] = {
+      totalCards: deckStats[name].totalCards,
+      dueCards: deckStats[name].dueCards,
+    };
+    // 累加所有子牌组
+    const prefix = name + '::';
+    for (const child of shiYiDecks) {
+      if (child.startsWith(prefix)) {
+        aggregatedStats[name].totalCards += deckStats[child].totalCards;
+        aggregatedStats[name].dueCards += deckStats[child].dueCards;
+      }
+    }
+  }
+
+  const statsList = shiYiDecks.map((name) => ({
+    name,
+    displayName: name.replace('ShiYi::', ''),
+    totalCards: aggregatedStats[name].totalCards,
+    dueCards: aggregatedStats[name].dueCards,
+  }));
 
   return {
     decks: statsList.map((s) => ({
@@ -126,17 +143,9 @@ async function getShiYiDecks() {
  * @param {string} deckFullName — 牌组全名（decodeURIComponent 之后），如 "ShiYi::编程"
  */
 async function getDueCards(deckFullName) {
-  // 通过牌组名查找 ID，避免中文查询问题
-  const { nameToId } = await getDeckMapping();
-  const deckId = nameToId[deckFullName];
-
-  if (!deckId) {
-    return [];
-  }
-
-  // 使用 did: 查询避免中文 UTF-8 错误
+  // 使用 deck: 查询，Anki 自动递归搜索所有子牌组
   const cardIds = await invoke('findCards', {
-    query: `did:${deckId} is:due`,
+    query: `deck:"${deckFullName}" is:due`,
   });
 
   if (cardIds.length === 0) return [];
@@ -186,15 +195,10 @@ async function getDueCards(deckFullName) {
  * 用于约束 AI 生成场景时的用词范围
  */
 async function getKnownVocabulary(deckFullName) {
-  // 通过牌组名查找 ID，使用 did: 查询避免中文 UTF-8 错误
-  const { nameToId } = await getDeckMapping();
-  const deckId = nameToId[deckFullName];
-
-  if (!deckId) {
-    return [];
-  }
-
-  const noteIds = await invoke('findNotes', { query: `did:${deckId}` });
+  // 使用 deck: 查询，Anki 自动递归搜索所有子牌组
+  const noteIds = await invoke('findNotes', {
+    query: `deck:"${deckFullName}"`,
+  });
 
   if (noteIds.length === 0) return [];
 
