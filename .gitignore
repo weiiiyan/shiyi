@@ -39,3 +39,6 @@ Desktop.ini
 *.sln
 *.sw?
 *~
+
+# temp
+/temp/
