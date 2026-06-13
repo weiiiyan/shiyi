@@ -1,6 +1,6 @@
 /* ================================================================
-   ShiYi — "Nocturne Study" 深夜书斋
-   Warm dark literary aesthetic for immersive English learning.
+   ShiYi — Theme System
+   "Nocturne Study" dark + "Clean Minimal" light
    ================================================================ */
 
 /* === Reset & Base === */
@@ -12,26 +12,53 @@
   padding: 0;
 }
 
+/* ================================================================
+   Shared Layer — typography, spacing, shape, transitions
+   ================================================================ */
 :root {
-  /* Core palette — warm dark */
+  /* Typography — unified sans-serif */
+  --font-display:   'Inter', 'SF Pro Display', -apple-system, sans-serif;
+  --font-body:      'Inter', 'SF Pro Text', -apple-system, sans-serif;
+  --font-ui:        'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Spacing & shape */
+  --radius-sm:      6px;
+  --radius:         10px;
+  --radius-lg:      16px;
+  --radius-xl:      24px;
+
+  /* Transitions */
+  --ease-out:       cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Shadow glow (references themed --accent-glow) */
+  --shadow-glow:    0 0 20px var(--accent-glow);
+}
+
+/* ================================================================
+   Dark Theme — "Nocturne Study" warm dark literary
+   ================================================================ */
+[data-theme="dark"] {
+  /* Core palette */
   --bg-deep:        #1b1918;
   --bg-surface:     #242220;
   --bg-elevated:    #2d2a27;
   --bg-hover:       #332f2b;
 
   /* Text — cream paper tones */
-  --text-primary:   #e4dccf;
-  --text-secondary: #a09888;
-  --text-muted:     #6b6560;
+  --text-primary:   #ece5d8;
+  --text-secondary: #b8b0a0;
+  --text-muted:     #908a80;
   --text-inverse:   #1b1918;
 
   /* Accent — aged brass / warm gold */
-  --gold:           #c9a95c;
-  --gold-light:     #e2cc8a;
-  --gold-glow:      rgba(201, 169, 92, 0.18);
-  --gold-subtle:    rgba(201, 169, 92, 0.08);
+  --accent:           #c9a95c;
+  --accent-light:     #e2cc8a;
+  --accent-glow:      rgba(201, 169, 92, 0.18);
+  --accent-glow-heavy:rgba(201, 169, 92, 0.35);
+  --accent-subtle:    rgba(201, 169, 92, 0.08);
 
-  /* Skill colors — desaturated for dark theme */
+  /* Skill colors */
   --skill-read:     #8bb3c4;
   --skill-write:    #cf9da2;
   --skill-listen:   #8fb88f;
@@ -50,30 +77,66 @@
   --danger:         #c4726e;
   --danger-bg:      rgba(196, 114, 110, 0.12);
 
-  /* Borders & dividers */
+  /* Borders */
   --border-subtle:  #35302b;
   --border-visible: #4a4540;
 
-  /* Typography */
-  --font-display:   'Cormorant Garamond', 'Times New Roman', serif;
-  --font-body:      'Crimson Pro', 'Georgia', serif;
-  --font-ui:        'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-
-  /* Spacing & shape */
-  --radius-sm:      6px;
-  --radius:         10px;
-  --radius-lg:      16px;
-  --radius-xl:      24px;
-
-  /* Shadows — warm, soft */
+  /* Shadows */
   --shadow-sm:      0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow:         0 2px 8px rgba(0, 0, 0, 0.35);
   --shadow-lg:      0 8px 24px rgba(0, 0, 0, 0.45);
-  --shadow-glow:    0 0 20px var(--gold-glow);
+}
 
-  /* Transitions */
-  --ease-out:       cubic-bezier(0.22, 0.61, 0.36, 1);
-  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+/* ================================================================
+   Light Theme — "Clean Minimal" pure white + teal accent
+   ================================================================ */
+[data-theme="light"] {
+  /* Core palette */
+  --bg-deep:        #ffffff;
+  --bg-surface:     #f8f9fb;
+  --bg-elevated:    #f1f3f6;
+  --bg-hover:       #e8ebef;
+
+  /* Text */
+  --text-primary:   #1a1a1a;
+  --text-secondary: #6b7280;
+  --text-muted:     #9ca3af;
+  --text-inverse:   #ffffff;
+
+  /* Accent — teal */
+  --accent:           #0d9488;
+  --accent-light:     #14b8a6;
+  --accent-glow:      rgba(13, 148, 136, 0.18);
+  --accent-glow-heavy:rgba(13, 148, 136, 0.28);
+  --accent-subtle:    rgba(13, 148, 136, 0.08);
+
+  /* Skill colors — more saturated for light bg */
+  --skill-read:     #3b82b6;
+  --skill-write:    #d9466f;
+  --skill-listen:   #10b981;
+  --skill-speak:    #e5a50a;
+
+  --skill-read-bg:  rgba(59, 130, 182, 0.1);
+  --skill-write-bg: rgba(217, 70, 111, 0.1);
+  --skill-listen-bg:rgba(16, 185, 129, 0.1);
+  --skill-speak-bg: rgba(229, 165, 10, 0.1);
+
+  /* Semantic */
+  --success:        #10b981;
+  --success-bg:     rgba(16, 185, 129, 0.1);
+  --warning:        #e5a50a;
+  --warning-bg:     rgba(229, 165, 10, 0.1);
+  --danger:         #ef4444;
+  --danger-bg:      rgba(239, 68, 68, 0.1);
+
+  /* Borders */
+  --border-subtle:  #e5e7eb;
+  --border-visible: #d1d5db;
+
+  /* Shadows — lighter, wider spread */
+  --shadow-sm:      0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow:         0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg:      0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 html {
@@ -82,9 +145,10 @@ html {
 
 body {
   font-family: var(--font-body);
+  font-weight: 500;
   color: var(--text-primary);
   background: var(--bg-deep);
-  line-height: 1.65;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -350,8 +414,9 @@ code {
 
 .disconnected-warning .hint {
   font-size: 0.85em;
+  font-weight: 500;
   margin: 0.5em 0;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .disconnected-warning a {
@@ -374,8 +439,9 @@ code {
 .error {
   text-align: center;
   padding: 4rem 2rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-family: var(--font-body);
+  font-weight: 500;
 }
 
 .error {
@@ -392,7 +458,7 @@ code {
 
 .empty p {
   margin-bottom: 0.5rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .empty code {
@@ -409,7 +475,7 @@ code {
   margin: 1.25rem auto;
   padding-left: 1.5rem;
   line-height: 2;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .empty .setup-guide li {
@@ -534,14 +600,15 @@ code {
 }
 
 .deck-stats .total {
-  color: var(--text-muted);
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .start-hint {
   font-family: var(--font-ui);
   color: var(--gold);
-  font-size: 0.82rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   position: relative;
   z-index: 1;
   transition: transform 0.2s var(--ease-out);
@@ -694,7 +761,8 @@ code {
 .target-word-concept {
   font-family: var(--font-body);
   font-size: 1rem;
-  color: var(--text-secondary);
+  font-weight: 500;
+  color: var(--text-primary);
   margin-top: 0.35rem;
   font-style: italic;
 }
@@ -713,7 +781,8 @@ code {
 .progress-info {
   font-family: var(--font-ui);
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-weight: 500;
+  color: var(--text-primary);
   display: flex;
   gap: 0.6rem;
   align-items: center;
@@ -833,14 +902,16 @@ code {
 .done-message p {
   font-family: var(--font-body);
   font-size: 1.1rem;
+  font-weight: 500;
   margin-bottom: 1.25rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .loading-message {
   font-family: var(--font-body);
+  font-weight: 500;
   font-style: italic;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 1.05rem;
 }
 
@@ -867,7 +938,7 @@ code {
 }
 
 .input-area input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-style: italic;
 }
 
@@ -911,8 +982,10 @@ code {
   border: 1px solid var(--border-subtle);
   padding: 1.35rem;
   overflow-y: auto;
-  font-size: 0.88rem;
-  line-height: 1.65;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--text-primary);
 }
 
 .philosophy-panel .section {
@@ -942,12 +1015,12 @@ code {
 
 .philosophy-panel li {
   margin-bottom: 0.35em;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .philosophy-panel b {
-  color: var(--text-primary);
-  font-weight: 600;
+  color: var(--gold-light);
+  font-weight: 700;
 }
 
 .philosophy-panel .skill-table {
@@ -957,18 +1030,19 @@ code {
 
 .philosophy-panel .skill-table td {
   padding: 0.25em 0.5em;
-  font-size: 0.88em;
-  color: var(--text-secondary);
+  font-size: 0.9em;
+  color: var(--text-primary);
 }
 
 .philosophy-panel .skill-table td:first-child {
-  color: var(--text-primary);
+  color: var(--gold-light);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .philosophy-panel .mistakes li {
   color: var(--danger);
-  font-size: 0.84em;
+  font-size: 0.86em;
 }
 
 /* ================================================================
@@ -1009,10 +1083,11 @@ code {
 
 .section-desc {
   font-family: var(--font-body);
-  font-size: 0.92rem;
-  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
   margin-bottom: 1.25rem;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .form-group {
@@ -1022,9 +1097,9 @@ code {
 .form-group label {
   display: block;
   font-family: var(--font-ui);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin-bottom: 0.35em;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1045,7 +1120,7 @@ code {
 }
 
 .form-group input::placeholder {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-style: italic;
 }
 
@@ -1068,7 +1143,8 @@ select {
 .hint {
   font-family: var(--font-ui);
   font-size: 0.8rem;
-  color: var(--text-muted);
+  font-weight: 500;
+  color: var(--text-secondary);
   display: block;
   margin-top: 0.3em;
 }
@@ -1177,9 +1253,13 @@ select {
   font-family: var(--font-ui);
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+.levels-header .hint {
+  color: var(--text-secondary);
 }
 
 .levels-list {
