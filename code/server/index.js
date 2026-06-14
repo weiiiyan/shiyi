@@ -5,6 +5,7 @@
  * 运行在 localhost:3001，与 Vite dev server (5173) 配合使用。
  */
 
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import decksRouter from './routes/decks.js';
@@ -34,6 +35,11 @@ app.use((err, req, res, _next) => {
   res.status(500).json({ error: err.message || 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-  console.log(`ShiYiAiChat server running on http://localhost:${PORT}`);
-});
+// 仅在直接运行时启动服务器（导入时跳过，以便测试）
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`ShiYiAiChat server running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;

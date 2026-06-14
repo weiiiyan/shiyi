@@ -7,21 +7,30 @@
  */
 
 const ANKI_CONNECT_URL = process.env.ANKI_CONNECT_URL || 'http://localhost:8765';
+const ANKI_TIMEOUT_MS = 10000;
 
 async function invoke(action, params = {}) {
-  const response = await fetch(ANKI_CONNECT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action, version: 6, params }),
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ANKI_TIMEOUT_MS);
 
-  const data = await response.json();
+  try {
+    const response = await fetch(ANKI_CONNECT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, version: 6, params }),
+      signal: controller.signal,
+    });
 
-  if (data.error) {
-    throw new Error(`Anki-Connect error [${action}]: ${data.error}`);
+    const data = await response.json();
+
+    if (data.error) {
+      throw new Error(`Anki-Connect error [${action}]: ${data.error}`);
+    }
+
+    return data.result;
+  } finally {
+    clearTimeout(timer);
   }
-
-  return data.result;
 }
 
 /**
@@ -314,8 +323,10 @@ const CARD_TYPES = ['read', 'write', 'listen', 'speak'];
  * 避免破坏 pickNextCard 的轮换机制
  */
 function randomCardType(cardId) {
-  // 乘法哈希：cardId * golden-ratio-like constant, mod length
-  const idx = ((cardId * 2654435761) >>> 0) % CARD_TYPES.length;
+  // 乘法哈希常量 floor(2^32 / φ)，其中 φ ≈ 1.618 (黄金比例)
+  // 该常数在乘法哈希中提供良好的位分散特性，确保不同 cardId 产生均匀分布的类型
+  const GOLDEN_RATIO_HASH = 2654435761;
+  const idx = ((cardId * GOLDEN_RATIO_HASH) >>> 0) % CARD_TYPES.length;
   return CARD_TYPES[idx];
 }
 

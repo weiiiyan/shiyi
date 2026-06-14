@@ -2,59 +2,67 @@ import { Router } from 'express';
 import ankiService from '../services/ankiService.js';
 import aiService from '../services/aiService.js';
 import sessionService from '../services/sessionService.js';
+import { errorResponse } from '../lib/errorHandler.js';
+import { validateDeckId, validateEase, assertValid } from '../lib/validation.js';
 
 const router = Router();
 
 /**
- * 从待学卡片中按类型轮换选择下一张卡片
+ * 共享的卡片准备 + 场景生成逻辑
+ * 供 /start 和 /next 复用，消除重复代码
  *
- * 策略：
- * 1. 按 cardType 分组
- * 2. 从上次使用的类型开始轮换 (read → write → listen → speak)
- * 3. 在选中的类型组内随机抽取一张
- * 4. 如果该类型无卡片，顺延到下一个类型
- *
- * @param {Array} cards - 待选卡片数组
- * @param {Object} session - 当前学习会话 (会修改 session.lastCardType)
- * @returns {Object|null} 选中的卡片
+ * @param {string} deckId - 已编码的牌组 ID
+ * @param {Array} cards - 待选卡片列表
+ * @param {Object} session - 当前学习会话
+ * @param {Object} aiConfig - AI 配置
+ * @param {Object} proficiencyConfig - 水平配置
+ * @param {number} totalCount - 可选卡片总数（用于进度提示）
  */
-function pickNextCard(cards, session) {
-  if (!cards || cards.length === 0) return null;
+async function prepareCardAndScenario(deckId, cards, session, aiConfig, proficiencyConfig, totalCount) {
+  const deckFullName = decodeURIComponent(deckId);
 
-  // 按类型分组
-  const byType = { read: [], write: [], listen: [], speak: [] };
-  for (const card of cards) {
-    const type = card.cardType || 'read';
-    if (byType[type]) {
-      byType[type].push(card);
-    } else {
-      byType.read.push(card); // 未知类型归入 read
-    }
-  }
+  // 获取已知词汇
+  const knownWords = await ankiService.getKnownVocabulary(deckFullName);
 
-  const typeOrder = ['read', 'write', 'listen', 'speak'];
+  // 按类型轮换取下一张卡片
+  const card = sessionService.pickNextCard(cards, session);
 
-  // 从上次类型的下一个开始轮换
-  let startIdx = 0;
-  if (session.lastCardType != null) {
-    const lastIdx = typeOrder.indexOf(session.lastCardType);
-    startIdx = (lastIdx + 1) % typeOrder.length;
-  }
+  if (!card) return null;
 
-  // 按轮换顺序尝试每种类型
-  for (let i = 0; i < typeOrder.length; i++) {
-    const idx = (startIdx + i) % typeOrder.length;
-    const type = typeOrder[idx];
-    const pool = byType[type];
-    if (pool.length > 0) {
-      // 同类型内随机抽取
-      const j = Math.floor(Math.random() * pool.length);
-      session.lastCardType = type;
-      return pool[j];
-    }
-  }
+  // 获取该单词的历史场景（用于 AI 去重）
+  const previousScenarios = sessionService.getPreviousScenarios(deckId, card.word);
 
-  return null;
+  // AI 生成场景
+  const scenario = await aiService.generateScenario({
+    cardType: card.cardType,
+    word: card.word,
+    concept: card.concept,
+    knownWords,
+    context: card.context,
+    aiConfig,
+    previousScenarios,
+    proficiencyConfig,
+  });
+
+  // 记录已生成的场景
+  sessionService.recordScenario(deckId, card.word, scenario);
+
+  // 在会话中设置当前卡片
+  sessionService.setCurrentCard(deckId, card, scenario);
+
+  return {
+    done: false,
+    card: {
+      cardId: card.cardId,
+      word: card.word,
+      concept: card.concept,
+      cardType: card.cardType,
+      ankiType: card.type, // 0=new, 1=learning, 2=review
+    },
+    scenario,
+    totalDue: totalCount,
+    remaining: totalCount - 1,
+  };
 }
 
 /**
@@ -66,9 +74,7 @@ router.post('/start', async (req, res) => {
   try {
     const { deckId, aiConfig, proficiencyConfig } = req.body;
 
-    if (!deckId) {
-      return res.status(400).json({ error: '请选择牌组' });
-    }
+    assertValid(validateDeckId(deckId));
 
     const deckFullName = decodeURIComponent(deckId);
 
@@ -83,52 +89,25 @@ router.post('/start', async (req, res) => {
       });
     }
 
-    // 获取已知词汇
-    const knownWords = await ankiService.getKnownVocabulary(deckFullName);
-
     // 创建会话
     sessionService.createSession(deckId, aiConfig, proficiencyConfig);
     const session = sessionService.getSession(deckId);
 
-    // 按类型轮换取下一张卡片
-    const card = pickNextCard(dueCards, session);
+    const result = await prepareCardAndScenario(
+      deckId, dueCards, session, aiConfig, proficiencyConfig, dueCards.length
+    );
 
-    // 获取该单词的历史场景（用于 AI 去重）
-    const previousScenarios = sessionService.getPreviousScenarios(deckId, card.word);
+    if (!result) {
+      return res.json({
+        done: true,
+        message: '没有可用的学习卡片',
+        totalDue: dueCards.length,
+      });
+    }
 
-    // AI 生成场景
-    const scenario = await aiService.generateScenario({
-      cardType: card.cardType,
-      word: card.word,
-      concept: card.concept,
-      knownWords,
-      context: card.context,
-      aiConfig,
-      previousScenarios,
-      proficiencyConfig,
-    });
-
-    // 记录已生成的场景
-    sessionService.recordScenario(deckId, card.word, scenario);
-
-    // 在会话中设置当前卡片
-    sessionService.setCurrentCard(deckId, card, scenario);
-
-    res.json({
-      done: false,
-      card: {
-        cardId: card.cardId,
-        word: card.word,
-        concept: card.concept,
-        cardType: card.cardType,
-        ankiType: card.type,  // 0=new, 1=learning, 2=review
-      },
-      scenario,
-      totalDue: dueCards.length,
-      remaining: dueCards.length - 1,
-    });
+    res.json(result);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    errorResponse(res, 500, err.message);
   }
 });
 
@@ -140,17 +119,15 @@ router.post('/respond', async (req, res) => {
   try {
     const { deckId, response: userResponse } = req.body;
 
-    if (!deckId) {
-      return res.status(400).json({ error: '缺少牌组 ID' });
-    }
+    assertValid(validateDeckId(deckId));
 
     const session = sessionService.getSession(deckId);
     if (!session) {
-      return res.status(400).json({ error: '没有活跃的学习会话，请重新开始' });
+      return errorResponse(res, 400, '没有活跃的学习会话，请重新开始');
     }
 
     if (!session.currentCard) {
-      return res.status(400).json({ error: '没有当前卡片' });
+      return errorResponse(res, 400, '没有当前卡片');
     }
 
     // 记录用户消息
@@ -179,38 +156,37 @@ router.post('/respond', async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    errorResponse(res, 500, err.message);
   }
 });
 
 /**
  * POST /api/learn/complete
- * 完成当前卡片，更新 Anki，获取下一张卡片。
+ * 完成当前卡片，更新 Anki。
  */
 router.post('/complete', async (req, res) => {
   try {
     const { deckId, ease } = req.body;
 
-    if (!deckId) {
-      return res.status(400).json({ error: '缺少牌组 ID' });
-    }
+    assertValid(validateDeckId(deckId));
+    const validatedEase = validateEase(ease);
+    assertValid(validatedEase);
 
     const session = sessionService.getSession(deckId);
     if (!session || !session.currentCard) {
-      // 如果会话丢失，仅记录 ease
+      // 如果会话丢失，仅返回提示
       return res.json({ done: true, message: '会话已过期，请重新开始' });
     }
 
     const cardId = session.currentCard.cardId;
 
     // 更新 Anki
-    await ankiService.answerCard(cardId, ease);
+    await ankiService.answerCard(cardId, validatedEase.value);
 
     // 记录到会话
     sessionService.recordScore(deckId, ease);
     sessionService.markCardComplete(deckId, cardId);
 
-    const deckFullName = decodeURIComponent(deckId);
     const progress = sessionService.getProgress(deckId);
 
     res.json({
@@ -219,7 +195,7 @@ router.post('/complete', async (req, res) => {
       next: true,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    errorResponse(res, 500, err.message);
   }
 });
 
@@ -231,13 +207,11 @@ router.post('/next', async (req, res) => {
   try {
     const { deckId } = req.body;
 
-    if (!deckId) {
-      return res.status(400).json({ error: '缺少牌组 ID' });
-    }
+    assertValid(validateDeckId(deckId));
 
     const session = sessionService.getSession(deckId);
     if (!session) {
-      return res.status(400).json({ error: '没有活跃的学习会话' });
+      return errorResponse(res, 400, '没有活跃的学习会话');
     }
 
     const deckFullName = decodeURIComponent(deckId);
@@ -245,7 +219,7 @@ router.post('/next', async (req, res) => {
     // 获取到期卡片
     const dueCards = await ankiService.getDueCards(deckFullName);
 
-    // 过滤掉已完成的卡片（completedCards 已通过卡片 ID 防止重复练习）
+    // 过滤掉已完成的卡片
     const remaining = dueCards.filter(
       (c) => !session.completedCards.includes(c.cardId)
     );
@@ -259,48 +233,24 @@ router.post('/next', async (req, res) => {
       });
     }
 
-    // 获取已知词汇
-    const knownWords = await ankiService.getKnownVocabulary(deckFullName);
+    const result = await prepareCardAndScenario(
+      deckId, remaining, session, session.aiConfig, session.proficiencyConfig, remaining.length
+    );
 
-    // 按类型轮换取下一张卡片
-    const card = pickNextCard(remaining, session);
+    if (!result) {
+      return res.json({
+        done: true,
+        message: '没有更多可用的学习卡片',
+        progress: sessionService.getProgress(deckId),
+        totalDue: remaining.length,
+      });
+    }
 
-    // 获取该单词的历史场景（用于 AI 去重）
-    const previousScenarios = sessionService.getPreviousScenarios(deckId, card.word);
-
-    // AI 生成场景
-    const scenario = await aiService.generateScenario({
-      cardType: card.cardType,
-      word: card.word,
-      concept: card.concept,
-      knownWords,
-      context: card.context,
-      aiConfig: session.aiConfig,
-      previousScenarios,
-      proficiencyConfig: session.proficiencyConfig,
-    });
-
-    // 记录已生成的场景
-    sessionService.recordScenario(deckId, card.word, scenario);
-
-    sessionService.setCurrentCard(deckId, card, scenario);
-
-    res.json({
-      done: false,
-      card: {
-        cardId: card.cardId,
-        word: card.word,
-        concept: card.concept,
-        cardType: card.cardType,
-        ankiType: card.type,  // 0=new, 1=learning, 2=review
-      },
-      scenario,
-      totalDue: remaining.length,
-      remaining: remaining.length - 1,
-      progress: sessionService.getProgress(deckId),
-    });
+    // /next 额外返回 progress
+    result.progress = sessionService.getProgress(deckId);
+    res.json(result);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    errorResponse(res, 500, err.message);
   }
 });
 
@@ -312,9 +262,7 @@ router.get('/progress', async (req, res) => {
   try {
     const { deckId } = req.query;
 
-    if (!deckId) {
-      return res.status(400).json({ error: '缺少牌组 ID' });
-    }
+    assertValid(validateDeckId(deckId));
 
     const progress = sessionService.getProgress(deckId);
     if (!progress) {
@@ -323,7 +271,7 @@ router.get('/progress', async (req, res) => {
 
     res.json({ active: true, ...progress });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    errorResponse(res, 500, err.message);
   }
 });
 

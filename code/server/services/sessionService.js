@@ -151,16 +151,68 @@ function getPreviousScenarios(deckId, wordKey) {
 function formatScenarioMessage(cardType, scenario) {
   switch (cardType) {
     case 'read':
-      return `${scenario.scenario}\n\n${scenario.question}${scenario.hint ? '\n\n💡 Hint: ' + scenario.hint : ''}`;
+      return `${scenario?.scenario || ''}\n\n${scenario?.question || ''}${scenario?.hint ? '\n\n💡 Hint: ' + scenario.hint : ''}`;
     case 'write':
-      return `🖊️ ${scenario.scenario}\n\n${scenario.task}${scenario.hint ? '\n\n💡 Hint: ' + scenario.hint : ''}`;
+      return `🖊️ ${scenario?.scenario || ''}\n\n${scenario?.task || ''}${scenario?.hint ? '\n\n💡 Hint: ' + scenario.hint : ''}`;
     case 'listen':
-      return `🎧 Listen to this:\n\n"${scenario.audioText}"\n\n${scenario.question}${scenario.hint ? '\n\n💡 Hint: ' + scenario.hint : ''}`;
+      return `🎧 Listen to this:\n\n"${scenario?.audioText || ''}"\n\n${scenario?.question || ''}${scenario?.hint ? '\n\n💡 Hint: ' + scenario.hint : ''}`;
     case 'speak':
-      return `🗣️ ${scenario.scenario}\n\n${scenario.task}`;
+      return `🗣️ ${scenario?.scenario || ''}\n\n${scenario?.task || ''}`;
     default:
-      return `${scenario.scenario || scenario.question || ''}`;
+      return `${scenario?.scenario || scenario?.question || ''}`;
   }
+}
+
+/**
+ * 从待学卡片中按类型轮换选择下一张卡片
+ *
+ * 策略：
+ * 1. 按 cardType 分组
+ * 2. 从上次使用的类型开始轮换 (read → write → listen → speak)
+ * 3. 在选中的类型组内随机抽取一张
+ * 4. 如果该类型无卡片，顺延到下一个类型
+ *
+ * @param {Array} cards - 待选卡片数组
+ * @param {Object} session - 当前学习会话 (会修改 session.lastCardType)
+ * @returns {Object|null} 选中的卡片，或 null（无可用卡片时）
+ */
+function pickNextCard(cards, session) {
+  if (!cards || cards.length === 0) return null;
+
+  // 按类型分组
+  const byType = { read: [], write: [], listen: [], speak: [] };
+  for (const card of cards) {
+    const type = card.cardType || 'read';
+    if (byType[type]) {
+      byType[type].push(card);
+    } else {
+      byType.read.push(card); // 未知类型归入 read
+    }
+  }
+
+  const typeOrder = ['read', 'write', 'listen', 'speak'];
+
+  // 从上次类型的下一个开始轮换
+  let startIdx = 0;
+  if (session.lastCardType != null) {
+    const lastIdx = typeOrder.indexOf(session.lastCardType);
+    startIdx = (lastIdx + 1) % typeOrder.length;
+  }
+
+  // 按轮换顺序尝试每种类型
+  for (let i = 0; i < typeOrder.length; i++) {
+    const idx = (startIdx + i) % typeOrder.length;
+    const type = typeOrder[idx];
+    const pool = byType[type];
+    if (pool.length > 0) {
+      // 同类型内随机抽取
+      const j = Math.floor(Math.random() * pool.length);
+      session.lastCardType = type;
+      return pool[j];
+    }
+  }
+
+  return null;
 }
 
 export default {
@@ -174,4 +226,5 @@ export default {
   recordScenario,
   getPreviousScenarios,
   getProgress,
+  pickNextCard,
 };

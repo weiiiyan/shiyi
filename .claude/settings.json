@@ -8,7 +8,9 @@
       "Read(//c/Users/Admin/AppData/Local/Temp/claude/f--web-shiyi/f60d71a1-6062-45f4-aa58-283bd1ec45c4/tasks/**)",
       "Bash(bash \"C:/Users/Admin/.claude/plugins/cache/claude-plugins-official/superpowers/5.1.0/skills/brainstorming/scripts/start-server.sh\" --project-dir \"f:/web/shiyi\")",
       "Skill(commit-commands:commit)",
-      "Skill(commit-commands:commit:*)"
+      "Skill(commit-commands:commit:*)",
+      "Bash(npm i *)",
+      "Bash(npx vitest *)"
     ]
   }
 }

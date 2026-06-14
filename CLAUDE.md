@@ -16,6 +16,9 @@ npm run server        # Express 后端，端口 3001
 npm run dev:all       # 前后端同时启动
 npm run build         # 生产构建
 npm run preview       # 预览生产构建
+npm test              # 运行全部服务端单元测试（vitest）
+npm run test:watch    # 监听模式
+npm run test:coverage # 测试覆盖率报告
 ```
 
 **前置条件：** 本地必须运行 Anki，并安装 [Anki-Connect](https://ankiweb.net/shared/info/2055492159) 插件（默认地址 `http://localhost:8765`）。
@@ -36,10 +39,14 @@ npm run preview       # 预览生产构建
 code/                        ← 主应用
   server/
     index.js                 ← Express 入口（端口 3001，CORS + JSON 解析）
+    lib/
+      parseAIJson.js         ← AI 返回 JSON 鲁棒解析
+      validation.js          ← 共享请求参数校验器
+      errorHandler.js        ← 统一错误响应辅助
     services/
-      ankiService.js         ← Anki-Connect HTTP 封装（POST JSON, version 6）
+      ankiService.js         ← Anki-Connect HTTP 封装（POST JSON, version 6，10s 超时）
       aiService.js           ← 多模型 AI 适配层：场景生成 + 作答评判
-      sessionService.js      ← 内存会话存储（TTL: 2 小时）
+      sessionService.js      ← 内存会话存储（TTL: 2 小时）+ pickNextCard 卡片轮换
     routes/
       decks.js               ← GET /api/decks, /api/decks/status, /api/decks/all
       learn.js               ← /api/learn/start|respond|complete|next, /api/learn/progress

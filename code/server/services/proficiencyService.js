@@ -69,7 +69,7 @@ const DEFAULT_LEVELS = [
  * 获取默认水平等级列表（深拷贝，防止调用方意外修改）
  */
 function getDefaultLevels() {
-  return JSON.parse(JSON.stringify(DEFAULT_LEVELS));
+  return structuredClone(DEFAULT_LEVELS);
 }
 
 /**
