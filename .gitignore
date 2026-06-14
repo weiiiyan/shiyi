@@ -24,6 +24,9 @@ skills-lock.json
 # Superpowers — brainstorming session data
 .superpowers/
 
+# understand
+.understand-anything/
+
 # OS generated files
 .DS_Store
 .DS_Store?

@@ -424,6 +424,114 @@
       "language": "markdown",
       "sizeLines": 193,
       "fileCategory": "docs"
+    },
+    {
+      "path": ".gitignore",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "sizeLines": 0,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "code/.gitignore",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/package-lock.json",
+      "language": "json",
+      "sizeLines": 0,
+      "fileCategory": "config"
+    },
+    {
+      "path": "code/server/lib/errorHandler.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/lib/parseAIJson.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/lib/parseAIJson.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/lib/validation.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/lib/validation.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/routes/ai.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/routes/decks.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/routes/learn.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/services/aiService.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/services/ankiService.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/services/proficiencyService.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/services/proficiencyService.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/server/services/sessionService.test.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "code/vitest.config.js",
+      "language": "javascript",
+      "sizeLines": 0,
+      "fileCategory": "code"
     }
   ],
   "totalFiles": 68,

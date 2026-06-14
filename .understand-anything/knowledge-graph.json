@@ -1,25 +1,23 @@
 {
   "version": "1.0.0",
   "project": {
-    "name": "code",
+    "name": "ShiYi（拾忆）",
     "languages": [
-      "config",
+      "javascript",
+      "vue",
+      "json",
       "css",
       "html",
-      "javascript",
-      "json",
-      "markdown",
-      "unknown",
-      "vue"
+      "markdown"
     ],
     "frameworks": [
       "Express",
       "Vite",
       "Vue"
     ],
-    "description": "基于 Vue 3 + Vite 的英语学习应用（ShiYi），集成 Express 后端、OpenAI 多模型 AI 服务和 Anki 闪卡管理，通过 AI 场景对话和语音交互实现听说读写四项技能训练。",
-    "analyzedAt": "2026-06-12T15:47:13.171Z",
-    "gitCommitHash": "4f5facfd198fda289f5405ac3dd2d85ba4c9d039"
+    "description": "AI 驱动的沉浸式英语学习应用，结合 Anki 间隔重复算法与 AI 生成的对话场景，覆盖读、写、听、说四种技能训练",
+    "analyzedAt": "2026-06-14T14:39:00.101Z",
+    "gitCommitHash": "934105cbd433cbc8590c6e316533f9b9e116a105"
   },
   "nodes": [
     {
@@ -27,11 +25,11 @@
       "type": "file",
       "name": "index.js",
       "filePath": "code/server/index.js",
-      "summary": "Express 后端服务入口文件，挂载 CORS 和 JSON 中间件，注册 /api/decks、/api/learn、/api/ai 三个路由模块，提供健康检查端点和全局错误处理，监听 3001 端口。",
+      "summary": "Express 后端入口文件，挂载 CORS 和 JSON 中间件，注册 /api/decks、/api/learn、/api/ai 三个路由模块，提供健康检查端点，并在非测试环境下启动 :3001 端口监听。",
       "tags": [
         "entry-point",
-        "server",
         "express",
+        "server",
         "middleware"
       ],
       "complexity": "simple"
@@ -41,11 +39,11 @@
       "type": "file",
       "name": "ai.js",
       "filePath": "code/server/routes/ai.js",
-      "summary": "AI 相关路由模块，提供 POST /api/ai/test（测试 AI 连接）和 GET /api/ai/presets（获取预设模型配置）两个端点，依赖 aiService 处理业务逻辑。",
+      "summary": "AI 路由模块，提供 POST /test 测试 AI 连接和 GET /presets 获取预设模型配置两个端点，依赖 aiService 进行实际的 API 调用。",
       "tags": [
         "api-handler",
-        "route",
         "express",
+        "route",
         "ai"
       ],
       "complexity": "simple"
@@ -55,11 +53,11 @@
       "type": "file",
       "name": "decks.js",
       "filePath": "code/server/routes/decks.js",
-      "summary": "牌组相关路由模块，提供 GET /api/decks（获取 ShiYi 牌组列表）、GET /api/decks/status（检查 Anki-Connect 连接状态）和 GET /api/decks/all（调试端点返回全部牌组），依赖 ankiService 处理业务逻辑。",
+      "summary": "牌组路由模块，提供 GET / 获取 ShiYi 牌组列表及统计、GET /status 检查 Anki 连接状态、GET /all 获取所有 Anki 牌组三个端点，依赖 ankiService 进行数据查询。",
       "tags": [
         "api-handler",
-        "route",
         "express",
+        "route",
         "anki"
       ],
       "complexity": "simple"
@@ -69,13 +67,13 @@
       "type": "file",
       "name": "learn.js",
       "filePath": "code/server/routes/learn.js",
-      "summary": "学习流程核心路由模块，编排完整的卡片学习生命周期：POST /start（开始学习并生成 AI 场景）、POST /respond（用户回复后 AI 评判掌握程度）、POST /complete（完成当前卡片并更新 Anki）、POST /next（获取下一张卡片）、GET /progress（查询学习进度），协调 ankiService、aiService 和 sessionService 三个服务层。",
+      "summary": "学习主路由模块，编排完整学习循环——开始会话（/start）、用户作答评判（/respond）、完成卡片更新 Anki（/complete）、获取下一张卡片（/next）、查询进度（/progress），通过共享函数 prepareCardAndScenario 消除 /start 和 /next 的重复逻辑。",
       "tags": [
         "api-handler",
-        "route",
         "express",
-        "learning-flow",
-        "orchestration"
+        "route",
+        "learning-loop",
+        "session"
       ],
       "complexity": "complex"
     },
@@ -84,65 +82,66 @@
       "type": "file",
       "name": "aiService.js",
       "filePath": "code/server/services/aiService.js",
-      "summary": "AI 多模型服务层，封装 OpenAI 兼容 API 调用，支持千问/豆包/OpenAI 等模型提供商，提供学习场景生成（generateScenario）和用户回复评判（judgeResponse）两大核心能力，内置鲁棒的 AI JSON 响应解析器（parseAIJson）处理各模型不规范的 JSON 输出。",
+      "summary": "AI 多模型服务层，封装 OpenAI 兼容接口的客户端创建、学习场景生成（根据 read/write/listen/speak 四种卡片类型生成沉浸式英语场景）、作答评判（输出 ease 1/3/4 三档评分）和连接测试功能，内置千问、豆包、OpenAI、自定义四种预设配置。",
       "tags": [
         "service",
         "ai",
-        "openai",
+        "multi-model",
         "scenario-generation",
-        "nlp"
+        "judging"
       ],
       "complexity": "complex",
-      "languageNotes": "使用 OpenAI SDK 统一调用多家兼容 API（千问 dashscope、豆包 ark），内置多策略 JSON 提取器以应对 LLM 返回格式不一致的问题；预设 MODEL_PRESETS 配置提供四组模型预设（qwen/doubao/openai/custom）。"
+      "languageNotes": "使用 OpenAI SDK 统一适配多种 AI 服务商；场景生成使用 temperature 0.9 鼓励多样性，作答评判使用 temperature 0.5 追求一致性；通过场景哈希去重避免同一单词生成雷同场景。"
     },
     {
       "id": "file:code/server/services/ankiService.js",
       "type": "file",
       "name": "ankiService.js",
       "filePath": "code/server/services/ankiService.js",
-      "summary": "Anki-Connect API 服务层，封装与本地 Anki 应用的 JSON-RPC 通信（localhost:8765），提供牌组查询、到期卡片获取、已知词汇收集、卡片评分提交和连接状态检查等功能，特别处理 Windows 下中文牌组名 UTF-8 编码问题（统一使用 did: 牌组 ID 查询）。",
+      "summary": "Anki-Connect API 服务层，封装所有 Anki-Connect 调用（version 6 协议），提供牌组查询、卡片获取、词汇提取、作答更新、连接检测等功能，使用 10 秒超时的 AbortController 机制，支持子牌组递归聚合统计。",
       "tags": [
         "service",
         "anki",
         "anki-connect",
-        "flashcard",
-        "json-rpc"
+        "data-access",
+        "spaced-repetition"
       ],
       "complexity": "complex",
-      "languageNotes": "所有 Anki-Connect 查询通过 did:（牌组 ID）而非 deck:（牌组名）以避免 Windows 版 Anki-Connect 的中文 UTF-8 解码错误；invoke 函数封装统一的 JSON-RPC 请求/错误处理模式。"
+      "languageNotes": "牌组查询使用 Anki deck:\"名称\" 格式进行树级递归搜索；通过乘法哈希（黄金比例常数 2654435761）基于 cardId 确定性地分配卡片类型，保证同一卡片在不同请求中获得一致的类型。"
     },
     {
       "id": "file:code/server/services/sessionService.js",
       "type": "file",
       "name": "sessionService.js",
       "filePath": "code/server/services/sessionService.js",
-      "summary": "学习会话管理服务，基于内存 Map 存储每个牌组的会话状态，跟踪当前卡片、对话历史、连续失败次数和评分统计，支持 2 小时 TTL 自动过期机制，提供 formatScenarioMessage 将 AI 生成的场景 JSON 格式化为可读文本。",
+      "summary": "学习会话管理服务，基于内存 Map 存储每个牌组的会话状态，跟踪当前卡片、对话历史、场景去重、评分统计和连续失败次数，实现卡片类型轮换（Round Robin: read → write → listen → speak）选择策略，2 小时无操作自动过期。",
       "tags": [
         "service",
         "session",
         "state-management",
-        "in-memory"
+        "round-robin",
+        "ttl"
       ],
       "complexity": "moderate",
-      "languageNotes": "使用 Map 实现内存会话存储，通过 setTimeout/clearTimeout 实现会话自动过期（TTL=2小时），每次 getSession 刷新计时器实现滑动过期策略。"
+      "languageNotes": "使用 setTimeout 实现会话 TTL 自动过期，每次 getSession 调用刷新计时器；卡片类型轮换指针存储在 session.lastCardType 中。"
     },
     {
-      "id": "function:code/server/services/aiService.js:parseAIJson",
+      "id": "function:code/server/routes/learn.js:prepareCardAndScenario",
       "type": "function",
-      "name": "parseAIJson",
-      "filePath": "code/server/services/aiService.js",
+      "name": "prepareCardAndScenario",
+      "filePath": "code/server/routes/learn.js",
       "lineRange": [
-        24,
-        89
+        21,
+        66
       ],
-      "summary": "从 AI 返回的文本中鲁棒地提取 JSON 对象，依次尝试：去除 markdown 代码块后解析、花括号配对提取第一个完整 JSON 对象、直接 parse 兜底，处理各 LLM（千问/豆包等）不规范输出。",
+      "summary": "共享的卡片准备与场景生成逻辑——获取已知词汇、按类型轮换选择卡片、查询历史场景去重、调用 AI 生成新场景、记录场景并设置当前卡片，供 /start 和 /next 端点复用，消除重复代码。",
       "tags": [
-        "utility",
-        "json-parsing",
-        "robust",
-        "ai-integration"
+        "orchestration",
+        "scenario-generation",
+        "card-selection",
+        "deduplication"
       ],
-      "complexity": "moderate"
+      "complexity": "complex"
     },
     {
       "id": "function:code/server/services/aiService.js:createClient",
@@ -150,17 +149,16 @@
       "name": "createClient",
       "filePath": "code/server/services/aiService.js",
       "lineRange": [
-        122,
-        134
+        45,
+        57
       ],
-      "summary": "根据 provider 预设配置创建 OpenAI 客户端实例，解析最终的 baseURL 和 model，验证 API Key 存在性。",
+      "summary": "根据服务商预设创建 OpenAI 客户端实例，合并用户配置与预设的 baseURL 和 model，验证 API Key 是否存在。",
       "tags": [
         "factory",
-        "client",
-        "openai",
-        "configuration"
+        "client-creation",
+        "openai-compatible"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/server/services/aiService.js:generateScenario",
@@ -168,14 +166,14 @@
       "name": "generateScenario",
       "filePath": "code/server/services/aiService.js",
       "lineRange": [
-        147,
-        258
+        70,
+        197
       ],
-      "summary": "根据卡片类型（read/write/listen/speak）调用 AI 生成沉浸式英语学习场景，传入已知词汇列表以约束 AI 用词范围，返回包含场景描述、问题和提示的结构化 JSON。",
+      "summary": "根据卡片类型（read/write/listen/speak）生成沉浸式英语学习场景——构建 system prompt 强调英语是运动技能，按类型组装专用 prompt，结合已知词汇和水平配置，支持同单词场景去重，调用 AI 后解析 JSON 返回场景内容。",
       "tags": [
         "scenario-generation",
-        "ai",
         "prompt-engineering",
+        "ai",
         "english-learning"
       ],
       "complexity": "complex"
@@ -186,17 +184,17 @@
       "name": "judgeResponse",
       "filePath": "code/server/services/aiService.js",
       "lineRange": [
-        274,
-        346
+        213,
+        292
       ],
-      "summary": "调用 AI 评判用户回复的掌握程度，返回 ease 评分（1=Again, 3=Good, 4=Easy）和鼓励性反馈，根据连续失败次数调整评判宽松度以防止挫败感。",
+      "summary": "评判用户对学习场景的作答——构建评判 prompt 强调以传达意义为核心（而非语法完美），根据连续失败次数调整宽容度，返回 ease 分数（1=Again/3=Good/4=Easy，跳过 Hard）和一句简短反馈。",
       "tags": [
-        "judgment",
+        "judging",
+        "prompt-engineering",
         "ai",
-        "scoring",
-        "adaptive"
+        "scoring"
       ],
-      "complexity": "moderate"
+      "complexity": "complex"
     },
     {
       "id": "function:code/server/services/aiService.js:testConnection",
@@ -204,16 +202,16 @@
       "name": "testConnection",
       "filePath": "code/server/services/aiService.js",
       "lineRange": [
-        351,
-        363
+        297,
+        309
       ],
-      "summary": "验证 AI 配置是否可用，发送简单测试消息并返回连接状态，捕获异常并返回友好错误信息。",
+      "summary": "验证 AI 服务配置是否可用——使用给定凭证发送最小测试请求，成功返回 {ok: true, message}，失败返回 {ok: false, message}。",
       "tags": [
+        "connection-test",
         "validation",
-        "connectivity",
-        "diagnostics"
+        "ai"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/server/services/ankiService.js:invoke",
@@ -222,16 +220,16 @@
       "filePath": "code/server/services/ankiService.js",
       "lineRange": [
         12,
-        26
+        34
       ],
-      "summary": "向 Anki-Connect（localhost:8765）发送 JSON-RPC 请求的底层封装，统一处理 POST 请求构建、响应解析和错误抛出。",
+      "summary": "Anki-Connect 底层调用封装——发送 POST JSON 请求（version 6 协议），带 10 秒 AbortController 超时，自动处理错误响应和定时器清理。",
       "tags": [
-        "json-rpc",
         "http-client",
         "anki-connect",
-        "utility"
+        "timeout",
+        "error-handling"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/server/services/ankiService.js:getAllDeckNames",
@@ -239,31 +237,14 @@
       "name": "getAllDeckNames",
       "filePath": "code/server/services/ankiService.js",
       "lineRange": [
-        31,
-        33
-      ],
-      "summary": "获取 Anki 中所有牌组名称（调试用），直接委托 invoke('deckNames')。",
-      "tags": [
-        "anki",
-        "deck",
-        "query"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "function:code/server/services/ankiService.js:getDeckMapping",
-      "type": "function",
-      "name": "getDeckMapping",
-      "filePath": "code/server/services/ankiService.js",
-      "lineRange": [
         39,
-        48
+        41
       ],
-      "summary": "构建牌组名称与 ID 的双向映射（nameToId 和 idToName），用于将中文牌组名转换为安全的牌组 ID。",
+      "summary": "获取 Anki 中所有牌组名称，供调试端点使用。",
       "tags": [
-        "mapping",
         "anki",
-        "utility"
+        "deck-query",
+        "debug"
       ],
       "complexity": "simple"
     },
@@ -273,17 +254,17 @@
       "name": "getShiYiDecks",
       "filePath": "code/server/services/ankiService.js",
       "lineRange": [
-        54,
-        120
+        47,
+        165
       ],
-      "summary": "获取所有 ShiYi:: 前缀的牌组及其统计信息（总卡片数、到期卡片数），使用 did: 查询避免中文 UTF-8 编码问题，返回带有 encodeURIComponent 编码 ID 的牌组列表。",
+      "summary": "获取所有 ShiYi 项目牌组（ShiYi:: 前缀过滤）及其统计信息——批量查询卡片信息并按牌组分组统计，支持子牌组聚合（父牌组累加所有后代数据），返回包含 id/name/totalCards/newCards/reviewCards 的牌组列表。",
       "tags": [
         "anki",
-        "deck",
-        "filtering",
+        "deck-query",
+        "aggregation",
         "statistics"
       ],
-      "complexity": "moderate"
+      "complexity": "complex"
     },
     {
       "id": "function:code/server/services/ankiService.js:getDueCards",
@@ -291,17 +272,51 @@
       "name": "getDueCards",
       "filePath": "code/server/services/ankiService.js",
       "lineRange": [
-        128,
+        173,
         182
       ],
-      "summary": "获取指定牌组中到期的卡片，通过 cardsInfo/notesInfo 合并卡片与笔记字段数据，返回包含 cardId、word、concept、cardType、examples、context 等完整字段的卡片对象数组。",
+      "summary": "获取指定牌组中到期和新卡片（is:due OR is:new），批量获取卡片信息并合并 note 字段数据。",
       "tags": [
         "anki",
-        "due-cards",
-        "query",
-        "data-merging"
+        "card-query",
+        "due-cards"
       ],
       "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/services/ankiService.js:getAllCardsInDeck",
+      "type": "function",
+      "name": "getAllCardsInDeck",
+      "filePath": "code/server/services/ankiService.js",
+      "lineRange": [
+        188,
+        196
+      ],
+      "summary": "获取指定牌组中所有卡片（不限到期状态），用于诊断统计场景。",
+      "tags": [
+        "anki",
+        "card-query",
+        "diagnostic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/ankiService.js:fetchCardsWithNotes",
+      "type": "function",
+      "name": "fetchCardsWithNotes",
+      "filePath": "code/server/services/ankiService.js",
+      "lineRange": [
+        204,
+        250
+      ],
+      "summary": "批量获取卡片信息并合并 note 字段数据——查询 cardsInfo 和 notesInfo，构建 note 映射，合并 concept/word/cardType/subDeck/examples/context 字段，对缺失 cardType 的卡片使用乘法哈希确定性分配类型。",
+      "tags": [
+        "data-merge",
+        "anki",
+        "card-info",
+        "note-fields"
+      ],
+      "complexity": "complex"
     },
     {
       "id": "function:code/server/services/ankiService.js:getKnownVocabulary",
@@ -309,17 +324,17 @@
       "name": "getKnownVocabulary",
       "filePath": "code/server/services/ankiService.js",
       "lineRange": [
-        188,
-        216
+        256,
+        279
       ],
-      "summary": "收集指定牌组中所有已掌握词汇（word+concept），使用 Set 去重后返回词汇对象数组，用于约束 AI 生成场景时的用词范围。",
+      "summary": "获取牌组中所有已掌握的词汇（word + concept），用于约束 AI 生成场景时的用词范围，使用 Set 去重后返回去重数组。",
       "tags": [
         "vocabulary",
         "anki",
-        "knowledge-base",
-        "deduplication"
+        "deduplication",
+        "ai-context"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/server/services/ankiService.js:answerCard",
@@ -327,14 +342,14 @@
       "name": "answerCard",
       "filePath": "code/server/services/ankiService.js",
       "lineRange": [
-        223,
-        228
+        286,
+        291
       ],
-      "summary": "向 Anki 提交卡片学习结果，将 ease 值约束在 1-4 范围内后通过 Anki-Connect 的 answerCards 接口更新卡片调度。",
+      "summary": "更新卡片学习结果到 Anki——将 ease 分数钳制在 1-4 范围后调用 Anki-Connect answerCards。",
       "tags": [
         "anki",
-        "scoring",
-        "scheduling"
+        "spaced-repetition",
+        "answer"
       ],
       "complexity": "simple"
     },
@@ -344,14 +359,14 @@
       "name": "isAvailable",
       "filePath": "code/server/services/ankiService.js",
       "lineRange": [
-        233,
-        240
+        296,
+        303
       ],
-      "summary": "检查 Anki-Connect 是否可用，通过调用 version 接口验证连接，返回可用状态和版本号。",
+      "summary": "检查 Anki-Connect 是否可用——调用 version API，成功返回版本号，失败返回 available: false。",
       "tags": [
-        "diagnostics",
-        "connectivity",
-        "anki"
+        "health-check",
+        "anki-connect",
+        "availability"
       ],
       "complexity": "simple"
     },
@@ -362,15 +377,16 @@
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
         16,
-        41
+        44
       ],
-      "summary": "创建或重置学习会话，清理旧会话定时器后初始化新的会话对象（含 deckId、aiConfig、currentCard、history、scenario、failCount、completedCards、scores），设置 2 小时 TTL 自动过期。",
+      "summary": "创建或重置学习会话——清理旧会话定时器，初始化 currentCard/history/scenario/failCount/completedCards/scores 等状态字段，设置 2 小时 TTL 自动过期定时器。",
       "tags": [
         "session",
+        "lifecycle",
         "initialization",
-        "state-management"
+        "ttl"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/server/services/sessionService.js:getSession",
@@ -378,16 +394,16 @@
       "name": "getSession",
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
-        43,
-        53
+        46,
+        56
       ],
-      "summary": "获取指定 deckId 的会话对象，每次访问时刷新过期定时器实现滑动过期策略，无会话时返回 undefined。",
+      "summary": "获取指定牌组的学习会话，每次访问刷新 TTL 定时器（滑动过期）。",
       "tags": [
         "session",
-        "lookup",
-        "ttl"
+        "retrieval",
+        "ttl-refresh"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/server/services/sessionService.js:deleteSession",
@@ -395,13 +411,14 @@
       "name": "deleteSession",
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
-        55,
-        61
+        58,
+        64
       ],
-      "summary": "删除指定 deckId 的会话，清理定时器并从 Map 中移除。",
+      "summary": "删除指定牌组的学习会话并清理定时器。",
       "tags": [
         "session",
-        "cleanup"
+        "cleanup",
+        "lifecycle"
       ],
       "complexity": "simple"
     },
@@ -411,16 +428,16 @@
       "name": "setCurrentCard",
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
-        63,
-        79
+        66,
+        82
       ],
-      "summary": "设置当前学习卡片和 AI 生成的场景，重置对话历史（将场景作为第一条 assistant 消息）和连续失败计数。",
+      "summary": "设置当前学习卡片和场景——清空对话历史和失败计数，将 AI 生成的场景格式化为第一条 assistant 消息推入历史。",
       "tags": [
         "session",
         "card-management",
-        "state-reset"
+        "history-reset"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/server/services/sessionService.js:addMessage",
@@ -428,10 +445,10 @@
       "name": "addMessage",
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
-        81,
-        86
+        84,
+        89
       ],
-      "summary": "向会话历史记录追加一条消息（user 或 assistant 角色）。",
+      "summary": "向会话对话历史中添加一条消息（role + content）。",
       "tags": [
         "session",
         "history",
@@ -445,16 +462,16 @@
       "name": "recordScore",
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
-        88,
-        102
+        91,
+        105
       ],
-      "summary": "记录卡片评分结果，更新 again/good/easy 计数，管理连续失败次数（ease=1 递增 failCount，ease>=3 清零）。",
+      "summary": "记录用户作答评分——更新 again/good/easy 计数，维护连续失败次数（ease=1 递增，ease>=3 归零）。",
       "tags": [
+        "session",
         "scoring",
-        "tracking",
-        "session"
+        "fail-tracking"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/server/services/sessionService.js:markCardComplete",
@@ -462,14 +479,13 @@
       "name": "markCardComplete",
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
-        104,
-        109
+        107,
+        112
       ],
-      "summary": "将指定 cardId 标记为已完成，追加到会话的 completedCards 数组。",
+      "summary": "将指定卡片 ID 标记为已完成，推入 completedCards 数组。",
       "tags": [
         "session",
-        "completion",
-        "tracking"
+        "completion-tracking"
       ],
       "complexity": "simple"
     },
@@ -479,14 +495,48 @@
       "name": "getProgress",
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
-        111,
-        121
+        114,
+        124
       ],
-      "summary": "获取当前学习进度快照，返回已完成卡片数、评分分布、连续失败次数和会话开始时间。",
+      "summary": "获取当前学习进度——返回已完成卡片数、评分统计、连续失败次数和会话开始时间。",
       "tags": [
+        "session",
         "progress",
-        "statistics",
-        "session"
+        "statistics"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:recordScenario",
+      "type": "function",
+      "name": "recordScenario",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        129,
+        140
+      ],
+      "summary": "记录某个单词已生成的场景哈希（JSON 前 50 字符 + 长度），用于去重——避免同一单词再次出现时 AI 生成雷同场景。",
+      "tags": [
+        "session",
+        "deduplication",
+        "scenario-tracking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:getPreviousScenarios",
+      "type": "function",
+      "name": "getPreviousScenarios",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        145,
+        149
+      ],
+      "summary": "获取某个单词的历史场景哈希列表，供 AI 生成新场景时参考去重。",
+      "tags": [
+        "session",
+        "deduplication",
+        "scenario-history"
       ],
       "complexity": "simple"
     },
@@ -496,29 +546,50 @@
       "name": "formatScenarioMessage",
       "filePath": "code/server/services/sessionService.js",
       "lineRange": [
-        123,
-        136
+        151,
+        164
       ],
-      "summary": "根据卡片类型（read/write/listen/speak）将 AI 生成的场景 JSON 格式化为适合展示给用户的可读文本消息，附带类型对应的 emoji 标识。",
+      "summary": "根据卡片类型格式化场景内容为对话消息——read 展示文本和问题，write 展示写作任务，listen 展示音频文本，speak 展示口语任务，每种类型添加对应 emoji 前缀。",
       "tags": [
         "formatting",
-        "display",
-        "scenario"
+        "session",
+        "card-type",
+        "message-rendering"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/services/sessionService.js:pickNextCard",
+      "type": "function",
+      "name": "pickNextCard",
+      "filePath": "code/server/services/sessionService.js",
+      "lineRange": [
+        179,
+        216
+      ],
+      "summary": "从待学卡片中按类型轮换选择下一张卡片——先按 cardType 分组，从上次类型之后开始 Round Robin 轮换（read → write → listen → speak），在同类型卡片池内随机抽取一张，更新 session.lastCardType 指针。",
+      "tags": [
+        "card-selection",
+        "round-robin",
+        "randomization",
+        "session"
+      ],
+      "complexity": "complex"
     },
     {
       "id": "file:code/src/App.vue",
       "type": "file",
       "name": "App.vue",
       "filePath": "code/src/App.vue",
-      "summary": "Vue 根组件，定义应用整体布局结构，包含顶部导航栏（牌组/设置路由链接）和 <router-view /> 主内容出口区域。",
+      "summary": "Vue 根组件，包含顶部导航栏（牌组/设置路由链接）和主题切换下拉菜单（深色/浅色/跟随系统），使用 localStorage 持久化主题选择并通过 data-theme 属性全局控制样式。",
       "tags": [
-        "component",
-        "entry-point",
-        "layout"
+        "root-component",
+        "theme-management",
+        "navigation",
+        "vue-sfc"
       ],
-      "complexity": "simple"
+      "complexity": "moderate",
+      "languageNotes": "使用 CSS media query（prefers-color-scheme）监听系统主题变化，支持 auto 模式下跟随系统，并通过 watch 自动同步 localStorage 与 DOM。"
     },
     {
       "id": "file:code/src/main.js",
@@ -550,11 +621,12 @@
       "type": "file",
       "name": "DeckSelect.vue",
       "filePath": "code/src/views/DeckSelect.vue",
-      "summary": "牌组选择视图，检测 Anki-Connect 连接状态，加载并展示以 ShiYi:: 为前缀的牌组列表，支持点击进入对应牌组的学习流程。",
+      "summary": "牌组选择页面：检测 Anki-Connect 连接状态并展示版本号，加载并过滤 ShiYi:: 前缀牌组，提供未找到牌组时的创建引导，支持点击牌组卡片跳转至学习页。",
       "tags": [
-        "component",
-        "view",
-        "deck-management"
+        "deck-selection",
+        "anki-connection",
+        "status-check",
+        "api-consumer"
       ],
       "complexity": "moderate"
     },
@@ -563,29 +635,66 @@
       "type": "file",
       "name": "LearnView.vue",
       "filePath": "code/src/views/LearnView.vue",
-      "summary": "核心学习视图，提供基于 AI 场景的英语对话学习界面，集成语音输入/朗读、四种卡片类型（读/写/听/说）及 AI 自动评分反馈，学习完成后自动推进下一张卡片。",
+      "summary": "学习主界面——整个应用最核心的组件，编排完整的英语学习循环（开始会话→AI生成场景→用户作答→AI评判→完成卡片→下一张），集成语音输入（Web Speech API STT）和朗读（TTS），按读/写/听/说四类卡片轮换出题，右侧嵌入 PhilosophyPanel 学习理念面板。",
       "tags": [
-        "component",
-        "view",
-        "learning",
-        "ai-integration",
-        "voice"
+        "learning-loop",
+        "ai-interaction",
+        "speech-recognition",
+        "text-to-speech",
+        "card-management"
       ],
-      "complexity": "complex"
+      "complexity": "complex",
+      "languageNotes": "formatMessageText 实现了一套安全的 Markdown→HTML 转换管道（占位符转义防 XSS），并自动高亮目标单词。学习循环设计为每张卡片单轮问答（start→respond→complete→next），Anki 间隔重复数据在 complete 阶段异步更新。"
     },
     {
       "id": "file:code/src/views/SettingsView.vue",
       "type": "file",
       "name": "SettingsView.vue",
       "filePath": "code/src/views/SettingsView.vue",
-      "summary": "设置视图，配置 AI 服务商（OpenAI/千问/豆包/自定义）、API Key 与模型名称，支持连接测试；管理 Anki-Connect 连接检测；配置通过 watch 自动持久化到 localStorage。",
+      "summary": "设置页面，通过 Tab 切换组织三个配置面板：AI 模型配置（服务商/API Key/模型名称，含连接测试）、Anki-Connect 状态检测、英语水平设置（CEFR 五级分四技能的 AI 提示词管理，支持新增自定义等级和删除、编辑、重置内置等级）。",
       "tags": [
-        "component",
-        "view",
         "configuration",
-        "settings"
+        "ai-settings",
+        "anki-settings",
+        "proficiency-config",
+        "local-storage"
       ],
-      "complexity": "moderate"
+      "complexity": "complex",
+      "languageNotes": "自建 Tab 组件支持 ARIA 属性（role=tablist/tab/tabpanel, aria-selected, keyboard navigation with Home/End/Arrow keys），水平等级配置含内置（beginner~advanced 五个 CEFR 级别）和自定义等级的合并与持久化逻辑。"
+    },
+    {
+      "id": "function:code/src/App.vue:resolveTheme",
+      "type": "function",
+      "name": "resolveTheme",
+      "filePath": "code/src/App.vue",
+      "lineRange": [
+        29,
+        32
+      ],
+      "summary": "解析主题值：auto 模式下根据系统 media query 匹配结果返回 dark/light，其他值直接透传。",
+      "tags": [
+        "theme-resolution",
+        "utility",
+        "media-query"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/src/App.vue:applyTheme",
+      "type": "function",
+      "name": "applyTheme",
+      "filePath": "code/src/App.vue",
+      "lineRange": [
+        34,
+        41
+      ],
+      "summary": "将解析后的主题值应用到 DOM：设置 document.documentElement 的 data-theme 属性，同时更新浏览器标题栏 meta theme-color。",
+      "tags": [
+        "theme-application",
+        "dom-manipulation",
+        "meta-color"
+      ],
+      "complexity": "simple"
     },
     {
       "id": "function:code/src/views/DeckSelect.vue:checkAnkiStatus",
@@ -593,13 +702,14 @@
       "name": "checkAnkiStatus",
       "filePath": "code/src/views/DeckSelect.vue",
       "lineRange": [
-        84,
-        96
+        85,
+        97
       ],
-      "summary": "异步检测 Anki-Connect 连接状态，调用 /api/decks/status 接口获取可用性与版本号。",
+      "summary": "异步检测 Anki-Connect 连接状态，调用 /api/decks/status 接口获取可用性和版本号，失败时标记为未连接。",
       "tags": [
+        "status-check",
         "api-call",
-        "status-check"
+        "anki-connect"
       ],
       "complexity": "simple"
     },
@@ -609,78 +719,14 @@
       "name": "loadDecks",
       "filePath": "code/src/views/DeckSelect.vue",
       "lineRange": [
-        98,
-        111
+        99,
+        112
       ],
-      "summary": "异步加载牌组列表，调用 /api/decks 接口获取 ShiYi 牌组与全部 Anki 牌组名称。",
+      "summary": "异步加载 ShiYi 牌组列表，调用 /api/decks 接口获取牌组数据及 Anki 中所有牌组名称列表，异常时展示错误信息。",
       "tags": [
+        "data-loading",
         "api-call",
-        "data-loading"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "function:code/src/views/LearnView.vue:startSession",
-      "type": "function",
-      "name": "startSession",
-      "filePath": "code/src/views/LearnView.vue",
-      "lineRange": [
-        211,
-        261
-      ],
-      "summary": "启动学习会话，调用 /api/learn/start 传入牌组 ID 与 AI 配置，获取当前卡片和 AI 生成场景，listen 类型卡片自动触发 TTS 朗读。",
-      "tags": [
-        "api-call",
-        "session-management",
-        "tts-integration"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "function:code/src/views/LearnView.vue:sendResponse",
-      "type": "function",
-      "name": "sendResponse",
-      "filePath": "code/src/views/LearnView.vue",
-      "lineRange": [
-        263,
-        309
-      ],
-      "summary": "发送用户回答到 /api/learn/respond，接收 AI 评分反馈后自动调用 completeCard 完成当前卡片。",
-      "tags": [
-        "api-call",
-        "ai-evaluation"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "function:code/src/views/LearnView.vue:nextCard",
-      "type": "function",
-      "name": "nextCard",
-      "filePath": "code/src/views/LearnView.vue",
-      "lineRange": [
-        332,
-        367
-      ],
-      "summary": "请求 /api/learn/next 获取下一张待学卡片，展示 AI 生成的场景；listen 类型卡片自动触发 TTS 朗读。",
-      "tags": [
-        "api-call",
-        "card-progression"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "function:code/src/views/LearnView.vue:completeCard",
-      "type": "function",
-      "name": "completeCard",
-      "filePath": "code/src/views/LearnView.vue",
-      "lineRange": [
-        311,
-        330
-      ],
-      "summary": "调用 /api/learn/complete 提交卡片评分结果（ease），更新学习进度统计后自动请求下一张卡片。",
-      "tags": [
-        "api-call",
-        "card-completion"
+        "deck-list"
       ],
       "complexity": "simple"
     },
@@ -690,16 +736,16 @@
       "name": "readAloud",
       "filePath": "code/src/views/LearnView.vue",
       "lineRange": [
-        141,
-        162
+        152,
+        175
       ],
-      "summary": "使用 TTS 朗读指定文本内容，清理消息中的显示标记后调用 speak 方法，支持点击切换朗读/停止。",
+      "summary": "朗读指定的 AI 消息文本：先清理 HTML 标签、Markdown 强调标记和 emoji 图标，再调用 Web Speech API TTS 发音，支持点击切换朗读/停止。",
       "tags": [
-        "tts",
-        "utility",
-        "voice"
+        "text-to-speech",
+        "text-cleaning",
+        "web-speech-api"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "function:code/src/views/LearnView.vue:toggleVoiceInput",
@@ -707,16 +753,87 @@
       "name": "toggleVoiceInput",
       "filePath": "code/src/views/LearnView.vue",
       "lineRange": [
-        164,
-        181
+        177,
+        194
       ],
-      "summary": "切换语音输入状态，调用 STT startListening 获取识别文本后自动填入输入框并触发 sendResponse。",
+      "summary": "切换语音输入状态：已录音时停止识别，未录音时启动 STT 并将识别结果自动填入输入框并提交作答。",
       "tags": [
-        "stt",
-        "voice",
-        "input"
+        "speech-recognition",
+        "voice-input",
+        "web-speech-api"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:startSession",
+      "type": "function",
+      "name": "startSession",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        245,
+        298
+      ],
+      "summary": "启动学习会话：调用 POST /api/learn/start 发送牌组 ID、AI 配置和水平配置，处理 AI 生成场景的展示（含按卡片类型的格式化），listen 类型卡片自动触发 TTS 朗读。",
+      "tags": [
+        "session-start",
+        "api-call",
+        "scenario-generation",
+        "learning-flow"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:sendResponse",
+      "type": "function",
+      "name": "sendResponse",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        300,
+        346
+      ],
+      "summary": "发送用户作答到 POST /api/learn/respond 进行 AI 评判，接收 ease 分数和反馈消息并展示，随后自动调用 completeCard 完成当前卡片。",
+      "tags": [
+        "response-submission",
+        "api-call",
+        "ai-judgment",
+        "learning-flow"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:completeCard",
+      "type": "function",
+      "name": "completeCard",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        348,
+        367
+      ],
+      "summary": "完成当前卡片的 Anki 间隔重复更新（POST /api/learn/complete），记录评分统计后自动调用 nextCard 获取下一张卡片。",
+      "tags": [
+        "card-completion",
+        "api-call",
+        "anki-update",
+        "learning-flow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:nextCard",
+      "type": "function",
+      "name": "nextCard",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        369,
+        406
+      ],
+      "summary": "获取下一张待学习卡片（POST /api/learn/next），展示新场景，listen 类型自动朗读，会话全部完成时展示结束信息。",
+      "tags": [
+        "card-rotation",
+        "api-call",
+        "learning-flow"
+      ],
+      "complexity": "complex"
     },
     {
       "id": "function:code/src/views/LearnView.vue:formatScenario",
@@ -724,13 +841,49 @@
       "name": "formatScenario",
       "filePath": "code/src/views/LearnView.vue",
       "lineRange": [
-        369,
-        382
+        408,
+        427
       ],
-      "summary": "根据卡片类型（read/write/listen/speak）格式化 AI 场景数据为带图标的显示文本。",
+      "summary": "根据卡片类型（read/write/listen/speak）将 AI 生成的场景数据格式化为带图标前缀的展示文本，再经 formatMessageText 安全渲染。",
       "tags": [
         "formatting",
-        "display"
+        "scenario-display",
+        "card-type"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/src/views/LearnView.vue:formatMessageText",
+      "type": "function",
+      "name": "formatMessageText",
+      "filePath": "code/src/views/LearnView.vue",
+      "lineRange": [
+        440,
+        475
+      ],
+      "summary": "安全地将 AI 文本转为可渲染 HTML：Markdown 转占位符→去除原始 HTML 标签→HTML 转义→占位符还原为 <strong>/<em>→换行转 <br>→高亮目标单词，有效防止 XSS。",
+      "tags": [
+        "sanitization",
+        "markdown-parsing",
+        "xss-prevention",
+        "word-highlighting"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:code/src/views/SettingsView.vue:handleTabKeydown",
+      "type": "function",
+      "name": "handleTabKeydown",
+      "filePath": "code/src/views/SettingsView.vue",
+      "lineRange": [
+        217,
+        238
+      ],
+      "summary": "Tab 键盘导航处理：响应左右方向键切换相邻 Tab、Home/End 跳至首/末 Tab，切换后自动聚焦目标按钮。",
+      "tags": [
+        "keyboard-navigation",
+        "accessibility",
+        "tab-switching"
       ],
       "complexity": "simple"
     },
@@ -740,447 +893,84 @@
       "name": "testConnection",
       "filePath": "code/src/views/SettingsView.vue",
       "lineRange": [
-        98,
-        121
+        269,
+        292
       ],
-      "summary": "发送 AI 服务商/API Key/模型配置到 /api/ai/test 测试连接，显示成功或失败的测试结果。",
+      "summary": "测试 AI 服务连接：自动保存当前配置后调用 POST /api/ai/test 发送 provider/apiKey/baseURL/model 参数，展示成功或失败结果。",
       "tags": [
-        "api-call",
         "connection-test",
-        "ai-config"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/assemble-review.json",
-      "type": "config",
-      "name": "assemble-review.json",
-      "filePath": ".understand-anything/.trash-1781277533/assemble-review.json",
-      "summary": "图组装后的审查报告，验证节点恢复、边还原、交叉批次边添加、类型重映射和复杂度重映射情况，并附数据质量备注。",
-      "tags": [
-        "审查报告",
-        "质量验证",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "type": "config",
-      "name": "assembled-graph.json",
-      "filePath": ".understand-anything/.trash-1781277533/assembled-graph.json",
-      "summary": "完整的组装知识图谱输出，包含版本信息、项目元数据、所有节点数组、边数组、架构层定义和导览步骤数据。",
-      "tags": [
-        "知识图谱",
-        "图组装",
-        "输出产物",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/batch-1.json",
-      "type": "config",
-      "name": "batch-1.json",
-      "filePath": ".understand-anything/.trash-1781277533/batch-1.json",
-      "summary": "第1批次的知识图谱片段，包含该批次源代码文件提取的节点和边数据。",
-      "tags": [
-        "批次输出",
-        "图片段",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/batch-2.json",
-      "type": "config",
-      "name": "batch-2.json",
-      "filePath": ".understand-anything/.trash-1781277533/batch-2.json",
-      "summary": "第2批次的知识图谱片段，包含该批次源代码文件提取的节点和边数据。",
-      "tags": [
-        "批次输出",
-        "图片段",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/batch-3.json",
-      "type": "config",
-      "name": "batch-3.json",
-      "filePath": ".understand-anything/.trash-1781277533/batch-3.json",
-      "summary": "第3批次的知识图谱片段，包含该批次非代码文件（配置和文档）提取的节点和边数据。",
-      "tags": [
-        "批次输出",
-        "图片段",
-        "configuration"
+        "api-call",
+        "ai-provider-validation"
       ],
       "complexity": "moderate"
     },
     {
-      "id": "config:.understand-anything/.trash-1781277533/batch-4.json",
-      "type": "config",
-      "name": "batch-4.json",
-      "filePath": ".understand-anything/.trash-1781277533/batch-4.json",
-      "summary": "第4批次的知识图谱片段，包含该批次文档文件提取的节点和边数据。",
+      "id": "function:code/src/views/SettingsView.vue:loadProficiencyConfig",
+      "type": "function",
+      "name": "loadProficiencyConfig",
+      "filePath": "code/src/views/SettingsView.vue",
+      "lineRange": [
+        407,
+        439
+      ],
+      "summary": "从 localStorage 加载英语水平配置并进行智能合并：用保存的自定义等级覆盖内置版本，补齐缺失的内置等级，恢复自定义 ID 计数器。",
       "tags": [
-        "批次输出",
-        "图片段",
-        "configuration"
+        "config-loading",
+        "data-merge",
+        "local-storage",
+        "proficiency"
       ],
       "complexity": "moderate"
     },
     {
-      "id": "config:.understand-anything/.trash-1781277533/batch-5.json",
-      "type": "config",
-      "name": "batch-5.json",
-      "filePath": ".understand-anything/.trash-1781277533/batch-5.json",
-      "summary": "第5批次的知识图谱片段，包含该批次剩余源代码文件和配置文档提取的节点和边数据。",
-      "tags": [
-        "批次输出",
-        "图片段",
-        "configuration"
+      "id": "function:code/src/views/SettingsView.vue:addCustomLevel",
+      "type": "function",
+      "name": "addCustomLevel",
+      "filePath": "code/src/views/SettingsView.vue",
+      "lineRange": [
+        462,
+        478
       ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/batches.json",
-      "type": "config",
-      "name": "batches.json",
-      "filePath": ".understand-anything/.trash-1781277533/batches.json",
-      "summary": "批次调度配置文件，定义Louvain算法分区策略、31个源文件的批次分配、导出符号映射和各批次间的导入关系数据。",
+      "summary": "新增自定义英语水平等级：生成唯一 custom_N ID，初始化四技能空提示词，添加到等级列表并自动展开编辑。",
       "tags": [
-        "批次调度",
-        "分区配置",
-        "导入映射",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/fingerprint-input.json",
-      "type": "config",
-      "name": "fingerprint-input.json",
-      "filePath": ".understand-anything/.trash-1781277533/fingerprint-input.json",
-      "summary": "指纹生成输入文件，包含项目根目录路径、需要计算指纹的源文件路径列表和当前Git提交哈希。",
-      "tags": [
-        "指纹输入",
-        "文件索引",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/layers.json",
-      "type": "config",
-      "name": "layers.json",
-      "filePath": ".understand-anything/.trash-1781277533/layers.json",
-      "summary": "架构层定义文件，将知识图谱节点按API层、服务层、UI层、配置层、测试层和文档层六个逻辑层次进行分组，每层包含节点ID列表和描述。",
-      "tags": [
-        "架构分层",
-        "层定义",
-        "configuration"
+        "level-management",
+        "custom-config",
+        "proficiency"
       ],
       "complexity": "moderate"
     },
     {
-      "id": "config:.understand-anything/.trash-1781277533/review.json",
-      "type": "config",
-      "name": "review.json",
-      "filePath": ".understand-anything/.trash-1781277533/review.json",
-      "summary": "知识图谱审查输出，列出图组装后发现的问题节点、警告信息（如孤立节点）和节点与边类型的统计概况。",
-      "tags": [
-        "审查输出",
-        "质量报告",
-        "configuration"
+      "id": "function:code/src/views/SettingsView.vue:executeDelete",
+      "type": "function",
+      "name": "executeDelete",
+      "filePath": "code/src/views/SettingsView.vue",
+      "lineRange": [
+        480,
+        493
       ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tour.json",
-      "type": "config",
-      "name": "tour.json",
-      "filePath": ".understand-anything/.trash-1781277533/tour.json",
-      "summary": "项目架构导览定义，包含13个步骤依次介绍从项目概览、配置构建、入口点、路由样式、设置视图、核心学习体验到AI服务、Anki集成和教育理论的完整架构遍历。",
+      "summary": "删除指定自定义等级：若该等级被某技能选中则回退至 intermediate，从列表移除并自动保存。",
       "tags": [
-        "架构导览",
-        "导览定义",
-        "configuration"
+        "level-management",
+        "delete-operation",
+        "fallback-logic",
+        "proficiency"
       ],
       "complexity": "moderate"
     },
     {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
-      "type": "config",
-      "name": "ua-arch-input.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
-      "summary": "架构分析输入文件，包含文件节点列表、导入边数据和所有边数据，供架构分析脚本进行目录分组和模式匹配。",
-      "tags": [
-        "架构分析",
-        "输入文件",
-        "configuration"
+      "id": "function:code/src/views/SettingsView.vue:resetLevelToDefault",
+      "type": "function",
+      "name": "resetLevelToDefault",
+      "filePath": "code/src/views/SettingsView.vue",
+      "lineRange": [
+        495,
+        505
       ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
-      "type": "config",
-      "name": "ua-arch-results.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
-      "summary": "架构分析结果输出，包含目录分组、节点类型分组、跨类别边、组间导入、模式匹配、部署拓扑和数据管道等全面架构分析数据。",
+      "summary": "将指定内置等级的名称和四技能提示词恢复为默认值，用于撤消用户对内置等级的编辑。",
       "tags": [
-        "架构分析",
-        "输出结果",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
-      "type": "config",
-      "name": "ua-file-analyzer-input-1.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
-      "summary": "文件分析器第1批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
-      "tags": [
-        "文件分析",
-        "批次输入",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
-      "type": "config",
-      "name": "ua-file-analyzer-input-2.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
-      "summary": "文件分析器第2批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
-      "tags": [
-        "文件分析",
-        "批次输入",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
-      "type": "config",
-      "name": "ua-file-analyzer-input-3.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
-      "summary": "文件分析器第3批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
-      "tags": [
-        "文件分析",
-        "批次输入",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
-      "type": "config",
-      "name": "ua-file-analyzer-input-4.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
-      "summary": "文件分析器第4批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
-      "tags": [
-        "文件分析",
-        "批次输入",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
-      "type": "config",
-      "name": "ua-file-analyzer-input-5.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
-      "summary": "文件分析器第5批次输入，包含项目根目录、该批次文件列表和预解析的导入数据。",
-      "tags": [
-        "文件分析",
-        "批次输入",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
-      "type": "config",
-      "name": "ua-file-extract-results-1.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
-      "summary": "文件结构提取第1批次结果，包含已分析文件数、跳过的文件和每个文件的函数、类、导出、调用图等结构化数据。",
-      "tags": [
-        "结构提取",
-        "批次结果",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
-      "type": "config",
-      "name": "ua-file-extract-results-2.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
-      "summary": "文件结构提取第2批次结果，包含各文件的函数、类、导出和调用图等结构化分析数据。",
-      "tags": [
-        "结构提取",
-        "批次结果",
-        "configuration"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
-      "type": "config",
-      "name": "ua-file-extract-results-3.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
-      "summary": "文件结构提取第3批次结果，包含各文件的段落、指标等结构化分析数据。",
-      "tags": [
-        "结构提取",
-        "批次结果",
-        "configuration"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
-      "type": "config",
-      "name": "ua-file-extract-results-4.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
-      "summary": "文件结构提取第4批次结果，包含各文件的段落、指标等结构化分析数据。",
-      "tags": [
-        "结构提取",
-        "批次结果",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
-      "type": "config",
-      "name": "ua-file-extract-results-5.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
-      "summary": "文件结构提取第5批次结果，包含各文件的函数、类、导出和调用图等结构化分析数据。",
-      "tags": [
-        "结构提取",
-        "批次结果",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
-      "type": "config",
-      "name": "ua-import-map-input.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
-      "summary": "导入映射输入文件，包含项目根目录和需要解析导入关系的文件路径列表。",
-      "tags": [
-        "导入映射",
-        "输入文件",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
-      "type": "config",
-      "name": "ua-import-map-output.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
-      "summary": "导入映射输出文件，包含脚本完成状态、统计信息和文件间导入关系映射表。",
-      "tags": [
-        "导入映射",
-        "输出结果",
-        "configuration"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
-      "type": "config",
-      "name": "ua-scan-files.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
-      "summary": "文件扫描结果，包含项目源文件完整列表、被过滤忽略的文件、复杂度估算和按语言分类的统计信息。",
-      "tags": [
-        "文件扫描",
-        "项目索引",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
-      "type": "config",
-      "name": "ua-tour-input.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
-      "summary": "导览生成输入文件，包含知识图谱的节点数组、边数组和层定义数据，供导览生成脚本进行入口点识别和BFS遍历。",
-      "tags": [
-        "导览生成",
-        "输入文件",
-        "configuration"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
-      "type": "config",
-      "name": "ua-tour-results.json",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
-      "summary": "导览生成结果，包含入口点候选列表、出入度排名、BFS遍历路径、非代码文件列表、聚类结果、层分组和节点摘要索引。",
-      "tags": [
-        "导览生成",
-        "输出结果",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/config.json",
-      "type": "config",
-      "name": "config.json",
-      "filePath": ".understand-anything/config.json",
-      "summary": "Understand-Anything 插件配置文件，指定知识图谱文本输出语言为中文（zh）。",
-      "tags": [
-        "插件配置",
-        "语言设置",
-        "configuration"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/fingerprints.json",
-      "type": "config",
-      "name": "fingerprints.json",
-      "filePath": ".understand-anything/fingerprints.json",
-      "summary": "文件指纹数据库，包含版本号、Git提交哈希、生成时间戳和每个项目源文件的指纹哈希值，用于增量分析时检测文件变更。",
-      "tags": [
-        "文件指纹",
-        "增量分析",
-        "变更检测",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/knowledge-graph.json",
-      "type": "config",
-      "name": "knowledge-graph.json",
-      "filePath": ".understand-anything/knowledge-graph.json",
-      "summary": "项目的完整知识图谱数据，包含版本信息、项目元数据、所有节点（文件、函数、类、配置、文档）、所有边（导入、调用、包含等关系）、架构层定义和导览步骤。",
-      "tags": [
-        "知识图谱",
-        "项目架构",
-        "图数据库",
-        "configuration"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "config:.understand-anything/meta.json",
-      "type": "config",
-      "name": "meta.json",
-      "filePath": ".understand-anything/meta.json",
-      "summary": "分析元数据文件，记录最近一次代码分析的执行时间戳、Git提交哈希、插件版本号和已分析文件总数。",
-      "tags": [
-        "分析元数据",
-        "版本追踪",
-        "configuration"
+        "level-management",
+        "reset-operation",
+        "proficiency"
       ],
       "complexity": "simple"
     },
@@ -1216,27 +1006,30 @@
       "type": "file",
       "name": "index.html",
       "filePath": "code/index.html",
-      "summary": "Vue 应用的前端入口 HTML 文件，声明中文语言与响应式视口，提供 #app 挂载点并通过 ES Module 方式引入 /src/main.js。",
+      "summary": "应用的 HTML 入口文件，设置中文语言与暗色主题默认值，引入 Google Fonts（DM Sans + Inter），挂载 Vue 应用根节点并通过 module script 加载主入口。",
       "tags": [
         "entry-point",
         "html",
-        "spa"
+        "frontend",
+        "vue"
       ],
-      "complexity": "simple"
+      "complexity": "simple",
+      "languageNotes": "使用 <meta name=\"theme-color\"> 配合 id 选择器实现主题色动态切换，通过 JavaScript 运行时修改 content 属性。"
     },
     {
       "id": "config:code/package.json",
       "type": "config",
       "name": "package.json",
       "filePath": "code/package.json",
-      "summary": "npm 项目配置文件，定义脚本命令（Vite 开发/构建、Express 服务端启动、concurrently 并行运行）、运行时依赖（Vue 3、Express、OpenAI、cors、dotenv）和 Vite 开发插件。",
+      "summary": "项目 npm 包配置文件，定义 Vite 开发/构建、Express 服务端、并发启动等 8 个脚本，管理 Vue 3、Express、OpenAI 等 7 个运行时依赖和 Vite、Vitest 等 5 个开发工具链依赖。",
       "tags": [
         "configuration",
+        "npm",
         "build-system",
         "dependencies",
-        "npm-scripts"
+        "scripts"
       ],
-      "complexity": "simple"
+      "complexity": "moderate"
     },
     {
       "id": "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
@@ -1281,147 +1074,17 @@
       "complexity": "simple"
     },
     {
-      "id": "config:.claude/settings.json",
-      "type": "config",
-      "name": "settings.json",
-      "filePath": ".claude/settings.json",
-      "summary": "Claude Code 权限配置，允许执行 Understand-Anything 插件相关的 Bash 脚本和临时文件读取操作。",
-      "tags": [
-        "configuration",
-        "权限配置",
-        "claude-code"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "file:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
-      "type": "file",
-      "name": "ua-arch-analyze.js",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
-      "summary": "Understand-Anything 插件的架构分析脚本，计算目录分组、导入邻接矩阵、跨类别依赖关系、部署拓扑和数据管道检测等结构模式。",
-      "tags": [
-        "utility",
-        "code-analysis",
-        "architecture",
-        "understand-anything"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "function:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js:commonPrefix",
-      "type": "function",
-      "name": "commonPrefix",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
-      "lineRange": [
-        41,
-        53
-      ],
-      "summary": "计算文件路径列表的公共目录前缀，通过逐次缩短前缀的方式找到所有路径共享的基路径。",
-      "tags": [
-        "utility",
-        "路径处理",
-        "字符串操作"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "file:.understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
-      "type": "file",
-      "name": "ua-inline-validate.cjs",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
-      "summary": "知识图谱数据的内联验证脚本，检查节点字段完整性（id/type/name/summary/tags）、边引用有效性、层级分配一致性及孤立节点检测。",
-      "tags": [
-        "utility",
-        "validation",
-        "graph-validation",
-        "understand-anything"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "file:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
-      "type": "file",
-      "name": "ua-tour-analyze.js",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
-      "summary": "知识图谱拓扑分析脚本，计算入口点评分、扇入扇出排名、BFS 遍历路径、紧耦合聚簇识别和非代码文件清单。",
-      "tags": [
-        "utility",
-        "graph-analysis",
-        "topology",
-        "understand-anything"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "function:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js:scoreEntryPoint",
-      "type": "function",
-      "name": "scoreEntryPoint",
-      "filePath": ".understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
-      "lineRange": [
-        86,
-        126
-      ],
-      "summary": "为图谱节点计算入口点评分，综合文件名匹配（index.ts/main.go 等）、目录深度、扇入扇出排名等指标判断节点作为入口点的可能性。",
-      "tags": [
-        "utility",
-        "scoring",
-        "entry-point-detection"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "file:.understand-anything/.understandignore",
-      "type": "file",
-      "name": ".understandignore",
-      "filePath": ".understand-anything/.understandignore",
-      "summary": "Understand-Anything 插件的分析排除规则文件，采用 .gitignore 语法定义不需要分析的文件和目录模式，内置忽略 node_modules、dist 等常见目录。",
-      "tags": [
-        "configuration",
-        "ignore-rules",
-        "understand-anything"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.understand-anything/intermediate/scan-result.json",
-      "type": "config",
-      "name": "scan-result.json",
-      "filePath": ".understand-anything/intermediate/scan-result.json",
-      "summary": "项目扫描结果中间产物，包含项目元信息（名称、描述）、文件清单、编程语言列表、框架检测、导入映射和复杂度评估等扫描阶段输出。",
-      "tags": [
-        "configuration",
-        "scan-result",
-        "project-metadata",
-        "understand-anything"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "file:code/src/components/PhilosophyPanel.vue",
-      "type": "file",
-      "name": "PhilosophyPanel.vue",
-      "filePath": "code/src/components/PhilosophyPanel.vue",
-      "summary": "学习理念展示组件，呈现英语作为运动类技能的核心原则（不思考中文、想象场景、以句子为单位学习），展示听说读写的正确映射方式及常见学习误区。",
-      "tags": [
-        "component",
-        "vue",
-        "学习理念",
-        "ui"
-      ],
-      "complexity": "simple"
-    },
-    {
       "id": "file:code/src/composables/useSpeech.js",
       "type": "file",
       "name": "useSpeech.js",
       "filePath": "code/src/composables/useSpeech.js",
-      "summary": "Web Speech API 封装模块，提供 useTTS（文本转语音）和 useSTT（语音转文本）两个 Vue 组合式函数，支持浏览器原生语音合成与识别能力。",
+      "summary": "Web Speech API 的 Vue 3 组合式封装模块，导出 useTTS() 文本转语音朗读与 useSTT() 语音识别转录两个 composable，含浏览器兼容检测、英文语音引擎自动优选、Promise 风格异步接口及组件卸载时自动清理资源。",
       "tags": [
         "composable",
-        "speech",
+        "speech-api",
         "tts",
         "stt",
-        "web-speech-api"
+        "vue3"
       ],
       "complexity": "moderate"
     },
@@ -1434,12 +1097,13 @@
         12,
         64
       ],
-      "summary": "Vue 组合式函数，封装浏览器 SpeechSynthesis API 实现英文文本朗读，支持语速、音调、音量调节，自动优选 Google 英文语音，并在组件卸载时自动停止。",
+      "summary": "Vue 3 组合式函数，封装浏览器 SpeechSynthesis API 实现文本转语音朗读，自动优选 Google 英文语音引擎，支持语速、音调、音量可调参数，组件卸载时自动停止朗读并清理。",
       "tags": [
         "composable",
         "tts",
         "speech-synthesis",
-        "vue"
+        "vue3",
+        "reactive"
       ],
       "complexity": "moderate"
     },
@@ -1452,90 +1116,13 @@
         69,
         141
       ],
-      "summary": "Vue 组合式函数，封装浏览器 SpeechRecognition API 实现语音识别，以 Promise 形式返回转录文本，支持非连续识别模式，在组件卸载时自动停止监听。",
+      "summary": "Vue 3 组合式函数，封装浏览器 SpeechRecognition API 实现语音识别转录，返回 Promise 风格的 startListening() 方法，含 webkit 前缀兼容降级、识别错误处理及组件卸载自动停止监听。",
       "tags": [
         "composable",
         "stt",
         "speech-recognition",
-        "vue"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "file:code/src/style.css",
-      "type": "file",
-      "name": "style.css",
-      "filePath": "code/src/style.css",
-      "summary": "应用全局样式表，定义 CSS 自定义属性（颜色、圆角、阴影）、基础重置（box-sizing）、布局系统、表单组件样式、按钮组件样式和学习界面特定区域样式。",
-      "tags": [
-        "stylesheet",
-        "css",
-        "design-tokens",
-        "ui"
-      ],
-      "complexity": "complex"
-    },
-    {
-      "id": "file:code/test_parse_json.mjs",
-      "type": "file",
-      "name": "test_parse_json.mjs",
-      "filePath": "code/test_parse_json.mjs",
-      "summary": "AI JSON 解析函数的健壮性测试脚本，验证 parseAIJson 对多种 AI 返回格式（纯JSON、Markdown代码块包裹、前后附带文本、嵌套花括号、转义引号）的处理能力。",
-      "tags": [
-        "test",
-        "json-parsing",
-        "ai-response",
-        "validation"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "function:code/test_parse_json.mjs:parseAIJson",
-      "type": "function",
-      "name": "parseAIJson",
-      "filePath": "code/test_parse_json.mjs",
-      "lineRange": [
-        7,
-        50
-      ],
-      "summary": "从 AI 原始返回文本中稳健提取并解析 JSON 对象，依次尝试去除 Markdown 代码块、直接 JSON.parse、花括号配对齐三种策略，多层容错。",
-      "tags": [
-        "utility",
-        "json-parsing",
-        "ai-response",
-        "robustness"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "file:code/test_qwen_api.mjs",
-      "type": "file",
-      "name": "test_qwen_api.mjs",
-      "filePath": "code/test_qwen_api.mjs",
-      "summary": "千问多模态 API 快速诊断脚本，选取本地最小 PNG 图片转换为 base64，依次测试 qwen-omni-turbo、qwen-vl-plus、qwen-vl-max 三个模型的图片理解能力。",
-      "tags": [
-        "test",
-        "api-test",
-        "multimodal",
-        "qwen"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "function:code/test_qwen_api.mjs:main",
-      "type": "function",
-      "name": "main",
-      "filePath": "code/test_qwen_api.mjs",
-      "lineRange": [
-        11,
-        88
-      ],
-      "summary": "测试主入口函数，扫描本地图片目录找最小文件，读取并编码为 base64 Data URL，依次调用三种千问多模态模型进行图片描述测试并输出结果。",
-      "tags": [
-        "test",
-        "entry-point",
-        "api-test",
-        "multimodal"
+        "vue3",
+        "reactive"
       ],
       "complexity": "moderate"
     },
@@ -1544,12 +1131,13 @@
       "type": "file",
       "name": "vite.config.js",
       "filePath": "code/vite.config.js",
-      "summary": "Vite 构建配置文件，启用 Vue 3 插件并设置开发服务器代理规则，将 /api 路径请求转发至本地 Express 后端（端口 3001）。",
+      "summary": "Vite 构建配置文件，启用 Vue 3 官方插件并将 /api 请求代理至 Express 后端（localhost:3001），实现前后端同域开发环境下的 API 转发与 CORS 规避。",
       "tags": [
         "configuration",
-        "vite",
         "build-system",
-        "proxy"
+        "vite",
+        "proxy",
+        "vue3"
       ],
       "complexity": "simple"
     },
@@ -1558,12 +1146,12 @@
       "type": "document",
       "name": "1.1-产品需求文档.md",
       "filePath": "doc/01-需求分析/1.1-产品需求文档.md",
-      "summary": "ShiYi 项目产品需求文档（PRD），阐述项目背景（结合 Anki 间隔重复与 AI 的英语学习应用）、目标用户痛点、核心功能需求及英语学习理念引入。",
+      "summary": "ShiYi v1.0 产品需求文档草稿，阐述项目背景（以 Anki 间隔重复算法为基础，结合 AI 生成沉浸式学习场景解决生词初次学习困难）及四大核心功能需求。",
       "tags": [
         "documentation",
-        "product-requirements",
-        "prd",
-        "英语学习"
+        "requirements",
+        "product-spec",
+        "planning"
       ],
       "complexity": "simple"
     },
@@ -1572,12 +1160,11 @@
       "type": "document",
       "name": "需求分析.md",
       "filePath": "doc/01-需求分析/需求分析.md",
-      "summary": "需求分析索引文档，引用产品需求文档（PRD）、英语学习理念资料和 Anki-Connect API 参考链接等关键参考资源。",
+      "summary": "需求分析参考索引文档，链接指向详细产品需求文档（PRD）、英语学习理念参考资料及 Anki-Connect API 官方文档。",
       "tags": [
         "documentation",
-        "需求分析",
-        "索引",
-        "参考"
+        "reference",
+        "index"
       ],
       "complexity": "simple"
     },
@@ -1586,13 +1173,438 @@
       "type": "document",
       "name": "Claude Code Plan方案.md",
       "filePath": "doc/Claude Code Plan方案.md",
-      "summary": "ShiYi 项目完整实现计划文档，涵盖项目背景、核心学习理念、技术栈选型（Vue 3 + Express + Web Speech API）、整体架构设计、数据模型设计、核心业务流程、前端路由配置、分四阶段实现的任务清单和功能验证流程等12个章节。",
+      "summary": "ShiYi 详细实现计划文档，共 12 个章节涵盖项目背景、核心学习理念、技术栈选型、整体架构拓扑、Anki 数据模型设计、学习主循环业务流程、前端路由与页面布局、四阶段分步实施任务清单、核心文件目录职责表及待确认开放问题。",
       "tags": [
         "documentation",
         "implementation-plan",
         "architecture",
-        "英语学习",
-        "roadmap"
+        "technical-spec",
+        "planning"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.claude/settings.json",
+      "type": "config",
+      "name": "settings.json",
+      "filePath": ".claude/settings.json",
+      "summary": "Claude Code 项目级权限配置文件，定义允许执行的 Bash 命令、文件读取路径、Skill 调用及 npm/vitest 等操作的白名单规则，确保 AI 助手在安全边界内运行。",
+      "tags": [
+        "configuration",
+        "permissions",
+        "security",
+        "claude-code"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "file",
+      "name": "PhilosophyPanel.vue",
+      "filePath": "code/src/components/PhilosophyPanel.vue",
+      "summary": "静态学习理念展示面板组件，以纯模板形式呈现英语作为运动类技能的核心原则、听说读写四项能力定义、常见误区对照及 Anki 间隔重复算法说明，无脚本逻辑，仅作信息展示。",
+      "tags": [
+        "component",
+        "vue",
+        "static-content",
+        "education"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/src/style.css",
+      "type": "file",
+      "name": "style.css",
+      "filePath": "code/src/style.css",
+      "summary": "ShiYi 全局主题样式系统，定义「Nocturne Study」暖暗色与「Clean Minimal」亮色双主题，通过 CSS 自定义属性体系管理色彩、排版、间距、阴影、过渡动画，并为听说读写四类技能配备专属配色方案及语义色，覆盖全局重置与完整组件样式。",
+      "tags": [
+        "theme-system",
+        "css-variables",
+        "dark-mode",
+        "design-system",
+        "global-styles"
+      ],
+      "complexity": "complex",
+      "languageNotes": "CSS 自定义属性（CSS Variables）驱动的双主题切换方案，通过 [data-theme] 属性选择器实现全局换肤，避免运行时 JS 样式计算开销。"
+    },
+    {
+      "id": "file:code/server/lib/errorHandler.js",
+      "type": "file",
+      "name": "errorHandler.js",
+      "filePath": "code/server/lib/errorHandler.js",
+      "summary": "统一错误响应辅助模块，提供 errorResponse 函数用于向客户端发送标准 JSON 格式的 HTTP 错误响应。",
+      "tags": [
+        "error-handling",
+        "utility",
+        "middleware"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/lib/errorHandler.js:errorResponse",
+      "type": "function",
+      "name": "errorResponse",
+      "filePath": "code/server/lib/errorHandler.js",
+      "lineRange": [
+        12,
+        14
+      ],
+      "summary": "发送标准 HTTP 错误响应，接受 Express Response 对象、状态码和错误消息，返回 { error: message } 格式的 JSON 响应。",
+      "tags": [
+        "error-handling",
+        "utility",
+        "http-response"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/server/lib/parseAIJson.js",
+      "type": "file",
+      "name": "parseAIJson.js",
+      "filePath": "code/server/lib/parseAIJson.js",
+      "summary": "AI 返回 JSON 鲁棒解析模块，处理 LLM 输出中常见的 markdown 代码块包裹、多余文本、字符串转义等问题，通过四级回退策略确保 JSON 提取成功率。",
+      "tags": [
+        "ai",
+        "json-parsing",
+        "utility",
+        "serialization"
+      ],
+      "complexity": "complex",
+      "languageNotes": "使用四级回退策略：去除 markdown 代码块 → 花括号配对提取 → 直接 trim 解析 → 最终兜底抛出详细错误，展示了防御性编程在处理非结构化 AI 输出时的最佳实践。"
+    },
+    {
+      "id": "function:code/server/lib/parseAIJson.js:parseAIJson",
+      "type": "function",
+      "name": "parseAIJson",
+      "filePath": "code/server/lib/parseAIJson.js",
+      "lineRange": [
+        17,
+        83
+      ],
+      "summary": "从 AI 返回的原始文本中鲁棒提取 JSON 对象，依次尝试四种解析策略：去除 markdown 代码块后解析、花括号配对提取首个完整 JSON、直接 trim 解析、最终兜底，失败时抛出带文本预览的详细错误。",
+      "tags": [
+        "ai",
+        "json-parsing",
+        "error-recovery",
+        "robust-parsing"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/server/lib/validation.js",
+      "type": "file",
+      "name": "validation.js",
+      "filePath": "code/server/lib/validation.js",
+      "summary": "共享请求参数校验工具模块，提供五个校验器函数，对牌组 ID、AI 评分、AI 配置、必填字段进行统一校验，返回 { valid, error? } 结构供调用方处理。",
+      "tags": [
+        "validation",
+        "utility",
+        "input-validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:code/server/lib/validation.js:validateDeckId",
+      "type": "function",
+      "name": "validateDeckId",
+      "filePath": "code/server/lib/validation.js",
+      "lineRange": [
+        13,
+        18
+      ],
+      "summary": "校验牌组 ID 是否为非空字符串，返回修剪后的有效值或错误信息。",
+      "tags": [
+        "validation",
+        "deck-id",
+        "input-check"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/lib/validation.js:validateEase",
+      "type": "function",
+      "name": "validateEase",
+      "filePath": "code/server/lib/validation.js",
+      "lineRange": [
+        26,
+        40
+      ],
+      "summary": "校验 AI 评分 ease 值是否合法：必须是 1-4 之间的数字（实际只使用 1/3/4 三档），返回取整后的有效值或错误信息。",
+      "tags": [
+        "validation",
+        "ease-score",
+        "anki"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/lib/validation.js:validateAiConfig",
+      "type": "function",
+      "name": "validateAiConfig",
+      "filePath": "code/server/lib/validation.js",
+      "lineRange": [
+        47,
+        55
+      ],
+      "summary": "校验 AI 配置对象是否包含有效的 apiKey 字段（非空字符串），用于确保 API 请求前配置完整。",
+      "tags": [
+        "validation",
+        "ai-config",
+        "api-key"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/lib/validation.js:validateRequired",
+      "type": "function",
+      "name": "validateRequired",
+      "filePath": "code/server/lib/validation.js",
+      "lineRange": [
+        63,
+        78
+      ],
+      "summary": "校验对象中是否存在指定的必填字段（非 undefined/null/空字符串），返回缺失字段列表及错误信息。",
+      "tags": [
+        "validation",
+        "required-fields",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/lib/validation.js:assertValid",
+      "type": "function",
+      "name": "assertValid",
+      "filePath": "code/server/lib/validation.js",
+      "lineRange": [
+        85,
+        89
+      ],
+      "summary": "断言校验结果有效，若 valid 为 false 则抛出 Error，供调用方在路由处理器中统一捕获。",
+      "tags": [
+        "validation",
+        "assertion",
+        "error-throwing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:code/server/services/proficiencyService.js",
+      "type": "file",
+      "name": "proficiencyService.js",
+      "filePath": "code/server/services/proficiencyService.js",
+      "summary": "英语水平配置服务，管理五个预设 CEFR 等级（Beginner 到 Advanced），每个等级针对读、写、听、说四个维度有独立的 AI 提示词，分别注入到场景生成和作答评判的 system prompt 中。",
+      "tags": [
+        "service",
+        "proficiency",
+        "cefr-levels",
+        "ai-prompt"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 structuredClone 深拷贝预设等级数据以防止调用方意外修改；通过 export default 对象暴露四个模块内部函数，是一种常见的 JavaScript 模块封装模式。"
+    },
+    {
+      "id": "function:code/server/services/proficiencyService.js:getProficiencyPrompt",
+      "type": "function",
+      "name": "getProficiencyPrompt",
+      "filePath": "code/server/services/proficiencyService.js",
+      "lineRange": [
+        82,
+        94
+      ],
+      "summary": "从水平配置中提取指定技能类型（read/write/listen/speak）对应的 AI 提示词文本，根据当前选中的等级 ID 查找匹配的 level 并返回其 prompts。",
+      "tags": [
+        "proficiency",
+        "prompt-extraction",
+        "cefr"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/proficiencyService.js:buildScenarioProficiency",
+      "type": "function",
+      "name": "buildScenarioProficiency",
+      "filePath": "code/server/services/proficiencyService.js",
+      "lineRange": [
+        103,
+        107
+      ],
+      "summary": "为场景生成构建水平相关的 system prompt 片段，将对应等级的提示词包装为 STUDENT PROFICIENCY LEVEL 格式后返回。",
+      "tags": [
+        "proficiency",
+        "scenario-generation",
+        "prompt-builder"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:code/server/services/proficiencyService.js:buildJudgeProficiency",
+      "type": "function",
+      "name": "buildJudgeProficiency",
+      "filePath": "code/server/services/proficiencyService.js",
+      "lineRange": [
+        116,
+        120
+      ],
+      "summary": "为作答评判构建水平相关的 system prompt 片段，指导 AI 根据学生的 CEFR 等级调整评分标准。",
+      "tags": [
+        "proficiency",
+        "judgment",
+        "prompt-builder"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:code/vitest.config.js",
+      "type": "config",
+      "name": "vitest.config.js",
+      "filePath": "code/vitest.config.js",
+      "summary": "Vitest 测试运行器配置，启用全局 API、Node 环境，限定测试文件范围为 server/**/*.test.js，并配置覆盖率收集范围排除测试文件自身。",
+      "tags": [
+        "configuration",
+        "test",
+        "vitest",
+        "coverage"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "项目级 CLAUDE.md 文档，涵盖 ShiYi（拾忆）AI 英语学习应用的完整架构说明，包括 13 个小节：项目概述、常用命令、架构拓扑、目录结构、数据模型、学习主流程、AI 服务层、会话管理及前端注意事项。",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "architecture",
+        "onboarding"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/server/lib/parseAIJson.test.js",
+      "type": "file",
+      "name": "parseAIJson.test.js",
+      "filePath": "code/server/lib/parseAIJson.test.js",
+      "summary": "parseAIJson 函数的单元测试文件，覆盖纯 JSON 解析、markdown 代码块包裹、多余文本前置/后置、转义引号、嵌套花括号、Unicode 内容及错误输入场景。",
+      "tags": [
+        "test",
+        "unit-test",
+        "json-parsing",
+        "vitest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/server/lib/validation.test.js",
+      "type": "file",
+      "name": "validation.test.js",
+      "filePath": "code/server/lib/validation.test.js",
+      "summary": "validation.js 五个校验器函数的单元测试文件，分别测试 validateDeckId、validateEase、validateAiConfig、validateRequired、assertValid 的合法输入、边界条件和错误处理路径。",
+      "tags": [
+        "test",
+        "unit-test",
+        "validation",
+        "vitest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/server/routes/ai.test.js",
+      "type": "file",
+      "name": "ai.test.js",
+      "filePath": "code/server/routes/ai.test.js",
+      "summary": "AI 路由的集成测试文件，使用 supertest 测试 /api/ai/test 和 /api/ai/presets 端点的请求/响应行为。",
+      "tags": [
+        "test",
+        "integration-test",
+        "api-handler",
+        "ai"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/server/routes/decks.test.js",
+      "type": "file",
+      "name": "decks.test.js",
+      "filePath": "code/server/routes/decks.test.js",
+      "summary": "牌组路由的集成测试文件，使用 supertest 测试 /api/decks 相关端点的行为，mock Anki-Connect 响应以验证牌组列表获取、状态查询等场景。",
+      "tags": [
+        "test",
+        "integration-test",
+        "api-handler",
+        "anki"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/server/routes/learn.test.js",
+      "type": "file",
+      "name": "learn.test.js",
+      "filePath": "code/server/routes/learn.test.js",
+      "summary": "学习路由的全面集成测试文件，使用 supertest 并通过 vi.mock 模拟 ankiService、aiService、sessionService 三个依赖，覆盖 POST /api/learn/start、respond、complete、next 及 GET progress 全流程的多种状态组合。",
+      "tags": [
+        "test",
+        "integration-test",
+        "api-handler",
+        "learning-flow"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/server/services/aiService.test.js",
+      "type": "file",
+      "name": "aiService.test.js",
+      "filePath": "code/server/services/aiService.test.js",
+      "summary": "AI 服务层的单元测试文件，mock 全局 fetch 以验证多模型适配层（千问/豆包/OpenAI/自定义）的场景生成和作答评判功能，覆盖 API 调用参数构造、响应解析及错误处理。",
+      "tags": [
+        "test",
+        "unit-test",
+        "ai-service",
+        "mock-fetch"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/server/services/ankiService.test.js",
+      "type": "file",
+      "name": "ankiService.test.js",
+      "filePath": "code/server/services/ankiService.test.js",
+      "summary": "Anki-Connect 服务的单元测试文件，mock 全局 fetch 以验证 Anki HTTP 请求封装（version 6 协议），覆盖牌组获取、到期卡片查询、已知词汇获取、卡片作答等 Anki-Connect 操作。",
+      "tags": [
+        "test",
+        "unit-test",
+        "anki-service",
+        "mock-fetch"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:code/server/services/proficiencyService.test.js",
+      "type": "file",
+      "name": "proficiencyService.test.js",
+      "filePath": "code/server/services/proficiencyService.test.js",
+      "summary": "proficiencyService 的单元测试文件，验证默认水平等级获取、各技能类型提示词提取、场景生成及评判 prompt 构建的正确性。",
+      "tags": [
+        "test",
+        "unit-test",
+        "proficiency",
+        "vitest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:code/server/services/sessionService.test.js",
+      "type": "file",
+      "name": "sessionService.test.js",
+      "filePath": "code/server/services/sessionService.test.js",
+      "summary": "会话服务的单元测试文件，验证内存会话存储的完整生命周期：创建会话、卡片轮换（Round Robin）、场景去重、评分记录、连续失败跟踪、TTL 过期及进度汇总等功能。",
+      "tags": [
+        "test",
+        "unit-test",
+        "session-management",
+        "vitest"
       ],
       "complexity": "complex"
     }
@@ -1655,8 +1667,8 @@
       "weight": 0.7
     },
     {
-      "source": "file:code/server/services/aiService.js",
-      "target": "function:code/server/services/aiService.js:parseAIJson",
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/routes/learn.js:prepareCardAndScenario",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -1705,13 +1717,6 @@
     },
     {
       "source": "file:code/server/services/ankiService.js",
-      "target": "function:code/server/services/ankiService.js:getDeckMapping",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:code/server/services/ankiService.js",
       "target": "function:code/server/services/ankiService.js:getShiYiDecks",
       "type": "contains",
       "direction": "forward",
@@ -1720,6 +1725,20 @@
     {
       "source": "file:code/server/services/ankiService.js",
       "target": "function:code/server/services/ankiService.js:getDueCards",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:getAllCardsInDeck",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:fetchCardsWithNotes",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -1797,6 +1816,20 @@
     {
       "source": "file:code/server/services/sessionService.js",
       "target": "function:code/server/services/sessionService.js:getProgress",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:recordScenario",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:getPreviousScenarios",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -1809,6 +1842,13 @@
       "weight": 1
     },
     {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:pickNextCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
       "source": "file:code/server/services/aiService.js",
       "target": "function:code/server/services/aiService.js:generateScenario",
       "type": "exports",
@@ -1846,6 +1886,13 @@
     {
       "source": "file:code/server/services/ankiService.js",
       "target": "function:code/server/services/ankiService.js:getDueCards",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "function:code/server/services/ankiService.js:getAllCardsInDeck",
       "type": "exports",
       "direction": "forward",
       "weight": 0.8
@@ -1928,116 +1975,130 @@
       "weight": 0.8
     },
     {
-      "source": "file:code/server/routes/ai.js",
-      "target": "function:code/server/services/aiService.js:testConnection",
-      "type": "calls",
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:recordScenario",
+      "type": "exports",
       "direction": "forward",
       "weight": 0.8
     },
     {
-      "source": "file:code/server/routes/decks.js",
-      "target": "function:code/server/services/ankiService.js:getShiYiDecks",
-      "type": "calls",
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:getPreviousScenarios",
+      "type": "exports",
       "direction": "forward",
       "weight": 0.8
     },
     {
-      "source": "file:code/server/routes/decks.js",
-      "target": "function:code/server/services/ankiService.js:isAvailable",
-      "type": "calls",
+      "source": "file:code/server/services/sessionService.js",
+      "target": "function:code/server/services/sessionService.js:pickNextCard",
+      "type": "exports",
       "direction": "forward",
       "weight": 0.8
     },
     {
-      "source": "file:code/server/routes/decks.js",
-      "target": "function:code/server/services/ankiService.js:getAllDeckNames",
-      "type": "calls",
-      "direction": "forward",
-      "weight": 0.8
-    },
-    {
-      "source": "file:code/server/routes/learn.js",
-      "target": "function:code/server/services/aiService.js:generateScenario",
-      "type": "calls",
-      "direction": "forward",
-      "weight": 0.8
-    },
-    {
-      "source": "file:code/server/routes/learn.js",
-      "target": "function:code/server/services/aiService.js:judgeResponse",
-      "type": "calls",
-      "direction": "forward",
-      "weight": 0.8
-    },
-    {
-      "source": "file:code/server/routes/learn.js",
-      "target": "function:code/server/services/ankiService.js:getDueCards",
-      "type": "calls",
-      "direction": "forward",
-      "weight": 0.8
-    },
-    {
-      "source": "file:code/server/routes/learn.js",
+      "source": "function:code/server/routes/learn.js:prepareCardAndScenario",
       "target": "function:code/server/services/ankiService.js:getKnownVocabulary",
       "type": "calls",
       "direction": "forward",
       "weight": 0.8
     },
     {
-      "source": "file:code/server/routes/learn.js",
-      "target": "function:code/server/services/ankiService.js:answerCard",
+      "source": "function:code/server/routes/learn.js:prepareCardAndScenario",
+      "target": "function:code/server/services/sessionService.js:pickNextCard",
       "type": "calls",
       "direction": "forward",
       "weight": 0.8
     },
     {
-      "source": "file:code/server/routes/learn.js",
-      "target": "function:code/server/services/sessionService.js:createSession",
+      "source": "function:code/server/routes/learn.js:prepareCardAndScenario",
+      "target": "function:code/server/services/sessionService.js:getPreviousScenarios",
       "type": "calls",
       "direction": "forward",
       "weight": 0.8
     },
     {
-      "source": "file:code/server/routes/learn.js",
+      "source": "function:code/server/routes/learn.js:prepareCardAndScenario",
+      "target": "function:code/server/services/aiService.js:generateScenario",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:code/server/routes/learn.js:prepareCardAndScenario",
+      "target": "function:code/server/services/sessionService.js:recordScenario",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:code/server/routes/learn.js:prepareCardAndScenario",
       "target": "function:code/server/services/sessionService.js:setCurrentCard",
       "type": "calls",
       "direction": "forward",
       "weight": 0.8
     },
     {
+      "source": "file:code/server/routes/ai.js",
+      "target": "function:code/server/services/aiService.js:testConnection",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/server/routes/decks.js",
+      "target": "function:code/server/services/ankiService.js:getShiYiDecks",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/server/routes/decks.js",
+      "target": "function:code/server/services/ankiService.js:isAvailable",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/aiService.js:judgeResponse",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/ankiService.js:getDueCards",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/ankiService.js:answerCard",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "function:code/server/services/sessionService.js:createSession",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
       "source": "file:code/server/routes/learn.js",
       "target": "function:code/server/services/sessionService.js:getSession",
-      "type": "calls",
+      "type": "depends_on",
       "direction": "forward",
-      "weight": 0.8
-    },
-    {
-      "source": "file:code/server/routes/learn.js",
-      "target": "function:code/server/services/sessionService.js:addMessage",
-      "type": "calls",
-      "direction": "forward",
-      "weight": 0.8
-    },
-    {
-      "source": "file:code/server/routes/learn.js",
-      "target": "function:code/server/services/sessionService.js:recordScore",
-      "type": "calls",
-      "direction": "forward",
-      "weight": 0.8
-    },
-    {
-      "source": "file:code/server/routes/learn.js",
-      "target": "function:code/server/services/sessionService.js:markCardComplete",
-      "type": "calls",
-      "direction": "forward",
-      "weight": 0.8
+      "weight": 0.6
     },
     {
       "source": "file:code/server/routes/learn.js",
       "target": "function:code/server/services/sessionService.js:getProgress",
-      "type": "calls",
+      "type": "depends_on",
       "direction": "forward",
-      "weight": 0.8
+      "weight": 0.6
     },
     {
       "source": "file:code/src/main.js",
@@ -2082,6 +2143,20 @@
       "weight": 0.7
     },
     {
+      "source": "file:code/src/App.vue",
+      "target": "function:code/src/App.vue:resolveTheme",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/App.vue",
+      "target": "function:code/src/App.vue:applyTheme",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
       "source": "file:code/src/views/DeckSelect.vue",
       "target": "function:code/src/views/DeckSelect.vue:checkAnkiStatus",
       "type": "contains",
@@ -2091,34 +2166,6 @@
     {
       "source": "file:code/src/views/DeckSelect.vue",
       "target": "function:code/src/views/DeckSelect.vue:loadDecks",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:code/src/views/LearnView.vue",
-      "target": "function:code/src/views/LearnView.vue:startSession",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:code/src/views/LearnView.vue",
-      "target": "function:code/src/views/LearnView.vue:sendResponse",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:code/src/views/LearnView.vue",
-      "target": "function:code/src/views/LearnView.vue:nextCard",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:code/src/views/LearnView.vue",
-      "target": "function:code/src/views/LearnView.vue:completeCard",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -2139,7 +2186,49 @@
     },
     {
       "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:startSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:sendResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:completeCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:nextCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
       "target": "function:code/src/views/LearnView.vue:formatScenario",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/LearnView.vue",
+      "target": "function:code/src/views/LearnView.vue:formatMessageText",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/src/views/SettingsView.vue",
+      "target": "function:code/src/views/SettingsView.vue:handleTabKeydown",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -2152,274 +2241,64 @@
       "weight": 1
     },
     {
-      "source": "file:code/src/views/LearnView.vue",
-      "target": "file:code/src/components/PhilosophyPanel.vue",
-      "type": "depends_on",
+      "source": "file:code/src/views/SettingsView.vue",
+      "target": "function:code/src/views/SettingsView.vue:loadProficiencyConfig",
+      "type": "contains",
       "direction": "forward",
-      "weight": 0.6
+      "weight": 1
     },
     {
-      "source": "file:code/src/views/LearnView.vue",
-      "target": "file:code/src/composables/useSpeech.js",
-      "type": "depends_on",
+      "source": "file:code/src/views/SettingsView.vue",
+      "target": "function:code/src/views/SettingsView.vue:addCustomLevel",
+      "type": "contains",
       "direction": "forward",
-      "weight": 0.6
+      "weight": 1
     },
     {
-      "source": "config:.understand-anything/.trash-1781277533/batches.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-1.json",
-      "type": "related",
+      "source": "file:code/src/views/SettingsView.vue",
+      "target": "function:code/src/views/SettingsView.vue:executeDelete",
+      "type": "contains",
       "direction": "forward",
-      "weight": 0.5
+      "weight": 1
     },
     {
-      "source": "config:.understand-anything/.trash-1781277533/batches.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-2.json",
-      "type": "related",
+      "source": "file:code/src/views/SettingsView.vue",
+      "target": "function:code/src/views/SettingsView.vue:resetLevelToDefault",
+      "type": "contains",
       "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/batches.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-3.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/batches.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-4.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/batches.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-5.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "target": "config:.understand-anything/.trash-1781277533/batches.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-1.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-2.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-3.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-4.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "target": "config:.understand-anything/.trash-1781277533/batch-5.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/assemble-review.json",
-      "target": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/layers.json",
-      "target": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tour.json",
-      "target": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tour.json",
-      "target": "config:.understand-anything/.trash-1781277533/layers.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/fingerprint-input.json",
-      "target": "config:.understand-anything/.trash-1781277533/batches.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/review.json",
-      "target": "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
-      "target": "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/config.json",
-      "target": "config:.understand-anything/knowledge-graph.json",
-      "type": "configures",
-      "direction": "forward",
-      "weight": 0.6
-    },
-    {
-      "source": "config:.understand-anything/fingerprints.json",
-      "target": "config:.understand-anything/knowledge-graph.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/meta.json",
-      "target": "config:.understand-anything/knowledge-graph.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "config:.understand-anything/meta.json",
-      "target": "config:.understand-anything/fingerprints.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
+      "weight": 1
     },
     {
       "source": "config:code/.env.example",
-      "target": "file:code/index.html",
+      "target": "file:code/server/index.js",
       "type": "configures",
       "direction": "forward",
       "weight": 0.6
-    },
-    {
-      "source": "config:code/.env.example",
-      "target": "config:code/package.json",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
     },
     {
       "source": "document:code/README.md",
-      "target": "file:code/index.html",
+      "target": "file:code/src/main.js",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
     },
     {
+      "source": "file:code/index.html",
+      "target": "file:code/src/main.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
       "source": "config:code/package.json",
-      "target": "file:code/index.html",
+      "target": "file:code/src/main.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:code/package.json",
+      "target": "file:code/server/index.js",
       "type": "configures",
       "direction": "forward",
       "weight": 0.6
@@ -2446,20 +2325,6 @@
       "weight": 0.5
     },
     {
-      "source": "file:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
-      "target": "function:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js:commonPrefix",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
-      "target": "function:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js:scoreEntryPoint",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
       "source": "file:code/src/composables/useSpeech.js",
       "target": "function:code/src/composables/useSpeech.js:useTTS",
       "type": "contains",
@@ -2469,20 +2334,6 @@
     {
       "source": "file:code/src/composables/useSpeech.js",
       "target": "function:code/src/composables/useSpeech.js:useSTT",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:code/test_parse_json.mjs",
-      "target": "function:code/test_parse_json.mjs:parseAIJson",
-      "type": "contains",
-      "direction": "forward",
-      "weight": 1
-    },
-    {
-      "source": "file:code/test_qwen_api.mjs",
-      "target": "function:code/test_qwen_api.mjs:main",
       "type": "contains",
       "direction": "forward",
       "weight": 1
@@ -2524,29 +2375,351 @@
     },
     {
       "source": "document:doc/Claude Code Plan方案.md",
-      "target": "file:code/src/components/PhilosophyPanel.vue",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:doc/Claude Code Plan方案.md",
       "target": "file:code/src/composables/useSpeech.js",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
     },
     {
-      "source": "file:code/src/components/PhilosophyPanel.vue",
-      "target": "document:doc/01-需求分析/1.1-产品需求文档.md",
-      "type": "related",
+      "source": "document:doc/Claude Code Plan方案.md",
+      "target": "file:code/src/components/PhilosophyPanel.vue",
+      "type": "documents",
       "direction": "forward",
       "weight": 0.5
     },
     {
-      "source": "file:.understand-anything/.understandignore",
-      "target": "config:.understand-anything/intermediate/scan-result.json",
-      "type": "related",
+      "source": "file:code/server/lib/errorHandler.js",
+      "target": "function:code/server/lib/errorHandler.js:errorResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/lib/errorHandler.js",
+      "target": "function:code/server/lib/errorHandler.js:errorResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/lib/parseAIJson.js",
+      "target": "function:code/server/lib/parseAIJson.js:parseAIJson",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/lib/parseAIJson.js",
+      "target": "function:code/server/lib/parseAIJson.js:parseAIJson",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:validateDeckId",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:validateDeckId",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:validateEase",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:validateEase",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:validateAiConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:validateAiConfig",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:validateRequired",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:validateRequired",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:assertValid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "function:code/server/lib/validation.js:assertValid",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/proficiencyService.js",
+      "target": "function:code/server/services/proficiencyService.js:getProficiencyPrompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/proficiencyService.js",
+      "target": "function:code/server/services/proficiencyService.js:getProficiencyPrompt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/proficiencyService.js",
+      "target": "function:code/server/services/proficiencyService.js:buildScenarioProficiency",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/proficiencyService.js",
+      "target": "function:code/server/services/proficiencyService.js:buildScenarioProficiency",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/services/proficiencyService.js",
+      "target": "function:code/server/services/proficiencyService.js:buildJudgeProficiency",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:code/server/services/proficiencyService.js",
+      "target": "function:code/server/services/proficiencyService.js:buildJudgeProficiency",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:code/server/services/proficiencyService.js:buildScenarioProficiency",
+      "target": "function:code/server/services/proficiencyService.js:getProficiencyPrompt",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:code/server/services/proficiencyService.js:buildJudgeProficiency",
+      "target": "function:code/server/services/proficiencyService.js:getProficiencyPrompt",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:code/server/lib/parseAIJson.test.js",
+      "target": "file:code/server/lib/parseAIJson.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/lib/validation.test.js",
+      "target": "file:code/server/lib/validation.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/ai.test.js",
+      "target": "file:code/server/routes/ai.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/decks.test.js",
+      "target": "file:code/server/routes/decks.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/learn.test.js",
+      "target": "file:code/server/routes/learn.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/learn.test.js",
+      "target": "file:code/server/services/aiService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/learn.test.js",
+      "target": "file:code/server/services/ankiService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/routes/learn.test.js",
+      "target": "file:code/server/services/sessionService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/services/aiService.test.js",
+      "target": "file:code/server/services/aiService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/services/ankiService.test.js",
+      "target": "file:code/server/services/ankiService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/services/proficiencyService.test.js",
+      "target": "file:code/server/services/proficiencyService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/services/sessionService.test.js",
+      "target": "file:code/server/services/sessionService.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:code/server/lib/parseAIJson.js",
+      "target": "file:code/server/lib/parseAIJson.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/server/lib/validation.js",
+      "target": "file:code/server/lib/validation.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/server/routes/ai.js",
+      "target": "file:code/server/routes/ai.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/server/routes/decks.js",
+      "target": "file:code/server/routes/decks.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/server/routes/learn.js",
+      "target": "file:code/server/routes/learn.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/server/services/aiService.js",
+      "target": "file:code/server/services/aiService.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/server/services/ankiService.js",
+      "target": "file:code/server/services/ankiService.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/server/services/proficiencyService.js",
+      "target": "file:code/server/services/proficiencyService.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:code/server/services/sessionService.js",
+      "target": "file:code/server/services/sessionService.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:code/vitest.config.js",
+      "target": "file:code/server/routes/learn.test.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:code/server/lib/errorHandler.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:code/server/lib/parseAIJson.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:code/server/lib/validation.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:code/server/services/proficiencyService.js",
+      "type": "documents",
       "direction": "forward",
       "weight": 0.5
     }
@@ -2555,7 +2728,7 @@
     {
       "id": "layer:api",
       "name": "API 层",
-      "description": "Express 后端入口与路由处理层，负责注册 CORS/JSON 中间件，挂载 /api/decks、/api/learn、/api/ai 三个路由模块，并将请求分发给服务层处理学习流程、牌组查询和 AI 交互。",
+      "description": "Express 后端入口与路由处理层，负责 HTTP 服务启动、CORS/JSON 中间件注册，以及 /api/ai、/api/decks、/api/learn 三个路由模块的请求分发与响应编排。",
       "nodeIds": [
         "file:code/server/index.js",
         "file:code/server/routes/ai.js",
@@ -2566,17 +2739,28 @@
     {
       "id": "layer:service",
       "name": "服务层",
-      "description": "核心业务逻辑服务层，封装 OpenAI 兼容多模型 AI 调用（千问/豆包/OpenAI）的场景生成与回复评判、Anki-Connect JSON-RPC 通信的牌组与卡片管理、以及基于内存 Map 的学习会话状态跟踪。",
+      "description": "核心业务逻辑服务层，封装 AI 多模型适配（场景生成与作答评判）、Anki-Connect JSON-RPC 通信、学习会话状态管理（Round Robin 轮换与 TTL 过期）以及词汇熟练度分级评估。",
       "nodeIds": [
         "file:code/server/services/aiService.js",
         "file:code/server/services/ankiService.js",
-        "file:code/server/services/sessionService.js"
+        "file:code/server/services/sessionService.js",
+        "file:code/server/services/proficiencyService.js"
+      ]
+    },
+    {
+      "id": "layer:utility",
+      "name": "工具层",
+      "description": "横切工具函数与中间件层，包含 AI 返回 JSON 的鲁棒解析器、请求参数统一校验器以及标准化 API 错误响应辅助函数，被路由层直接引用。",
+      "nodeIds": [
+        "file:code/server/lib/errorHandler.js",
+        "file:code/server/lib/parseAIJson.js",
+        "file:code/server/lib/validation.js"
       ]
     },
     {
       "id": "layer:ui",
       "name": "UI 层",
-      "description": "Vue 3 前端界面层，包含应用根组件、路由配置、牌组选择/学习/设置三个视图、学习理念展示组件、Web Speech API 语音合成与识别封装、全局样式表及 SPA 入口 HTML 文件。",
+      "description": "Vue 3 前端界面层，包含应用入口引导、根组件与主题管理（Dark/Light/Auto）、Hash 模式路由配置、三大页面视图（牌组选择、学习主界面、设置页）、学习理念展示组件、Web Speech API 语音交互封装（TTS/STT）、支持明暗主题切换的全局样式系统及 SPA 入口 HTML。",
       "nodeIds": [
         "file:code/src/main.js",
         "file:code/src/App.vue",
@@ -2593,205 +2777,197 @@
     {
       "id": "layer:config",
       "name": "配置层",
-      "description": "项目构建与运行配置层，包含 npm 依赖脚本定义、Vite 构建代理配置、环境变量模板及 Claude Code 权限设置。",
+      "description": "项目构建、运行与环境配置层，包含 Vite 构建配置（Vue 插件与 /api 反向代理）、Vitest 测试框架配置（含覆盖率）、npm 依赖与脚本清单、环境变量模板以及 Claude Code 项目级权限策略。",
       "nodeIds": [
         "config:code/package.json",
-        "file:code/vite.config.js",
         "config:code/.env.example",
-        "config:.claude/settings.json"
-      ]
-    },
-    {
-      "id": "layer:test",
-      "name": "测试层",
-      "description": "API 与解析器测试脚本层，包含 AI JSON 解析的健壮性验证和千问多模态 API 的诊断测试。",
-      "nodeIds": [
-        "file:code/test_parse_json.mjs",
-        "file:code/test_qwen_api.mjs"
+        "config:.claude/settings.json",
+        "file:code/vite.config.js",
+        "config:code/vitest.config.js"
       ]
     },
     {
       "id": "layer:documentation",
       "name": "文档层",
-      "description": "项目文档层，包含产品需求文档、需求分析索引、基于学习观理论的英语学习步骤指南、常见误区分析、听说读写技能映射说明及完整的分阶段实现计划。",
+      "description": "项目文档层，涵盖产品需求文档、学习理念方法论（学习观、误区分析、听说读写技能映射）、架构设计方案（Claude Code Plan）、功能设计规范与实施计划（主题切换、未学卡片展示）、项目 README 入口说明及 CLAUDE.md 开发者指引。",
       "nodeIds": [
         "document:code/README.md",
         "document:doc/01-需求分析/1.1-产品需求文档.md",
         "document:doc/01-需求分析/需求分析.md",
+        "document:doc/Claude Code Plan方案.md",
         "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
         "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
         "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md",
-        "document:doc/Claude Code Plan方案.md"
+        "document:CLAUDE.md"
       ]
     },
     {
-      "id": "layer:analysis-artifacts",
-      "name": "分析产物层",
-      "description": "Understand-Anything 插件的代码分析中间产物与元数据，包含知识图谱数据、批次分析片段、文件结构提取结果、导入映射、架构分析输入输出、导览数据、指纹信息及审查报告。",
+      "id": "layer:test",
+      "name": "测试层",
+      "description": "服务端单元测试与集成测试层，使用 Vitest + Supertest 覆盖路由处理器、服务模块、工具库与 JSON 解析器的测试，每个生产模块对应一个 .test.js 文件。",
       "nodeIds": [
-        "config:.understand-anything/.trash-1781277533/assemble-review.json",
-        "config:.understand-anything/.trash-1781277533/assembled-graph.json",
-        "config:.understand-anything/.trash-1781277533/batch-1.json",
-        "config:.understand-anything/.trash-1781277533/batch-2.json",
-        "config:.understand-anything/.trash-1781277533/batch-3.json",
-        "config:.understand-anything/.trash-1781277533/batch-4.json",
-        "config:.understand-anything/.trash-1781277533/batch-5.json",
-        "config:.understand-anything/.trash-1781277533/batches.json",
-        "config:.understand-anything/.trash-1781277533/fingerprint-input.json",
-        "config:.understand-anything/.trash-1781277533/layers.json",
-        "config:.understand-anything/.trash-1781277533/review.json",
-        "config:.understand-anything/.trash-1781277533/tour.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-arch-input.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-arch-results.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-1.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-2.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-3.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-4.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-analyzer-input-5.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-1.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-2.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-3.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-4.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-file-extract-results-5.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-input.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-import-map-output.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-scan-files.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-tour-input.json",
-        "config:.understand-anything/.trash-1781277533/tmp/ua-tour-results.json",
-        "config:.understand-anything/config.json",
-        "config:.understand-anything/fingerprints.json",
-        "config:.understand-anything/knowledge-graph.json",
-        "config:.understand-anything/meta.json",
-        "config:.understand-anything/intermediate/scan-result.json",
-        "file:.understand-anything/.trash-1781277533/tmp/ua-arch-analyze.js",
-        "file:.understand-anything/.trash-1781277533/tmp/ua-inline-validate.cjs",
-        "file:.understand-anything/.trash-1781277533/tmp/ua-tour-analyze.js",
-        "file:.understand-anything/.understandignore"
+        "file:code/server/lib/parseAIJson.test.js",
+        "file:code/server/lib/validation.test.js",
+        "file:code/server/routes/ai.test.js",
+        "file:code/server/routes/decks.test.js",
+        "file:code/server/routes/learn.test.js",
+        "file:code/server/services/aiService.test.js",
+        "file:code/server/services/ankiService.test.js",
+        "file:code/server/services/proficiencyService.test.js",
+        "file:code/server/services/sessionService.test.js"
       ]
     }
   ],
   "tour": [
     {
       "order": 1,
-      "title": "项目概览",
-      "description": "从 README 开始了解 ShiYi 项目的基本信息：这是一个基于 Vue 3 + Vite 构建的前端应用，采用 Script Setup 语法编写组件。虽然这份 README 较为简短，但它标记了项目的技术栈起点，为后续深入探索项目丰富的文档体系和代码结构提供了入口。",
+      "title": "项目概览：AI 驱动的沉浸式英语学习",
+      "description": "从项目指引文档 CLAUDE.md 入手，理解 ShiYi（拾忆）的核心设计理念——将英语视为运动技能而非思考类知识，结合 Anki 间隔重复算法与 AI 生成场景，覆盖读、写、听、说四项训练。该文档完整定义了架构拓扑（Vue 3 → Vite → Express → Anki-Connect / AI API）、核心数据模型（Anki 笔记字段与牌组命名规范）以及学习主流程的 8 个步骤。产品需求文档则进一步明确了各功能模块的边界与交互设计。",
       "nodeIds": [
-        "document:code/README.md"
+        "document:CLAUDE.md",
+        "document:doc/01-需求分析/1.1-产品需求文档.md"
       ]
     },
     {
       "order": 2,
-      "title": "产品需求与背景",
-      "description": "产品需求文档（PRD）揭示了 ShiYi 的核心定位：一款结合 Anki 间隔重复与 AI 的英语学习应用。它针对传统英语学习中「死记硬背单词」「缺乏真实场景练习」等痛点，提出了基于 AI 生成场景的交互式学习方案。需求分析索引文档汇总了 PRD、学习理念资料和 Anki-Connect API 参考等关键资源，是理解项目全貌的导航页。",
+      "title": "前端应用入口与构建工具链",
+      "description": "SPA 的启动从 index.html 开始，通过 ES module 加载 main.js 创建 Vue 3 应用实例。main.js 注册 Vue Router 插件并挂载全局样式，将应用注入 DOM 根节点。Vite 配置（vite.config.js）处理 Vue SFC 编译和 /api 到 Express 开发服务器的反向代理，package.json 则统一定义了前后端并行启动（dev:all）、生产构建和测试等所有命令脚本。",
       "nodeIds": [
-        "document:doc/01-需求分析/1.1-产品需求文档.md",
-        "document:doc/01-需求分析/需求分析.md"
-      ]
+        "file:code/index.html",
+        "file:code/src/main.js",
+        "file:code/vite.config.js",
+        "config:code/package.json"
+      ],
+      "languageLesson": "Vite 的 proxy 配置在开发环境下将 /api 请求转发到 Express 后端（端口 3001），避免了浏览器的跨域限制，同时保持了生产环境中前后端分离部署的灵活性。"
     },
     {
       "order": 3,
-      "title": "学习理念：英语作为运动类技能",
-      "description": "这三篇文档构成了 ShiYi 的教育理论基础。核心观点是：英语的听说读写是运动类技能而非知识类技能——正确的训练路径是「声音到意思」（听）、「想法到发声」（说）、「文字到意思」（读）、「想法到打字」（写），且应以句子为最小学习单元。同时指出了三个常见误区：应试教育模式、孤立记单词、插入中文思考。这些理念直接塑造了后续 LearnView 的交互设计。",
+      "title": "前端路由架构与页面框架",
+      "description": "Vue Router 使用 Hash 模式定义三条核心路由：/（牌组选择）、/learn/:deckId（学习页）、/settings（设置页），构成应用的完整导航骨架。App.vue 作为根组件提供顶部导航栏与主题切换按钮，通过 router-view 渲染当前路由对应的视图。全局主题管理（dark/light/auto 三种模式）在此集中控制，后续所有视图组件都依赖此主题上下文。",
+      "nodeIds": [
+        "file:code/src/router/index.js",
+        "file:code/src/App.vue"
+      ],
+      "languageLesson": "Vue 3 的 Composition API 配合 `<script setup>` 语法糖让组件逻辑更简洁——主题状态通过 reactive 对象管理，并通过 provide/inject 机制向子组件树注入，避免了层层传递 props。"
+    },
+    {
+      "order": 4,
+      "title": "后端服务入口与运行环境",
+      "description": "server/index.js 是 Express 应用的启动入口，注册 CORS 与 JSON body 解析中间件后，挂载 /api/ai、/api/decks、/api/learn 三个路由模块，并在 SERVER_PORT（默认 3001）上监听请求。在第二步我们看到 Vite 将 /api 请求代理到此端口——这正是前后端协作的桥梁。环境变量模板 .env.example 定义了 ANKI_CONNECT_URL 和 SERVER_PORT 两个核心配置项，确保本地 Anki 桌面端与本服务正确通信。",
+      "nodeIds": [
+        "file:code/server/index.js",
+        "config:code/.env.example"
+      ],
+      "languageLesson": "Express 的 app.use() 中间件按注册顺序执行——CORS 必须在路由之前注册，否则跨域预检请求（OPTIONS）会被路由处理器拦截而无法正确响应。"
+    },
+    {
+      "order": 5,
+      "title": "API 路由层：学习会话的完整生命周期",
+      "description": "三个路由模块构成了后端 API 的完整对外接口。learn.js 是最核心的路由——它编排了从 POST /api/learn/start（启动会话）、/respond（提交作答）、/complete（完成卡片并更新 Anki 间隔重复数据）到 /next（获取下一张卡片）的完整学习循环。decks.js 提供 Anki 牌组查询与连接状态检测，ai.js 则负责 AI 服务商的连接测试与预设查询。learn.js 的 fan-out 排名第一（6），说明它几乎依赖了所有后端模块——它是理解后端架构的最佳入口。",
+      "nodeIds": [
+        "file:code/server/routes/learn.js",
+        "file:code/server/routes/decks.js",
+        "file:code/server/routes/ai.js"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "AI 服务适配层与鲁棒 JSON 解析",
+      "description": "aiService.js 是 fan-in 最高的模块（被 4 个文件依赖），封装了对 OpenAI 兼容接口的通用调用逻辑，内置千问、豆包、OpenAI 和自定义四种服务商预设。它提供三个核心函数：generateScenario（温度 0.9，鼓励多样性）、judgeResponse（温度 0.5，追求一致性）和 testConnection。由于 LLM 输出的 JSON 可能包含 Markdown 代码块、多余逗号或格式错误，parseAIJson.js 提供了一套鲁棒的解析逻辑来处理这些边界情况。",
+      "nodeIds": [
+        "file:code/server/services/aiService.js",
+        "file:code/server/lib/parseAIJson.js"
+      ],
+      "languageLesson": "AI 调用中 temperature 参数控制输出随机性——0.9 适合创意生成（场景多样化），0.5 适合评判任务（评分一致性）。同一会话中还会对已生成场景做哈希去重，确保同一单词每次遇到时都获得全新场景。"
+    },
+    {
+      "order": 7,
+      "title": "Anki 间隔重复集成",
+      "description": "ankiService.js（fan-in 同为 4）封装了与 Anki 桌面端的所有 JSON-RPC 通信。它通过 HTTP POST 向 Anki-Connect 插件（默认 localhost:8765）发送 version 6 协议请求，提供牌组递归查询、卡片详情获取、答案提交和卡片类型分配等功能，含有 10 秒超时保护。Anki 是 ShiYi 的数据基石——所有学习内容（单词、例句、场景）都以 Anki 笔记形式存储，卡片状态由 Anki 的间隔重复算法统一管理。",
+      "nodeIds": [
+        "file:code/server/services/ankiService.js"
+      ],
+      "languageLesson": "Anki-Connect 使用 JSON-RPC 2.0 协议——所有请求通过单一 HTTP 端点发送，action 字段指定操作类型（如 'findCards'、'cardsInfo'），params 传递参数。牌组查询使用 Anki 的 deck: 过滤器语法自动递归搜索所有子牌组。"
+    },
+    {
+      "order": 8,
+      "title": "会话状态管理与卡片轮换策略",
+      "description": "sessionService.js 基于内存 Map 管理每个牌组的活跃会话，具备 2 小时 TTL 自动过期机制。它实现了 Round Robin 轮换策略——在 read、write、listen、speak 四种技能类型间循环出题，确保学习者均衡训练各项能力。proficiencyService.js 则提供了分级词汇熟练度判定逻辑，支持自定义等级配置。两者配合第 6-7 步的 AI 和 Anki 服务，共同构成学习引擎的核心状态机。",
+      "nodeIds": [
+        "file:code/server/services/sessionService.js",
+        "file:code/server/services/proficiencyService.js"
+      ],
+      "languageLesson": "Round Robin 调度算法在此处的应用：四种技能类型（read/write/listen/speak）按固定顺序轮换，同类型内随机抽取卡片，每张卡片只做一轮对话——这避免了学习者对单一技能类型的疲劳，同时保证了训练的全面性。"
+    },
+    {
+      "order": 9,
+      "title": "共享工具库：参数校验与错误处理",
+      "description": "validation.js 为所有 API 端点提供统一的入参格式验证与类型检查，确保请求数据的合法性在进入业务逻辑之前就被拦截。errorHandler.js 封装了标准化的 API 响应格式——所有成功响应和错误响应（含 HTTP 状态码）都通过统一的辅助函数生成，保证了后端 API 响应格式的一致性。这两个模块被 learn.js 直接依赖（第 5 步），是横切关注点的典型实现。",
+      "nodeIds": [
+        "file:code/server/lib/validation.js",
+        "file:code/server/lib/errorHandler.js"
+      ],
+      "languageLesson": "将校验逻辑从路由处理器中抽离到独立模块是 Express 应用的常见模式——它让路由代码专注于流程编排，校验逻辑可以复用和独立测试。错误处理辅助函数通过工厂模式返回统一结构的 error response 对象，前端可以据此做统一的错误提示。"
+    },
+    {
+      "order": 10,
+      "title": "学习主界面：四技能训练循环的前端实现",
+      "description": "LearnView.vue 是整个前端最复杂的组件，它在前端侧编排了与第 5-8 步后端服务对应的完整学习循环：接收 AI 生成的场景文本、提供文本/语音双模态输入、触发 TTS 朗读（listen 类型卡片自动播放）、自动提交作答并展示 AI 评判结果、驱动卡片轮换。PhilosophyPanel.vue 作为学习页的侧边栏，以静态卡片形式呈现「英语是运动技能」的核心理念——这是整个产品的设计哲学在 UI 层的具象化表达。",
+      "nodeIds": [
+        "file:code/src/views/LearnView.vue",
+        "file:code/src/components/PhilosophyPanel.vue"
+      ]
+    },
+    {
+      "order": 11,
+      "title": "语音交互：Web Speech API 封装",
+      "description": "useSpeech.js 是 Vue 3 Composable 模式的最佳实践示例，封装了浏览器原生的 Web Speech API。useTTS() 提供文本转语音功能（支持语速调节与语音选择），直接服务于第 10 步中 LearnView 的场景朗读需求；useSTT() 提供语音转文字功能，让学习者可以通过口语作答而非打字——这正是 speak 和 listen 类型卡片的核心交互方式。语音识别完成后自动提交，实现了无缝的语音学习体验。",
+      "nodeIds": [
+        "file:code/src/composables/useSpeech.js"
+      ],
+      "languageLesson": "Vue 3 Composable（组合式函数）以 use 前缀命名，将可复用的有状态逻辑封装为独立函数。与 React Hooks 类似，它们可以在多个组件间共享，但与具体组件解耦——useSpeech.js 可以在任何需要语音能力的 Vue 组件中使用。"
+    },
+    {
+      "order": 12,
+      "title": "辅助视图：牌组选择与设置管理",
+      "description": "DeckSelect.vue 是用户进入学习流程的起点——展示 Anki 连接状态指示器和按 ShiYi:: 前缀过滤的牌组列表，提供进入学习和跳转设置的入口。SettingsView.vue 则管理 AI 服务商的完整配置（服务商选择、API Key、模型参数，分 3 个 Tab 面板），同时集成 Anki 连接测试和词汇熟练度等级自定义管理。这两个视图与第 10 步的学习主界面共同覆盖了第 3 步定义的全部三条路由。",
+      "nodeIds": [
+        "file:code/src/views/DeckSelect.vue",
+        "file:code/src/views/SettingsView.vue"
+      ],
+      "languageLesson": "AI 配置存储在浏览器的 localStorage（键名 ShiYi_ai_config），由前端读取并通过每次 API 请求 header 传递给后端。这种设计将敏感的 API Key 保留在客户端控制的同时，让服务端仍能使用用户选择的模型——但要注意 localStorage 中的 Key 在 XSS 攻击场景下存在泄露风险。"
+    },
+    {
+      "order": 13,
+      "title": "全局主题与样式系统",
+      "description": "style.css 定义了完整的 CSS 自定义属性体系——通过 :root 和 [data-theme='dark'] 选择器实现 light/dark 双主题切换，涵盖颜色、间距、圆角、阴影等设计令牌。导航栏、卡片、按钮、表单、对话框等组件样式均以此变量体系为基础，确保全局视觉一致性。这与第 3 步 App.vue 中的主题管理逻辑配合——JavaScript 通过切换 data-theme 属性即可驱动整个样式系统的变化。",
+      "nodeIds": [
+        "file:code/src/style.css"
+      ],
+      "languageLesson": "CSS 自定义属性（Custom Properties）相比 Sass/Less 变量的核心优势是运行时动态性——通过 JavaScript 修改根元素的属性值，整个页面的颜色体系即时切换，无需重新编译。Prefer-color-scheme 媒体查询进一步支持了 auto 模式下跟随系统主题。"
+    },
+    {
+      "order": 14,
+      "title": "测试体系：从单元测试到集成测试",
+      "description": "项目的测试层覆盖了后端所有关键模块。集成测试（routes/*.test.js）使用 Supertest 对 Express 路由做端到端 HTTP 验证——learn.test.js 覆盖了完整学习会话的 start→respond→complete→next 流程。单元测试（services/*.test.js、lib/*.test.js）通过 Mock fetch 验证 AI 调用、Anki JSON-RPC 通信、会话 TTL 过期和 JSON 解析边界情况。vitest.config.js 启用全局 API 与 V8 覆盖率报告，与 Vite 配置共用插件体系——这与第 2 步的构建工具链一脉相承。",
+      "nodeIds": [
+        "file:code/server/routes/learn.test.js",
+        "file:code/server/services/aiService.test.js",
+        "file:code/server/services/sessionService.test.js",
+        "file:code/server/lib/parseAIJson.test.js",
+        "config:code/vitest.config.js"
+      ],
+      "languageLesson": "Vitest 与 Vite 共用转换管道和插件体系，意味着测试中的 import 语句无需额外配置即可解析 Vue SFC、TypeScript 和 CSS Modules——这在 Jest 中需要大量配置。Supertest 通过将 Express app 实例传入 request() 函数创建 HTTP 测试客户端，无需真正启动服务器端口。"
+    },
+    {
+      "order": 15,
+      "title": "设计哲学：学习观理论与产品理念",
+      "description": "回到产品设计的源头——这组文档阐述了 ShiYi 的核心理念：英语是运动技能而非思考知识，学习过程中不应插入中文翻译。文档系统性地分析了听说读写四项技能的正确输入输出映射和常见错误认知，并基于学习观理论设计了渐进式的能力构建路径。这些理念贯穿了整个代码架构——从第 10 步 PhilosophyPanel 的静态展示，到第 6 步 AI prompt 全英文策略，再到第 8 步四技能 Round Robin 轮换，无一不是这套学习理论的工程化实现。",
       "nodeIds": [
         "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/使用学习观来设计的英语学习步骤.md",
         "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/学习英语的错误.md",
         "document:doc/01-需求分析/使用学习观来设计的英语学习步骤/英语的听说读写正确的输入输出与构建方式.md"
       ]
-    },
-    {
-      "order": 4,
-      "title": "技术实现计划",
-      "description": "这份完整的实现计划文档是项目的技术蓝图，涵盖 12 个章节：技术栈选型（Vue 3 + Express + Web Speech API + OpenAI 兼容 API）、整体架构设计（前后端分离，Vite 代理转发 /api 请求）、数据模型设计、核心业务流程（选择牌组→AI 生成场景→用户回复→AI 评判→更新 Anki）、前端路由配置以及分四阶段实现的任务清单。阅读此文档可对整个项目的技术骨架获得全局认知。",
-      "nodeIds": [
-        "document:doc/Claude Code Plan方案.md"
-      ],
-      "languageLesson": "技术方案文档（Implementation Plan）是大型项目的设计蓝图。好的方案应包含：背景与动机、技术选型理由、架构分层图、数据模型、核心业务流程（通常用时序图或伪代码描述）、路由与API设计、分阶段任务拆解及验证标准。"
-    },
-    {
-      "order": 5,
-      "title": "项目构建与环境配置",
-      "description": "package.json 定义了项目的脚本命令（Vite 开发/构建、Express 后端启动、concurrently 并行运行前后端）和核心依赖（Vue 3、Express、OpenAI SDK、cors、dotenv）。vite.config.js 通过代理规则将前端 /api 请求转发到本地 Express 后端（端口 3001），实现开发环境下的前后端联调。.env.example 提供了环境变量模板，配置 Anki-Connect 地址和服务端口。",
-      "nodeIds": [
-        "config:code/package.json",
-        "file:code/vite.config.js",
-        "config:code/.env.example"
-      ],
-      "languageLesson": "Vite 的 server.proxy 配置可在开发阶段将特定路径的请求代理到后端服务器，解决跨域问题而无需后端单独配置 CORS。concurrently 工具允许一条命令同时启动前端开发服务器和后端服务，简化开发工作流。"
-    },
-    {
-      "order": 6,
-      "title": "前端启动链路：从 HTML 到路由",
-      "description": "Vue 应用从 index.html 的 #app 挂载点开始，通过 ES Module 方式加载 main.js。main.js 使用 createApp 创建 Vue 实例，注册全局样式（style.css）和路由插件后挂载到 DOM。App.vue 定义了整体布局骨架（顶部导航栏 + router-view 内容出口）。路由模块（router/index.js）使用哈希历史模式定义三条路由：牌组选择（/）、学习（/learn/:deckId）、设置（/settings）。这五个文件构成了前端的启动骨架。",
-      "nodeIds": [
-        "file:code/index.html",
-        "file:code/src/main.js",
-        "file:code/src/App.vue",
-        "file:code/src/router/index.js",
-        "file:code/src/style.css"
-      ],
-      "languageLesson": "Vue 3 应用通过 createApp() 创建实例，使用 app.use() 注册插件（如 Router），最终调用 app.mount('#app') 挂载。Hash 历史模式（createWebHashHistory）在 URL 中使用 # 符号，无需服务端配置即可支持 SPA 路由，适合无服务端渲染的纯前端项目。"
-    },
-    {
-      "order": 7,
-      "title": "辅助视图：牌组选择与设置",
-      "description": "DeckSelect 是用户进入学习流程的入口视图，它检测 Anki-Connect 连接状态，加载以 ShiYi:: 为前缀的牌组列表，用户点击即可进入对应牌组的学习流程。SettingsView 提供 AI 服务商（OpenAI/千问/豆包/自定义）的配置界面，包括 API Key 和模型名称，支持连接测试；配置通过 Vue 的 watch 自动持久化到 localStorage。这两个视图共同构成了学习主流程的前置环节。",
-      "nodeIds": [
-        "file:code/src/views/DeckSelect.vue",
-        "file:code/src/views/SettingsView.vue"
-      ],
-      "languageLesson": "Vue 的 watch API 可以监听响应式数据的变化并执行副作用（如持久化到 localStorage），是实现「设置即保存」体验的常用模式。通过 watch 的 immediate 选项可在组件挂载时立即执行一次回调，用于从 localStorage 恢复初始配置。"
-    },
-    {
-      "order": 8,
-      "title": "核心学习体验：场景对话与语音交互",
-      "description": "LearnView 是整个应用的核心视图，承载基于 AI 场景的英语对话学习流程。它支持四种卡片类型（读/写/听/说），集成语音输入（STT）和朗读（TTS）功能，由 AI 自动评判用户回复的掌握程度。PhilosophyPanel 以信息面板形式展示学习理念（不借助中文思考、以句子为单位等原则），与 Step 3 的教育理论形成呼应。useSpeech 封装了浏览器的 Web Speech API，提供 useTTS（文本转语音）和 useSTT（语音转文本）两个组合式函数，是实现听说训练的关键技术组件。",
-      "nodeIds": [
-        "file:code/src/views/LearnView.vue",
-        "file:code/src/components/PhilosophyPanel.vue",
-        "file:code/src/composables/useSpeech.js"
-      ],
-      "languageLesson": "Vue 3 的 Composables（组合式函数）是复用有状态逻辑的标准模式，约定以 use 开头命名。Web Speech API 包含 SpeechSynthesis（文本转语音，TTS）和 SpeechRecognition（语音转文本，STT）两个接口，均为浏览器原生能力，无需额外依赖。使用时需注意浏览器兼容性和 HTTPS 环境要求。"
-    },
-    {
-      "order": 9,
-      "title": "后端服务入口",
-      "description": "Express 后端从 server/index.js 启动，挂载 CORS 和 JSON 解析中间件后，注册 /api/decks、/api/learn、/api/ai 三个路由模块，并提供 /api/health 健康检查端点和全局错误处理，监听 3001 端口。这是前后端分离架构中「后」的那一半——前端通过 Step 5 中 Vite 配置的代理将 /api 请求转发至此。",
-      "nodeIds": [
-        "file:code/server/index.js"
-      ],
-      "languageLesson": "Express 的模块化路由通过 express.Router() 创建独立的路由实例，在主文件中用 app.use() 挂载。这种模式将不同业务域的路由逻辑分离到独立文件，避免主文件膨胀。中间件（如 cors、express.json）通过 app.use() 注册，按声明顺序对每个请求依次执行。"
-    },
-    {
-      "order": 10,
-      "title": "API 路由层：学习流程的 HTTP 接口",
-      "description": "三个路由模块构成了后端对外的 API 面。decks 路由提供牌组列表和 Anki-Connect 连接状态检测；learn 路由编排完整的卡片学习生命周期（开始→回复→完成→下一张→进度），需要协调 ankiService、aiService 和 sessionService 三个服务；ai 路由提供 AI 连接测试和预设模型配置。其中 learn 路由是核心枢纽，其端点映射了 Step 8 中 LearnView 的每个用户操作。",
-      "nodeIds": [
-        "file:code/server/routes/decks.js",
-        "file:code/server/routes/learn.js",
-        "file:code/server/routes/ai.js"
-      ],
-      "languageLesson": "RESTful API 设计中，路由层应保持「薄」——仅负责请求参数提取、响应格式化，将业务逻辑完全委托给服务层。这种分层使得路由易于测试（mock 服务层），也让服务层的业务逻辑可被多个路由甚至非 HTTP 入口复用。"
-    },
-    {
-      "order": 11,
-      "title": "核心服务层：AI、Anki 与会话管理",
-      "description": "三个服务构成了项目的业务核心。aiService 封装了 OpenAI 兼容 API 调用，支持千问、豆包、OpenAI 等多模型提供商，提供场景生成（generateScenario）和回复评判（judgeResponse）能力，内置健壮的 JSON 解析器处理各模型不规范的输出。ankiService 封装与本地 Anki 应用的 JSON-RPC 通信，处理牌组查询、卡片获取和评分提交。sessionService 基于内存 Map 管理学习会话状态，跟踪对话历史和评分统计，支持 2 小时 TTL 自动过期。这三个服务协同工作，实现了从 Step 10 的 learn 路由到 Step 8 的 LearnView 的完整学习闭环。",
-      "nodeIds": [
-        "file:code/server/services/aiService.js",
-        "file:code/server/services/ankiService.js",
-        "file:code/server/services/sessionService.js"
-      ],
-      "languageLesson": "JSON-RPC 是一种轻量级远程调用协议，与 REST 不同，它通过统一的 POST 端点传递 method 和 params。Anki-Connect 使用此协议让外部应用操控 Anki 的牌组和卡片数据。在封装第三方 API 时，统一的错误处理和重试逻辑是服务层的重要职责，而非散落在各路由中。"
-    },
-    {
-      "order": 12,
-      "title": "测试与质量保障",
-      "description": "两个测试脚本覆盖了项目中风险最高的两个环节。test_parse_json 验证 AI JSON 解析器对各种不规范输出的处理能力（纯 JSON、Markdown 代码块包裹、前后附带文本、嵌套花括号、转义引号），确保即使 AI 模型返回格式不规范，系统也能正确解析。test_qwen_api 是千问多模态 API 的快速诊断脚本，依次测试三个模型（qwen-omni-turbo、qwen-vl-plus、qwen-vl-max）的图片理解能力。这种针对性的测试策略——重点覆盖外部依赖和不稳定环节——在小型项目中尤为高效。",
-      "nodeIds": [
-        "file:code/test_parse_json.mjs",
-        "file:code/test_qwen_api.mjs"
-      ],
-      "languageLesson": ".mjs 扩展名明确告知 Node.js 该文件使用 ES Module 语法（import/export），而非 CommonJS（require）。在混合使用两种模块系统的项目中，.mjs 和 .cjs 扩展名是避免模块解析冲突的推荐做法。AI 应用的测试重点应放在「模型输出解析」和「API 连通性」上，因为这两者是系统中最不可控的环节。"
     }
   ]
 }

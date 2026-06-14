@@ -10,7 +10,15 @@
       "Skill(commit-commands:commit)",
       "Skill(commit-commands:commit:*)",
       "Bash(npm i *)",
-      "Bash(npx vitest *)"
+      "Bash(npx vitest *)",
+      "Bash(git -C \"f:/web/shiyi\" rev-parse HEAD)",
+      "Bash(mkdir -p \"f:/web/shiyi/.understand-anything/intermediate\")",
+      "Bash(mkdir -p \"f:/web/shiyi/.understand-anything/tmp\")",
+      "Bash(git -C \"f:/web/shiyi\" diff 4f5facfd198fda289f5405ac3dd2d85ba4c9d039..934105cbd433cbc8590c6e316533f9b9e116a105 --name-only)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({'projectName':d.get\\('projectName'\\),'languages':d.get\\('languages'\\),'frameworks':d.get\\('frameworks'\\),'projectDescription':d.get\\('projectDescription'\\),'fileCount':len\\(d.get\\('files',[]\\)\\)},indent=2\\)\\)\")",
+      "Bash(python3 -c \"import json; f=open\\('f:/web/shiyi/.understand-anything/intermediate/batch-8.json'\\); d=json.load\\(f\\); print\\(f'Nodes: {len\\(d[\\\\\"nodes\\\\\"]\\)}, Edges: {len\\(d[\\\\\"edges\\\\\"]\\)}'\\); [print\\(f'  {n[\\\\\"id\\\\\"]}'\\) for n in d['nodes']]; print\\('---'\\); [print\\(f'  {e[\\\\\"source\\\\\"]} -> {e[\\\\\"target\\\\\"]} \\({e[\\\\\"type\\\\\"]}\\)'\\) for e in d['edges']]\")",
+      "Bash(git -C \"f:/web/shiyi\" add .claude/settings.json .understand-anything/.understandignore .understand-anything/fingerprints.json .understand-anything/intermediate/scan-result.json .understand-anything/knowledge-graph.json .understand-anything/meta.json)",
+      "Bash(git -C f:/web/shiyi commit -m 'chore: update knowledge graph + ignore config after /understand incremental analysis *)"
     ]
   }
 }

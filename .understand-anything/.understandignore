@@ -36,3 +36,8 @@
 # *.test.*
 # *.spec.*
 # *.snap
+
+# --- Active exclusion rules ---
+
+code/scripts/
+docs/superpowers/
