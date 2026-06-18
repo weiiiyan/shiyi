@@ -11,7 +11,6 @@ const DEFAULT_LEVELS = [
   {
     id: 'beginner',
     label: 'Beginner 初学',
-    isBuiltin: true,
     prompts: {
       read: 'The student is a BEGINNER reader (CEFR A1). Their English vocabulary is limited to the most basic 300-500 words. Use ONLY very simple, short words (1-2 syllables). Write sentences with 3-5 words each. Avoid all idioms, phrasal verbs, and complex grammar. The scenario topic should be concrete and visual (colors, numbers, family, food, daily objects).',
       write: 'The student is a BEGINNER writer (CEFR A1). They can only produce very short phrases and simple sentences. The writing task should require just 2-4 words as a response. Use ONLY the most basic vocabulary (top 300 words). Accept spelling errors and grammatical mistakes — focus on whether they conveyed the basic idea.',
@@ -22,7 +21,6 @@ const DEFAULT_LEVELS = [
   {
     id: 'elementary',
     label: 'Elementary 基础',
-    isBuiltin: true,
     prompts: {
       read: 'The student is an ELEMENTARY reader (CEFR A2). Their vocabulary covers about 1000-1500 common words. Use simple sentences with basic connectors (and, but, because). Keep paragraphs to 2-3 short sentences. The topic can involve simple everyday situations (shopping, weather, hobbies, daily routines). Avoid abstract concepts.',
       write: 'The student is an ELEMENTARY writer (CEFR A2). They can write short, simple sentences about familiar topics. The writing task should require a short phrase or single sentence (5-10 words). Use common everyday vocabulary. Accept grammar errors as long as the meaning is understandable.',
@@ -33,7 +31,6 @@ const DEFAULT_LEVELS = [
   {
     id: 'intermediate',
     label: 'Intermediate 中级',
-    isBuiltin: true,
     prompts: {
       read: 'The student is an INTERMEDIATE reader (CEFR B1). Their vocabulary covers about 2000-3000 words. Use natural conversational English with moderate sentence complexity. You may use some phrasal verbs and common idioms (explain through context). Topics can include work, travel, opinions, and current events. Occasional unfamiliar words are fine if context makes them clear.',
       write: 'The student is an INTERMEDIATE writer (CEFR B1). They can write connected text on familiar topics. The writing task should require 1-2 complete sentences expressing a thought or opinion. Use everyday vocabulary with occasional slightly advanced words. Expect mostly correct basic grammar — some errors in complex structures are normal.',
@@ -44,7 +41,6 @@ const DEFAULT_LEVELS = [
   {
     id: 'upper-intermediate',
     label: 'Upper Intermediate 中高级',
-    isBuiltin: true,
     prompts: {
       read: 'The student is an UPPER-INTERMEDIATE reader (CEFR B2). Their vocabulary covers 4000+ words including some less common terms. Use natural, varied English with complex sentence structures. You may use idioms, phrasal verbs, and nuanced expressions freely. Topics can be abstract or specialized (technology, culture, science, society). Expect them to infer meaning from context.',
       write: 'The student is an UPPER-INTERMEDIATE writer (CEFR B2). They can write clear, detailed text on a wide range of topics. The writing task should require 2-3 well-formed sentences expressing nuanced ideas. Use varied vocabulary including some less common words. Expect mostly correct grammar and appropriate register.',
@@ -55,7 +51,6 @@ const DEFAULT_LEVELS = [
   {
     id: 'advanced',
     label: 'Advanced 高级',
-    isBuiltin: true,
     prompts: {
       read: 'The student is an ADVANCED reader (CEFR C1/C2). Their vocabulary is broad and includes specialized and academic terms. Use fully natural English — the same level you would use with a native speaker. Include cultural references, wordplay, nuanced arguments, and sophisticated rhetorical devices. Challenge them with abstract, technical, or literary content.',
       write: 'The student is an ADVANCED writer (CEFR C1/C2). They can write with near-native precision, style, and nuance. The writing task should require sophisticated expression — nuanced opinions, formal register, or creative writing. Use advanced vocabulary and expect appropriate collocations and register. Push for stylistic refinement.',
@@ -65,11 +60,21 @@ const DEFAULT_LEVELS = [
   },
 ];
 
+// 内置等级 ID 集合，用于判断某个等级是否为预设等级
+const BUILTIN_IDS = new Set(DEFAULT_LEVELS.map((l) => l.id));
+
 /**
  * 获取默认水平等级列表（深拷贝，防止调用方意外修改）
  */
 function getDefaultLevels() {
   return structuredClone(DEFAULT_LEVELS);
+}
+
+/**
+ * 判断指定等级 ID 是否为内置预设等级
+ */
+function isBuiltinLevel(id) {
+  return BUILTIN_IDS.has(id);
 }
 
 /**
@@ -80,47 +85,47 @@ function getDefaultLevels() {
  * @returns {string} 对应的提示词，或空字符串
  */
 function getProficiencyPrompt(proficiencyConfig, skillType) {
-  if (!proficiencyConfig || !proficiencyConfig.levels || !proficiencyConfig.selected) {
-    return '';
-  }
+  return proficiencyConfig?.levels?.find((l) => l.id === proficiencyConfig.selected?.[skillType])
+    ?.prompts?.[skillType] ?? '';
+}
 
-  const levelId = proficiencyConfig.selected[skillType];
-  if (!levelId) return '';
+// 各模式下的水平指令后缀
+const PROFICIENCY_SUFFIX = {
+  scenario: 'Adjust vocabulary, sentence complexity, and scenario content to match this level.',
+  judge: "Judge the student's response relative to this level. If they perform at or above this level, score favorably.",
+};
 
-  const level = proficiencyConfig.levels.find((l) => l.id === levelId);
-  if (!level || !level.prompts || !level.prompts[skillType]) return '';
-
-  return level.prompts[skillType];
+/**
+ * 构建水平相关提示词块（内部共享）
+ *
+ * @param {Object} proficiencyConfig
+ * @param {string} cardType - read | write | listen | speak
+ * @param {string} mode - 'scenario' | 'judge'
+ * @returns {string} 插入 system prompt 的文本
+ */
+function buildProficiencyBlock(proficiencyConfig, cardType, mode) {
+  const prompt = getProficiencyPrompt(proficiencyConfig, cardType);
+  if (!prompt) return '';
+  return `\n\nSTUDENT PROFICIENCY LEVEL (for ${cardType}):\n${prompt}\n${PROFICIENCY_SUFFIX[mode]}`;
 }
 
 /**
  * 为场景生成构建水平相关提示词
- *
- * @param {Object} proficiencyConfig
- * @param {string} cardType - read | write | listen | speak
- * @returns {string} 插入 system prompt 的文本
  */
 function buildScenarioProficiency(proficiencyConfig, cardType) {
-  const prompt = getProficiencyPrompt(proficiencyConfig, cardType);
-  if (!prompt) return '';
-  return `\n\nSTUDENT PROFICIENCY LEVEL (for ${cardType}):\n${prompt}\nAdjust vocabulary, sentence complexity, and scenario content to match this level.`;
+  return buildProficiencyBlock(proficiencyConfig, cardType, 'scenario');
 }
 
 /**
  * 为作答评判构建水平相关提示词
- *
- * @param {Object} proficiencyConfig
- * @param {string} cardType - read | write | listen | speak
- * @returns {string} 插入 system prompt 的文本
  */
 function buildJudgeProficiency(proficiencyConfig, cardType) {
-  const prompt = getProficiencyPrompt(proficiencyConfig, cardType);
-  if (!prompt) return '';
-  return `\n\nSTUDENT PROFICIENCY LEVEL (for ${cardType}):\n${prompt}\nJudge the student\'s response relative to this level. If they perform at or above this level, score favorably.`;
+  return buildProficiencyBlock(proficiencyConfig, cardType, 'judge');
 }
 
 export default {
   getDefaultLevels,
+  isBuiltinLevel,
   getProficiencyPrompt,
   buildScenarioProficiency,
   buildJudgeProficiency,

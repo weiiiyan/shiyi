@@ -31,12 +31,20 @@ describe('proficiencyService', () => {
         expect(level.prompts.speak).toBeTruthy();
       }
     });
+  });
 
-    it('each level has isBuiltin flag set to true', () => {
-      const levels = proficiencyService.getDefaultLevels();
-      for (const level of levels) {
-        expect(level.isBuiltin).toBe(true);
-      }
+  describe('isBuiltinLevel', () => {
+    it('returns true for builtin levels', () => {
+      expect(proficiencyService.isBuiltinLevel('beginner')).toBe(true);
+      expect(proficiencyService.isBuiltinLevel('elementary')).toBe(true);
+      expect(proficiencyService.isBuiltinLevel('intermediate')).toBe(true);
+      expect(proficiencyService.isBuiltinLevel('upper-intermediate')).toBe(true);
+      expect(proficiencyService.isBuiltinLevel('advanced')).toBe(true);
+    });
+
+    it('returns false for non-builtin level', () => {
+      expect(proficiencyService.isBuiltinLevel('custom-level')).toBe(false);
+      expect(proficiencyService.isBuiltinLevel('')).toBe(false);
     });
   });
 
