@@ -34,10 +34,7 @@ function resolveTheme(value) {
 function applyTheme(resolved) {
   document.documentElement.setAttribute('data-theme', resolved)
   // Update browser title bar color
-  const meta = document.getElementById('theme-color-meta')
-  if (meta) {
-    meta.setAttribute('content', resolved === 'light' ? '#ffffff' : '#1b1918')
-  }
+  document.getElementById('theme-color-meta')?.setAttribute('content', resolved === 'light' ? '#ffffff' : '#1b1918')
 }
 
 // Bootstrap

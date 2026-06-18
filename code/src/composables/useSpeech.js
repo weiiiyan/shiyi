@@ -32,8 +32,8 @@ export function useTTS() {
     if (!options.voice) {
       const voices = window.speechSynthesis.getVoices();
       const englishVoice =
-        voices.find((v) => v.lang === 'en-US' && v.name.includes('Google')) ||
-        voices.find((v) => v.lang === 'en-US') ||
+        voices.find((v) => v.lang === 'en-US' && v.name.includes('Google')) ??
+        voices.find((v) => v.lang === 'en-US') ??
         voices.find((v) => v.lang.startsWith('en'));
       if (englishVoice) utterance.voice = englishVoice;
     }

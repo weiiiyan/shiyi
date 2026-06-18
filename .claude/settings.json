@@ -24,7 +24,9 @@
       "Bash(npm list *)",
       "Bash(ls -la /c/Users/Admin/AppData/Roaming/npm/claude* 2>/dev/null)",
       "Read(//c/Users/Admin/AppData/Roaming/npm/**)",
-      "Bash(cat /c/Users/Admin/AppData/Roaming/npm/claude.cmd 2>/dev/null || echo \"FILE_NOT_FOUND\")"
+      "Bash(cat /c/Users/Admin/AppData/Roaming/npm/claude.cmd 2>/dev/null || echo \"FILE_NOT_FOUND\")",
+      "Bash(npm run *)",
+      "Bash(git commit -m 'refactor: 前端代码简化与优化 - 移除重复、提升可维护性 *)"
     ]
   }
 }

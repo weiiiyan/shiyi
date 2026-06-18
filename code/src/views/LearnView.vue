@@ -216,26 +216,31 @@ const proficiencyConfig = computed(() => {
   return null
 })
 
+const LABELS = {
+  cardType: { read: '📖 读', write: '✍️ 写', listen: '🎧 听', speak: '🗣️ 说' },
+  cardState: { 0: '🆕 新卡', 2: '🔄 复习' },
+  stateClass: { 0: 'state-new', 2: 'state-review' },
+  ease: { 1: '需要再练', 3: '基本掌握', 4: '完全掌握' }
+}
+
+function getLabel(type, key) {
+  return LABELS[type]?.[key] ?? key ?? ''
+}
+
 function cardTypeLabel(type) {
-  const map = { read: '📖 读', write: '✍️ 写', listen: '🎧 听', speak: '🗣️ 说' }
-  return map[type] || type
+  return getLabel('cardType', type)
 }
 
 function cardStateLabel(ankiType) {
-  if (ankiType === 0) return '🆕 新卡'
-  if (ankiType === 2) return '🔄 复习'
-  return '' // type=1 (learning) or undefined — no badge
+  return getLabel('cardState', ankiType)
 }
 
 function stateClass(ankiType) {
-  if (ankiType === 0) return 'state-new'
-  if (ankiType === 2) return 'state-review'
-  return ''
+  return getLabel('stateClass', ankiType)
 }
 
 function easeLabel(ease) {
-  const map = { 1: '需要再练', 3: '基本掌握', 4: '完全掌握' }
-  return map[ease] || ''
+  return getLabel('ease', ease)
 }
 
 function goBack() {

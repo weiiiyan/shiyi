@@ -213,28 +213,22 @@ const TABS = [
 
 const activeTab = ref('ai')
 
-// Keyboard navigation for tabs (left/right arrows + Home/End)
+const KEY_MAP = {
+  'ArrowRight': (idx, len) => (idx + 1) % len,
+  'ArrowLeft': (idx, len) => (idx - 1 + len) % len,
+  'Home': () => 0,
+  'End': (_, len) => len - 1
+}
+
 function handleTabKeydown(event, currentId) {
   const idx = TABS.findIndex((t) => t.id === currentId)
-  let nextIdx = idx
+  const nextIdxFn = KEY_MAP[event.key]
 
-  if (event.key === 'ArrowRight') {
-    nextIdx = (idx + 1) % TABS.length
-  } else if (event.key === 'ArrowLeft') {
-    nextIdx = (idx - 1 + TABS.length) % TABS.length
-  } else if (event.key === 'Home') {
-    nextIdx = 0
-  } else if (event.key === 'End') {
-    nextIdx = TABS.length - 1
-  } else {
-    return
-  }
+  if (!nextIdxFn) return // Unknown key, do nothing
 
   event.preventDefault()
-  activeTab.value = TABS[nextIdx].id
-  nextTick(() => {
-    document.getElementById('tab-' + TABS[nextIdx].id)?.focus()
-  })
+  activeTab.value = TABS[nextIdxFn(idx, TABS.length)].id
+  nextTick(() => document.getElementById(`tab-${activeTab.value}`)?.focus())
 }
 
 const MODEL_PRESETS = {

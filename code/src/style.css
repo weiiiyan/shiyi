@@ -709,6 +709,8 @@ code {
 }
 
 .card-type-badge {
+  background: var(--badge-bg);
+  color: var(--badge-color);
   font-family: var(--font-ui);
   padding: 0.2em 0.65em;
   border-radius: var(--radius-lg);
@@ -717,10 +719,10 @@ code {
   letter-spacing: 0.02em;
 }
 
-.card-type-badge.read  { background: var(--skill-read-bg);  color: var(--skill-read); }
-.card-type-badge.write { background: var(--skill-write-bg); color: var(--skill-write); }
-.card-type-badge.listen{ background: var(--skill-listen-bg);color: var(--skill-listen); }
-.card-type-badge.speak { background: var(--skill-speak-bg); color: var(--skill-speak); }
+.card-type-badge.read  { --badge-bg: var(--skill-read-bg);  --badge-color: var(--skill-read); }
+.card-type-badge.write { --badge-bg: var(--skill-write-bg); --badge-color: var(--skill-write); }
+.card-type-badge.listen{ --badge-bg: var(--skill-listen-bg);--badge-color: var(--skill-listen); }
+.card-type-badge.speak { --badge-bg: var(--skill-speak-bg); --badge-color: var(--skill-speak); }
 
 .card-state-badge {
   font-family: var(--font-ui);
@@ -1213,24 +1215,6 @@ code {
   opacity: 0;
 }
 
-/* === Settings Section (deprecated — kept for backward compatibility) === */
-
-.settings-section {
-  background: var(--bg-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-subtle);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.settings-section h3 {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  font-style: italic;
-  margin-bottom: 1.15rem;
-  color: var(--accent);
-}
 
 .section-desc {
   font-family: var(--font-body);
@@ -1269,11 +1253,11 @@ code {
   transition: background 0.25s var(--ease-out), border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 
+/* Unified focus styles */
 .form-group input:focus-visible,
-.form-group select:focus-visible {
+.form-group select:focus-visible,
+.skill-level-select:focus-visible {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .form-group input::placeholder {
@@ -1282,7 +1266,8 @@ code {
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.skill-level-select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
@@ -1388,15 +1373,6 @@ select {
   transition: all 0.25s var(--ease-out);
   cursor: pointer;
   color: var(--text-primary);
-}
-
-.skill-level-select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
-
-.skill-level-select:focus-visible {
-  outline: none;
 }
 
 .levels-header {
