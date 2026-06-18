@@ -5,6 +5,8 @@
  * 跟踪当前卡片、对话历史、连续失败次数等状态。
  */
 
+import { CARD_TYPES } from './ankiService.js';
+
 const sessions = new Map();
 
 // 会话过期时间：2 小时
@@ -15,8 +17,9 @@ const SESSION_TTL = 2 * 60 * 60 * 1000;
  */
 function createSession(deckId, aiConfig, proficiencyConfig) {
   // 清理旧会话
-  if (sessions.has(deckId)) {
-    clearTimeout(sessions.get(deckId).timer);
+  const oldSession = sessions.get(deckId);
+  if (oldSession) {
+    clearTimeout(oldSession.timer);
   }
 
   const session = {
@@ -95,11 +98,8 @@ function recordScore(deckId, ease) {
   if (ease === 1) {
     session.scores.again++;
     session.failCount++;
-  } else if (ease === 3) {
-    session.scores.good++;
-    session.failCount = 0;
-  } else if (ease === 4) {
-    session.scores.easy++;
+  } else if (ease === 3 || ease === 4) {
+    session.scores[ease === 3 ? 'good' : 'easy']++;
     session.failCount = 0;
   }
 }
@@ -133,7 +133,8 @@ function recordScenario(deckId, wordKey, scenario) {
     session.scenarioHistory[wordKey] = [];
   }
   // 简单哈希：场景 JSON 前 50 字符 + 长度
-  const hash = JSON.stringify(scenario).slice(0, 50) + '_' + JSON.stringify(scenario).length;
+  const json = JSON.stringify(scenario);
+  const hash = json.slice(0, 50) + '_' + json.length;
   if (!session.scenarioHistory[wordKey].includes(hash)) {
     session.scenarioHistory[wordKey].push(hash);
   }
@@ -180,35 +181,27 @@ function pickNextCard(cards, session) {
   if (!cards || cards.length === 0) return null;
 
   // 按类型分组
-  const byType = { read: [], write: [], listen: [], speak: [] };
+  const byType = {};
+  for (const type of CARD_TYPES) {
+    byType[type] = [];
+  }
   for (const card of cards) {
     const type = card.cardType || 'read';
-    if (byType[type]) {
-      byType[type].push(card);
-    } else {
-      byType.read.push(card); // 未知类型归入 read
-    }
+    // 未知类型归入 read
+    (byType[type] || byType.read).push(card);
   }
-
-  const typeOrder = ['read', 'write', 'listen', 'speak'];
 
   // 从上次类型的下一个开始轮换
-  let startIdx = 0;
-  if (session.lastCardType != null) {
-    const lastIdx = typeOrder.indexOf(session.lastCardType);
-    startIdx = (lastIdx + 1) % typeOrder.length;
-  }
+  const lastIdx = session.lastCardType != null ? CARD_TYPES.indexOf(session.lastCardType) : -1;
+  const startIdx = (lastIdx + 1) % CARD_TYPES.length;
 
   // 按轮换顺序尝试每种类型
-  for (let i = 0; i < typeOrder.length; i++) {
-    const idx = (startIdx + i) % typeOrder.length;
-    const type = typeOrder[idx];
+  for (let i = 0; i < CARD_TYPES.length; i++) {
+    const type = CARD_TYPES[(startIdx + i) % CARD_TYPES.length];
     const pool = byType[type];
     if (pool.length > 0) {
-      // 同类型内随机抽取
-      const j = Math.floor(Math.random() * pool.length);
       session.lastCardType = type;
-      return pool[j];
+      return pool[Math.floor(Math.random() * pool.length)];
     }
   }
 

@@ -298,7 +298,11 @@ function getNoteField(note, pascalKey, snakeKey, fallback = '') {
  * 当 Anki note 未设置 CardType 时，随机分配一种卡片类型
  * 等概率随机四种类型，使学习体验不再单调
  */
-const CARD_TYPES = ['read', 'write', 'listen', 'speak'];
+/**
+ * 卡片类型常量
+ * 四种技能类型：读、写、听、说
+ */
+export const CARD_TYPES = ['read', 'write', 'listen', 'speak'];
 
 /**
  * 基于卡片 ID 确定性分配卡片类型
