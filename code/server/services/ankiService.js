@@ -7,7 +7,11 @@
  */
 
 const ANKI_CONNECT_URL = process.env.ANKI_CONNECT_URL || 'http://localhost:8765';
-const ANKI_TIMEOUT_MS = 10000;
+const ANKI_TIMEOUT_MS = parseInt(process.env.ANKI_TIMEOUT_MS, 10) || 10000;
+
+const DECK_PREFIX = 'ShiYi';
+const DECK_CHILD_PREFIX = DECK_PREFIX + '::';
+const isShiYiDeck = (d) => d === DECK_PREFIX || d.startsWith(DECK_CHILD_PREFIX);
 
 async function invoke(action, params = {}) {
   const controller = new AbortController();
@@ -47,42 +51,29 @@ async function getAllDeckNames() {
 async function getShiYiDecks() {
   const allDecks = await invoke('deckNames');
 
-  // 匹配 "ShiYi::" 子牌组和顶级 "ShiYi" 牌组
-  const shiYiDecks = allDecks.filter(
-    (d) => d === 'ShiYi' || d.startsWith('ShiYi::')
-  );
+  const shiYiDecks = allDecks.filter(isShiYiDeck);
 
-  // 如果没有 ShiYi 牌组，直接返回空
   if (shiYiDecks.length === 0) {
     return { decks: [], allDecks };
   }
 
-  // 用 deck:"ShiYi" 一次性查出整棵树的所有卡片
-  // deck: 自动递归搜索所有子牌组
-  let allCardIds = [];
-  let dueCardIds = [];
-  try {
-    allCardIds = await invoke('findCards', { query: 'deck:"ShiYi"' });
-  } catch (err) {
-    console.error('[ankiService] findCards all failed:', err.message);
-  }
+  // 并行查询三种卡片（all / due / new），统一错误处理
+  const baseQuery = `deck:"${DECK_PREFIX}"`;
+  const queries = [
+    { key: 'all', query: baseQuery },
+    { key: 'due', query: `${baseQuery} is:due` },
+    { key: 'new', query: `${baseQuery} is:new` },
+  ];
 
-  try {
-    dueCardIds = await invoke('findCards', {
-      query: 'deck:"ShiYi" is:due',
-    });
-  } catch (err) {
-    console.error('[ankiService] findCards due failed:', err.message);
-  }
-
-  let newCardIds = [];
-  try {
-    newCardIds = await invoke('findCards', {
-      query: 'deck:"ShiYi" is:new',
-    });
-  } catch (err) {
-    console.error('[ankiService] findCards new failed:', err.message);
-  }
+  const results = await Promise.all(
+    queries.map(({ key, query }) =>
+      invoke('findCards', { query }).catch((err) => {
+        console.error(`[ankiService] findCards ${key} failed:`, err.message);
+        return [];
+      })
+    )
+  );
+  const [allCardIds, dueCardIds, newCardIds] = results;
 
   // 构建 due/new 集合用于 O(1) 查找
   const dueSet = new Set(dueCardIds);
@@ -102,64 +93,60 @@ async function getShiYiDecks() {
         const stat = deckStats[card.deckName];
         if (stat) {
           stat.totalCards++;
-          if (newSet.has(card.cardId)) {
-            stat.newCards++;
-          }
-          if (dueSet.has(card.cardId)) {
-            stat.reviewCards++;
-          }
+          if (newSet.has(card.cardId)) stat.newCards++;
+          if (dueSet.has(card.cardId)) stat.reviewCards++;
         }
-        // 卡片属于 ShiYi 树但不在 shiYiDecks 列表中则忽略
-        // （例如用户曾手动移到已删除的 ShiYi 子牌组）
       }
     } catch (err) {
-      // cardsInfo 失败时回退：至少填入 totalCards 总数
+      // cardsInfo 失败时无法按牌组拆分，各牌组保持零值
       console.error('[ankiService] cardsInfo failed:', err.message);
-      for (const name of shiYiDecks) {
-        deckStats[name].totalCards = allCardIds.length;
-        deckStats[name].newCards = newCardIds.length;
-        deckStats[name].reviewCards = dueCardIds.length;
-      }
     }
   }
 
   // 聚合子牌组数据到父牌组：父牌组 = 自身 + 所有后代
+  // 按深度降序排列，确保子牌组先被处理
+  const sortedDecks = [...shiYiDecks].sort(
+    (a, b) => b.split('::').length - a.split('::').length
+  );
+  // 子牌组 → 直接父牌组的映射
+  const childToParent = new Map();
+  for (const deck of sortedDecks) {
+    const lastSep = deck.lastIndexOf('::');
+    if (lastSep !== -1) {
+      const parent = deck.slice(0, lastSep);
+      if (deckStats[parent]) {
+        childToParent.set(deck, parent);
+      }
+    }
+  }
+  // 从最深子牌组向上累加（每个子牌组只加给直接父牌组，父牌组递归获得全部后代）
   const aggregatedStats = {};
   for (const name of shiYiDecks) {
-    aggregatedStats[name] = {
-      totalCards: deckStats[name].totalCards,
-      newCards: deckStats[name].newCards,
-      reviewCards: deckStats[name].reviewCards,
-    };
-    // 累加所有子牌组
-    const prefix = name + '::';
-    for (const child of shiYiDecks) {
-      if (child.startsWith(prefix)) {
-        aggregatedStats[name].totalCards += deckStats[child].totalCards;
-        aggregatedStats[name].newCards += deckStats[child].newCards;
-        aggregatedStats[name].reviewCards += deckStats[child].reviewCards;
+    aggregatedStats[name] = { ...deckStats[name] };
+  }
+  for (const name of sortedDecks) {
+    const parent = childToParent.get(name);
+    if (parent) {
+      for (const key of ['totalCards', 'newCards', 'reviewCards']) {
+        aggregatedStats[parent][key] += aggregatedStats[name][key];
       }
     }
   }
 
-  const statsList = shiYiDecks.map((name) => ({
-    name,
-    displayName: name.replace('ShiYi::', ''),
-    totalCards: aggregatedStats[name].totalCards,
-    newCards: aggregatedStats[name].newCards,
-    reviewCards: aggregatedStats[name].reviewCards,
-  }));
-
+  // 直接映射为最终结构（合并原来的两步映射）
   return {
-    decks: statsList.map((s) => ({
-      id: encodeURIComponent(s.name),
-      name: s.displayName,
-      fullName: s.name,
-      totalCards: s.totalCards,
-      newCards: s.newCards,
-      reviewCards: s.reviewCards,
-      dueCards: s.reviewCards,  // backward compat
-    })),
+    decks: shiYiDecks.map((name) => {
+      const stats = aggregatedStats[name];
+      return {
+        id: encodeURIComponent(name),
+        name: name.replace(DECK_CHILD_PREFIX, ''),
+        fullName: name,
+        totalCards: stats.totalCards,
+        newCards: stats.newCards,
+        reviewCards: stats.reviewCards,
+        dueCards: stats.reviewCards,  // backward compat
+      };
+    }),
     allDecks,
   };
 }
@@ -199,12 +186,11 @@ async function getAllCardsInDeck(deckFullName) {
  * 根据卡片 ID 批量获取卡片信息并合并 note 字段数据
  * 共享函数，getDueCards 和 getAllCardsInDeck 均使用此函数
  *
- * 关键修复：Anki-Connect 的 cardsInfo 返回的 note ID 字段名是 `note`，不是 `noteId`
+ * 注意：Anki-Connect 的 cardsInfo 返回的 note ID 字段名是 `note`，不是 `noteId`
  */
 async function fetchCardsWithNotes(cardIds) {
   const cardsInfo = await invoke('cardsInfo', { cards: cardIds });
 
-  // 从 cardsInfo 中提取 note ID（Anki-Connect 字段名为 `note`，不是 `noteId`）
   const noteIds = [...new Set(cardsInfo.map((c) => c.note).filter(Boolean))];
   const notesInfo = noteIds.length > 0
     ? await invoke('notesInfo', { notes: noteIds })
@@ -218,33 +204,22 @@ async function fetchCardsWithNotes(cardIds) {
 
   // 合并卡片信息和 note 字段
   return cardsInfo.map((card) => {
-    // 关键修复：Anki-Connect 的 cardsInfo 返回的 note ID 字段名是 `note`，不是 `noteId`
     const note = noteMap[card.note] || {};
 
     return {
       cardId: card.cardId,
-      // 使用 card.note（Anki-Connect 的 note ID 字段名）
       noteId: card.note,
       deck: card.deckName,
       type: card.type, // 0=new, 1=learning, 2=review
       due: card.due,
       interval: card.interval,
       ease: card.ease,
-      // Note fields
-      concept:
-        note.fields?.Concept?.value || note.fields?.concept?.value || '',
-      word: note.fields?.Word?.value || note.fields?.word?.value || '',
-      cardType:
-        note.fields?.CardType?.value ||
-        note.fields?.card_type?.value ||
-        randomCardType(card.cardId),
-      subDeck:
-        note.fields?.SubDeck?.value || note.fields?.sub_deck?.value || '',
-      examples: parseJsonField(
-        note.fields?.Examples?.value || note.fields?.examples?.value || '[]'
-      ),
-      context:
-        note.fields?.Context?.value || note.fields?.context?.value || '',
+      concept: getNoteField(note, 'Concept', 'concept'),
+      word: getNoteField(note, 'Word', 'word'),
+      cardType: getNoteField(note, 'CardType', 'card_type', '') || randomCardType(card.cardId),
+      subDeck: getNoteField(note, 'SubDeck', 'sub_deck'),
+      examples: parseJsonField(getNoteField(note, 'Examples', 'examples', '[]')),
+      context: getNoteField(note, 'Context', 'context'),
     };
   });
 }
@@ -263,19 +238,17 @@ async function getKnownVocabulary(deckFullName) {
 
   const notesInfo = await invoke('notesInfo', { notes: noteIds });
 
-  const words = new Set();
+  // 用 Map 按 word 去重，避免 JSON stringify/parse 往返
+  const wordMap = new Map();
   for (const note of notesInfo) {
-    const word = note.fields?.Word?.value || note.fields?.word?.value || '';
-    const concept =
-      note.fields?.Concept?.value || note.fields?.concept?.value || '';
-    if (word) {
-      words.add(
-        JSON.stringify({ word: word.trim(), concept: concept.trim() })
-      );
+    const word = getNoteField(note, 'Word', 'word').trim();
+    const concept = getNoteField(note, 'Concept', 'concept').trim();
+    if (word && !wordMap.has(word)) {
+      wordMap.set(word, { word, concept });
     }
   }
 
-  return [...words].map((s) => JSON.parse(s));
+  return [...wordMap.values()];
 }
 
 /**
@@ -312,6 +285,14 @@ function parseJsonField(value) {
 }
 
 /**
+ * 从 Anki note 中提取字段值，同时兼容 PascalCase 和 snake_case 命名
+ * Anki note 字段命名因用户创建方式不同可能是 Concept 或 concept
+ */
+function getNoteField(note, pascalKey, snakeKey, fallback = '') {
+  return note.fields?.[pascalKey]?.value || note.fields?.[snakeKey]?.value || fallback;
+}
+
+/**
  * 当 Anki note 未设置 CardType 时，随机分配一种卡片类型
  * 等概率随机四种类型，使学习体验不再单调
  */
@@ -323,6 +304,7 @@ const CARD_TYPES = ['read', 'write', 'listen', 'speak'];
  * 避免破坏 pickNextCard 的轮换机制
  */
 function randomCardType(cardId) {
+  console.warn(`[ankiService] Card ${cardId} missing CardType field, using deterministic fallback`);
   // 乘法哈希常量 floor(2^32 / φ)，其中 φ ≈ 1.618 (黄金比例)
   // 该常数在乘法哈希中提供良好的位分散特性，确保不同 cardId 产生均匀分布的类型
   const GOLDEN_RATIO_HASH = 2654435761;
