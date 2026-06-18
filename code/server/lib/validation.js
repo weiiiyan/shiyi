@@ -87,3 +87,15 @@ export function assertValid(result) {
     throw new Error(result.error || '校验失败');
   }
 }
+
+/**
+ * 将数值限制在指定范围内（用于 ease 评分限制）
+ * @param {number} value - 要限制的值
+ * @param {number} [min] - 最小值，默认 1
+ * @param {number} [max] - 最大值，默认 4
+ * @returns {number} 限制后的值
+ */
+export function clampEase(value, min = 1, max = 4) {
+  const rounded = Math.round(value);
+  return Math.max(min, Math.min(max, rounded));
+}

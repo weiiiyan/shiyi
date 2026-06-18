@@ -6,6 +6,8 @@
  * 经验证，当前 Anki-Connect 版本对中英文牌组名称均能正确处理。
  */
 
+import { clampEase } from '../lib/validation.js';
+
 const ANKI_CONNECT_URL = process.env.ANKI_CONNECT_URL || 'http://localhost:8765';
 const ANKI_TIMEOUT_MS = parseInt(process.env.ANKI_TIMEOUT_MS, 10) || 10000;
 
@@ -257,7 +259,7 @@ async function getKnownVocabulary(deckFullName) {
  * @param {number} ease - 1=again, 2=hard, 3=good, 4=easy
  */
 async function answerCard(cardId, ease) {
-  const validEase = Math.max(1, Math.min(4, Math.round(ease)));
+  const validEase = clampEase(ease);
   return invoke('answerCards', {
     answers: [{ cardId, ease: validEase }],
   });
